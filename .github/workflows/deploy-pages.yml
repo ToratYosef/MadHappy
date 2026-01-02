@@ -38,8 +38,35 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
-      - name: Export static site
-        run: npx next export
+      - name: Create static placeholder (app requires server runtime)
+        run: |
+          rm -rf out
+          mkdir -p out
+          cat > out/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Deployment requires a server runtime</title>
+            <style>
+              body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 2rem; line-height: 1.6; color: #111; }
+              .card { max-width: 720px; padding: 2rem; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+              h1 { margin-top: 0; }
+              code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; }
+              a { color: #0f766e; }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+              <h1>Needs a server runtime</h1>
+              <p>This Next.js application uses API routes and authentication (NextAuth), which cannot be exported as a static site for GitHub Pages.</p>
+              <p>Deploy to a server-capable host (e.g., Vercel, Render, Fly.io, Railway, or a Node server) to run the full app.</p>
+              <p>If you intentionally want a static export, remove API routes/NextAuth or provide <code>generateStaticParams</code> for all dynamic routes and set <code>output: 'export'</code> in <code>next.config.js</code>.</p>
+            </div>
+          </body>
+          </html>
+          EOF
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
