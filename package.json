@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "server:build": "next build",
+    "server": "NODE_ENV=production next start",
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",

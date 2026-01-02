@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { authSecret } from '@/lib/auth-config';
 
 const adminPaths = ['/admin'];
 
@@ -9,7 +10,7 @@ export async function middleware(req: NextRequest) {
 
   if (!isAdminRoute) return NextResponse.next();
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req, secret: authSecret });
 
   if (!token?.email) {
     return NextResponse.redirect(new URL('/admin/login', req.url));
