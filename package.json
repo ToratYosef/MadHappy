@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.35",
+    "@stripe/react-stripe-js": "^2.7.0",
     "@stripe/stripe-js": "^2.4.0",
+    "@studio-freight/lenis": "^1.0.35",
     "clsx": "^2.1.0",
     "gsap": "^3.12.5",
     "next": "^14.2.5",
