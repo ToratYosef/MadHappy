@@ -3,6 +3,16 @@ import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 
 async function getMetrics() {
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  if (!hasDatabaseUrl) {
+    return {
+      todayRevenue: 0,
+      weekRevenue: 0,
+      unfulfilled: 0,
+      disabledVariants: 0
+    };
+  }
+
   const [todayRevenue, weekRevenue, unfulfilled, disabledVariants] = await Promise.all([
     prisma.order.aggregate({
       _sum: { totalCents: true },
@@ -29,6 +39,18 @@ async function getMetrics() {
 }
 
 export default async function AdminDashboard() {
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  if (!hasDatabaseUrl) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <p className="text-sm text-black/60">Database is not configured. Connect a DATABASE_URL to see metrics.</p>
+        </div>
+      </div>
+    );
+  }
+
   const metrics = await getMetrics();
   const recent = await getRecentOrders();
 
