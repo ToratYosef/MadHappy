@@ -2,9 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
+import { useSession, signOut } from 'next-auth/react';
+import { useState } from 'react';
+import { AuthModal } from './auth-modal';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,6 +17,10 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const count = useCartStore((s) => s.items.reduce((acc, item) => acc + item.qty, 0));
+  const { data: session } = useSession();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-background/70 backdrop-blur">
       <div className="container-max flex items-center justify-between py-4">
@@ -45,8 +52,85 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+
+          {/* User Button */}
+          <div className="relative">
+            <button
+              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+              className="inline-flex items-center gap-2 rounded-full border border-black/5 px-3 py-2 text-sm transition hover:-translate-y-0.5 hover:shadow-soft"
+            >
+              <User className="h-4 w-4" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isUserDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-lg border border-black/5 bg-white shadow-soft">
+                {session?.user ? (
+                  <div className="space-y-1 p-2">
+                    <div className="px-3 py-2 border-b border-black/5">
+                      <p className="text-xs text-black/50 uppercase tracking-wider">Signed in as</p>
+                      <p className="font-semibold text-sm truncate">{session.user.email}</p>
+                    </div>
+                    <Link
+                      href="/account"
+                      className="block px-3 py-2 text-sm hover:bg-black/5 rounded"
+                      onClick={() => setIsUserDropdownOpen(false)}
+                    >
+                      My Account
+                    </Link>
+                    <Link
+                      href="/track-order"
+                      className="block px-3 py-2 text-sm hover:bg-black/5 rounded"
+                      onClick={() => setIsUserDropdownOpen(false)}
+                    >
+                      Track Order
+                    </Link>
+                    <Link
+                      href="/help"
+                      className="block px-3 py-2 text-sm hover:bg-black/5 rounded"
+                      onClick={() => setIsUserDropdownOpen(false)}
+                    >
+                      Help
+                    </Link>
+                    <button
+                      onClick={() => {
+                        signOut({ redirect: true, callbackUrl: '/' });
+                        setIsUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-red-50 text-red-600 rounded"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2 p-3">
+                    <button
+                      onClick={() => {
+                        setIsAuthModalOpen(true);
+                        setIsUserDropdownOpen(false);
+                      }}
+                      className="button-primary w-full text-sm"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsAuthModalOpen(true);
+                        setIsUserDropdownOpen(false);
+                      }}
+                      className="button-secondary w-full text-sm"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </nav>
       </div>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 }

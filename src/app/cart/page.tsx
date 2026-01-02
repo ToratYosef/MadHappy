@@ -5,33 +5,84 @@ import Footer from '@/components/storefront/footer';
 import { useCartStore } from '@/lib/cart-store';
 import Image from 'next/image';
 import { formatCurrency } from '@/lib/utils';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 export default function CartPage() {
   const { items, updateQty, removeItem, clear } = useCartStore();
   const [loading, startTransition] = useTransition();
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const subtotal = items.reduce((acc, item) => acc + item.priceCents * item.qty, 0);
 
   const handleCheckout = async () => {
+    setError(null);
     startTransition(async () => {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: items.map(({ productId, variantId, qty }) => ({ productId, variantId, qty })) })
-      });
-      const data = await res.json();
-      if (data.url) {
-        clear();
-        window.location.href = data.url;
+      try {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: items.map(({ productId, variantId, qty }) => ({ productId, variantId, qty })) })
+        });
+        const data = await res.json();
+        if (data.clientSecret) {
+          setClientSecret(data.clientSecret);
+        } else {
+          setError(data.error || 'Failed to create checkout session');
+        }
+      } catch (err) {
+        setError('An error occurred. Please try again.');
+        console.error('Checkout error:', err);
       }
     });
   };
+
+  if (clientSecret) {
+    if (!stripePromise) {
+      return (
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <section className="container-max flex-1 py-10">
+            <h1 className="mb-6 text-3xl font-semibold">Checkout</h1>
+            <div className="mx-auto max-w-2xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+              Payment system is not properly configured. Please contact support.
+            </div>
+          </section>
+          <Footer />
+        </div>
+      );
+    }
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <section className="container-max flex-1 py-10">
+          <h1 className="mb-6 text-3xl font-semibold">Checkout</h1>
+          <div className="mx-auto max-w-2xl">
+            <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
+              <EmbeddedCheckout />
+            </EmbeddedCheckoutProvider>
+          </div>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <section className="container-max flex-1 py-10">
         <h1 className="mb-6 text-3xl font-semibold">Your cart</h1>
+        {error && (
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            {error}
+          </div>
+        )}
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-4">
             {items.length === 0 && <p className="text-black/60">No items yet.</p>}
@@ -39,7 +90,7 @@ export default function CartPage() {
               <div key={item.variantId} className="flex items-center gap-4 rounded-xl border border-black/5 bg-white p-4 shadow-soft">
                 {item.imageUrl && (
                   <div className="relative h-24 w-20 overflow-hidden rounded-lg border border-black/5">
-                    <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+                    <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="80px" />
                   </div>
                 )}
                 <div className="flex-1">

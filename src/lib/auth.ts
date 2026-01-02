@@ -1,50 +1,57 @@
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { type Adapter } from 'next-auth/adapters';
-import GoogleProvider from 'next-auth/providers/google';
 import { type NextAuthOptions, getServerSession } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './db';
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' }
+      },
+      async authorize(credentials) {
+        const adminEmail = process.env.ADMIN_EMAIL || '';
+        const adminPassword = process.env.ADMIN_PASSWORD || '';
+
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        if (credentials.email === adminEmail && credentials.password === adminPassword) {
+          return {
+            id: '1',
+            email: credentials.email,
+            name: 'Admin User'
+          };
+        }
+
+        return null;
+      }
     })
   ],
   callbacks: {
     async signIn({ user }) {
-      if (!user?.email) return false;
-      const allowlist = (process.env.ADMIN_EMAILS || '')
-        .split(',')
-        .map((e) => e.trim())
-        .filter(Boolean);
-      const adminUser = await prisma.adminUser.findUnique({ where: { email: user.email } });
-      const isAdminEmail = allowlist.includes(user.email);
-      if (!adminUser && !isAdminEmail) {
-        return false;
-      }
-      if (user.email && isAdminEmail) {
-        await prisma.adminUser.upsert({
-          where: { email: user.email },
-          update: {},
-          create: { email: user.email }
-        });
-      }
       return true;
     },
-    async session({ session, user }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.role = user.role;
-        session.user.email = user.email;
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
       }
       return session;
     }
   },
-  session: { strategy: 'database' },
+  session: { strategy: 'jwt' },
   pages: {
-    signIn: '/admin/login'
+    signIn: '/login'
   }
 };
 

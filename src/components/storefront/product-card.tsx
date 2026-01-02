@@ -25,8 +25,9 @@ export function ProductCard({ product }: ProductCardProps) {
               src={image}
               alt={product.name}
               fill
+              priority
               className="object-cover transition duration-500 group-hover:scale-105"
-              sizes="(min-width: 1024px) 25vw, 50vw"
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent opacity-0 transition group-hover:opacity-100" />
           </div>

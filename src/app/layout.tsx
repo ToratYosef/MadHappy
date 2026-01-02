@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import PageTransition from '@/components/ui/page-transition';
+import CartDrawer from '@/components/cart-drawer';
+import { Providers } from '@/components/providers';
 
 const font = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-primary', display: 'swap' });
 
@@ -15,9 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={font.variable}>
       <body className={cn('bg-background text-foreground antialiased min-h-screen', font.className)}>
-        <PageTransition>
-          <main className="min-h-screen flex flex-col">{children}</main>
-        </PageTransition>
+        <Providers>
+          <PageTransition>
+            <main className="min-h-screen flex flex-col">{children}</main>
+          </PageTransition>
+          <CartDrawer />
+        </Providers>
       </body>
     </html>
   );

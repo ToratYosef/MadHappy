@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Gauge, Package, Settings, ShoppingCart, LogOut } from 'lucide-react';
+import { Gauge, Package, Settings, ShoppingCart, LogOut, Ticket, Image, Users } from 'lucide-react';
 import { getAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { SignOutButton } from './sign-out-button';
@@ -9,12 +9,15 @@ const nav = [
   { href: '/admin', label: 'Dashboard', icon: Gauge },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/admin/banners', label: 'Banners', icon: Image },
+  { href: '/admin/promo-codes', label: 'Promo Codes', icon: Ticket },
+  { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/settings', label: 'Settings', icon: Settings }
 ];
 
 export default async function AdminShell({ children }: { children: React.ReactNode }) {
   const session = await getAuthSession();
-  if (!session?.user?.email) redirect('/admin/login');
+  if (!session?.user?.email) redirect('/login');
 
   return (
     <div className="grid min-h-screen grid-cols-[240px_1fr] bg-background">

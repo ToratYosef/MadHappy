@@ -106,11 +106,11 @@ async function main() {
           create: product.images.map((url, idx) => ({ url, alt: product.name, sortOrder: idx }))
         },
         variants: {
-          create: [VariantSize.XS, VariantSize.S, VariantSize.M, VariantSize.L, VariantSize.XL].map((size, idx) => ({
-            size,
-            inventoryQty: 20 - idx * 2,
-            active: true
-          }))
+          create: [
+            { size: VariantSize.S, inventoryQty: 10, active: true },
+            { size: VariantSize.M, inventoryQty: 15, active: true },
+            { size: VariantSize.L, inventoryQty: 5, active: true }
+          ]
         }
       }
     });

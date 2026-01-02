@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Variant } from '@prisma/client';
 import { useCartStore } from '@/lib/cart-store';
+import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
 
 interface Props {
@@ -21,6 +22,7 @@ export default function AddToCart({ product }: Props) {
   const [variantId, setVariantId] = useState(product.variants[0]?.id);
   const [qty, setQty] = useState(1);
   const addItem = useCartStore((s) => s.addItem);
+  const openDrawer = useCartDrawer((s) => s.open);
 
   const variant = product.variants.find((v) => v.id === variantId);
 
@@ -36,6 +38,7 @@ export default function AddToCart({ product }: Props) {
       size: variant.size,
       qty
     });
+    openDrawer();
   };
 
   return (
