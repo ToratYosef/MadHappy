@@ -26,7 +26,7 @@ export default async function OrdersPage({ searchParams }: Props) {
               <th className="px-4 py-3">Order</th>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Total</th>
-              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Payment</th>
               <th className="px-4 py-3">Fulfillment</th>
             </tr>
           </thead>
@@ -35,12 +35,12 @@ export default async function OrdersPage({ searchParams }: Props) {
               <tr key={order.id} className="border-t border-black/5">
                 <td className="px-4 py-3">
                   <Link href={`/admin/orders/${order.id}`} className="font-semibold text-green hover:underline">
-                    {order.orderNumber}
+                    {order.id}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-black/70">{order.email}</td>
+                <td className="px-4 py-3 text-black/70">{order.customerEmail}</td>
                 <td className="px-4 py-3">{formatCurrency(order.totalCents)}</td>
-                <td className="px-4 py-3 text-black/70">{order.status}</td>
+                <td className="px-4 py-3 text-black/70">{order.paymentStatus}</td>
                 <td className="px-4 py-3 text-black/70">{order.fulfillmentStatus}</td>
               </tr>
             ))}

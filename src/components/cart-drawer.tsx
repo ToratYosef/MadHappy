@@ -83,8 +83,15 @@ export default function CartDrawer() {
                     >
                       {item.name}
                     </Link>
-                    {item.size && (
-                      <p className="text-xs text-black/60 mt-1">Size: {item.size}</p>
+                    {item.variantTitle && (
+                      <p className="text-xs text-black/60 mt-1">{item.variantTitle}</p>
+                    )}
+                    {item.options && (
+                      <p className="text-[11px] text-black/60">
+                        {Object.entries(item.options)
+                          .map(([k, v]) => `${k}: ${v}`)
+                          .join(', ')}
+                      </p>
                     )}
                     <p className="text-sm font-semibold mt-2">
                       {formatCurrency(item.priceCents, 'USD')}

@@ -14,7 +14,7 @@ export default async function OrderDetailPage({ params }: Props) {
     <div className="space-y-6">
       <div>
         <p className="text-sm text-black/60">Order</p>
-        <h1 className="text-2xl font-semibold">{order.orderNumber}</h1>
+        <h1 className="text-2xl font-semibold">{order.id}</h1>
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="rounded-xl border border-black/5 bg-white p-5 shadow-soft lg:col-span-2">
@@ -23,11 +23,11 @@ export default async function OrderDetailPage({ params }: Props) {
             {order.items.map((item) => (
               <div key={item.id} className="flex items-center justify-between rounded-lg border border-black/5 p-3">
                 <div>
-                  <p className="font-semibold">{item.nameSnapshot}</p>
-                  <p className="text-sm text-black/60">Size {item.size ?? 'N/A'}</p>
+                  <p className="font-semibold">{item.title}</p>
+                  <p className="text-sm text-black/60">{item.variantTitle}</p>
                 </div>
                 <div className="text-right text-sm text-black/70">
-                  <p>{formatCurrency(item.priceCentsSnapshot)}</p>
+                  <p>{formatCurrency(item.priceCents)}</p>
                   <p>Qty {item.qty}</p>
                 </div>
               </div>
@@ -37,18 +37,33 @@ export default async function OrderDetailPage({ params }: Props) {
         <div className="space-y-4 rounded-xl border border-black/5 bg-white p-5 shadow-soft">
           <div>
             <h3 className="text-sm text-black/60">Status</h3>
-            <p className="text-lg font-semibold">{order.status}</p>
+            <p className="text-lg font-semibold">{order.paymentStatus}</p>
             <p className="text-sm text-black/60">Fulfillment: {order.fulfillmentStatus}</p>
+            {order.printifyOrderId && (
+              <p className="text-xs text-black/50">Printify ID: {order.printifyOrderId}</p>
+            )}
           </div>
           <div>
             <h3 className="text-sm text-black/60">Customer</h3>
-            <p className="font-semibold">{order.shippingName ?? 'N/A'}</p>
-            <p className="text-sm text-black/60">{order.email}</p>
+            <p className="font-semibold">{order.shippingName ?? order.customerName ?? 'N/A'}</p>
+            <p className="text-sm text-black/60">{order.customerEmail}</p>
             <p className="text-sm text-black/60">
               {[order.shippingAddress1, order.shippingAddress2, order.shippingCity, order.shippingState, order.shippingPostal, order.shippingCountry]
                 .filter(Boolean)
                 .join(', ')}
             </p>
+            {order.trackingNumber && (
+              <p className="text-sm text-black/60">
+                Tracking: {order.trackingCarrier} ·{' '}
+                {order.trackingUrl ? (
+                  <a href={order.trackingUrl} className="text-green underline" target="_blank">
+                    {order.trackingNumber}
+                  </a>
+                ) : (
+                  order.trackingNumber
+                )}
+              </p>
+            )}
           </div>
           <div className="border-t border-black/5 pt-4 text-sm text-black/70">
             <div className="flex justify-between py-1">

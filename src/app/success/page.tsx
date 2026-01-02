@@ -2,7 +2,9 @@ import Navbar from '@/components/storefront/navbar';
 import Footer from '@/components/storefront/footer';
 import Link from 'next/link';
 
-export default function SuccessPage() {
+export default function SuccessPage({ searchParams }: { searchParams: { orderId?: string } }) {
+  const orderId = searchParams.orderId;
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -12,6 +14,7 @@ export default function SuccessPage() {
         <p className="max-w-xl text-black/70">
           Your receipt and shipping details have been sent to your email. We&apos;ll let you know once it ships.
         </p>
+        {orderId && <p className="text-sm text-black/60">Order ID: {orderId}</p>}
         <div className="flex gap-3">
           <Link href="/shop" className="button-primary">
             Continue shopping

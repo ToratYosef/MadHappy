@@ -7,53 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String         @id @default(uuid())
-  name        String
-  slug        String         @unique
-  description String
-  category    Category
-  priceCents  Int
-  currency    String         @default("USD")
-  active      Boolean        @default(true)
-  featured    Boolean        @default(false)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  images      ProductImage[]
-  variants    Variant[]
-}
-
-model ProductImage {
-  id        String  @id @default(uuid())
-  productId String
-  url       String
-  alt       String
-  sortOrder Int     @default(0)
-  product   Product @relation(fields: [productId], references: [id])
-}
-
-model Variant {
-  id           String      @id @default(uuid())
-  productId    String
-  size         VariantSize
-  sku          String?     @unique
-  inventoryQty Int         @default(0)
-  active       Boolean     @default(true)
-  product      Product     @relation(fields: [productId], references: [id])
-}
-
 model Order {
   id                    String            @id @default(uuid())
-  orderNumber           String            @unique
-  email                 String
-  status                OrderStatus       @default(CREATED)
-  fulfillmentStatus     FulfillmentStatus @default(UNFULFILLED)
-  currency              String            @default("USD")
-  subtotalCents         Int
-  shippingCents         Int
-  totalCents            Int
-  stripeSessionId       String            @unique
-  stripePaymentIntentId String?
+  stripePaymentIntentId String            @unique
+  stripeCheckoutSessionId String?
+  customerName          String?
+  customerEmail         String
+  customerPhone         String?
   shippingName          String?
   shippingAddress1      String?
   shippingAddress2      String?
@@ -61,23 +21,33 @@ model Order {
   shippingState         String?
   shippingPostal        String?
   shippingCountry       String?
+  paymentStatus         PaymentStatus     @default(PENDING)
+  fulfillmentStatus     FulfillmentStatus @default(DRAFT)
+  printifyOrderId       String?
+  trackingCarrier       String?
+  trackingNumber        String?
+  trackingUrl           String?
+  currency              String            @default("USD")
+  subtotalCents         Int
+  shippingCents         Int
+  totalCents            Int
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
-  userId                String?
-  user                  User?             @relation(fields: [userId], references: [id])
   items                 OrderItem[]
 }
 
 model OrderItem {
-  id                 String       @id @default(uuid())
-  orderId            String
-  productId          String?
-  nameSnapshot       String
-  priceCentsSnapshot Int
-  imageSnapshot      String?
-  size               VariantSize?
-  qty                Int
-  order              Order        @relation(fields: [orderId], references: [id])
+  id               String   @id @default(uuid())
+  orderId          String
+  printifyProductId String
+  variantId        String
+  title            String?
+  variantTitle     String?
+  imageUrl         String?
+  options          Json?
+  qty              Int
+  priceCents       Int
+  order            Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model SiteSettings {
@@ -110,13 +80,6 @@ model Banner {
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model AdminUser {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  role      AdminRole @default(STAFF)
-  createdAt DateTime  @default(now())
 }
 
 model Account {
@@ -155,7 +118,6 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
-  orders        Order[]
   sessions      Session[]
 }
 
@@ -167,30 +129,20 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-enum Category {
-  HOODIE
-  TEE
-  HAT
-}
-
-enum VariantSize {
-  XS
-  S
-  M
-  L
-  XL
-}
-
-enum OrderStatus {
-  CREATED
-  PAID
-  CANCELED
-  REFUNDED
+model AdminUser {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  role      AdminRole @default(STAFF)
+  createdAt DateTime  @default(now())
 }
 
 enum FulfillmentStatus {
-  UNFULFILLED
-  FULFILLED
+  DRAFT
+  SUBMITTED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
 }
 
 enum AdminRole {
@@ -201,4 +153,49 @@ enum AdminRole {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model PrintifyProductCache {
+  id                String                 @id @default(uuid())
+  shopId            String
+  printifyProductId String                 @unique
+  title             String
+  slug              String                 @unique
+  description       String
+  images            Json
+  options           Json
+  variants          PrintifyVariantCache[]
+  updatedAt         DateTime               @updatedAt
+  createdAt         DateTime               @default(now())
+}
+
+model PrintifyVariantCache {
+  id           String               @id @default(uuid())
+  productId    String
+  variantId    String
+  title        String
+  options      Json
+  priceCents   Int
+  isEnabled    Boolean              @default(true)
+  shippingInfo Json?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  product      PrintifyProductCache @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, variantId])
+}
+
+model WebhookEvent {
+  id        String   @id @default(uuid())
+  source    String
+  eventType String
+  payload   Json
+  createdAt DateTime @default(now())
 }

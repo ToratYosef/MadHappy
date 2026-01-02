@@ -9,16 +9,18 @@ interface Props {
 
 export default async function UserDetailsPage({ params }: Props) {
   const user = await prisma.user.findUnique({
-    where: { id: params.id },
-    include: {
-      orders: {
-        include: { items: true },
-        orderBy: { createdAt: 'desc' }
-      }
-    }
+    where: { id: params.id }
   });
 
   if (!user) return notFound();
+
+  const orders = user.email
+    ? await prisma.order.findMany({
+        where: { customerEmail: user.email },
+        include: { items: true },
+        orderBy: { createdAt: 'desc' }
+      })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -48,7 +50,7 @@ export default async function UserDetailsPage({ params }: Props) {
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.1em] text-black/50">Total Orders</p>
-            <p className="text-black/90">{user.orders.length}</p>
+            <p className="text-black/90">{orders.length}</p>
           </div>
         </div>
       </div>
@@ -56,18 +58,18 @@ export default async function UserDetailsPage({ params }: Props) {
       {/* Orders */}
       <div>
         <h2 className="font-semibold text-lg mb-4">Orders</h2>
-        {user.orders.length === 0 ? (
+        {orders.length === 0 ? (
           <div className="rounded-xl border border-black/5 bg-white p-6 text-center text-black/60">
             No orders yet.
           </div>
         ) : (
           <div className="space-y-3">
-            {user.orders.map((order) => (
+            {orders.map((order) => (
               <div key={order.id} className="rounded-xl border border-black/5 bg-white p-4 shadow-soft">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <p className="text-xs uppercase tracking-[0.1em] text-black/50">Order #</p>
-                    <p className="font-semibold">{order.orderNumber}</p>
+                    <p className="font-semibold">{order.id}</p>
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-[0.1em] text-black/50">Total</p>
@@ -75,7 +77,7 @@ export default async function UserDetailsPage({ params }: Props) {
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-[0.1em] text-black/50">Status</p>
-                    <p className="text-black/90">{order.status}</p>
+                    <p className="text-black/90">{order.paymentStatus}</p>
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-[0.1em] text-black/50">Date</p>
@@ -87,7 +89,7 @@ export default async function UserDetailsPage({ params }: Props) {
                   <div className="space-y-1">
                     {order.items.map((item) => (
                       <p key={item.id} className="text-sm text-black/70">
-                        {item.nameSnapshot} (x{item.qty}) - {formatCurrency(item.priceCentsSnapshot * item.qty)}
+                        {item.title} (x{item.qty}) - {formatCurrency(item.priceCents * item.qty)}
                       </p>
                     ))}
                   </div>

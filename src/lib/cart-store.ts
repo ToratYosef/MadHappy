@@ -10,7 +10,8 @@ export type CartItem = {
   slug: string;
   priceCents: number;
   imageUrl?: string;
-  size?: string;
+  variantTitle?: string;
+  options?: Record<string, string>;
   qty: number;
 };
 
