@@ -13,7 +13,9 @@ interface Props {
 export default async function ProductPage({ params }: Props) {
   const product = await getProductBySlug(params.slug);
   if (!product) return notFound();
-  const images = Array.isArray(product.images) ? product.images : [];
+  const images = Array.isArray(product.images)
+    ? product.images.filter((img): img is string => typeof img === 'string')
+    : [];
   const featuredImage = images[0]
     ? { url: images[0], alt: product.title }
     : null;
@@ -56,7 +58,6 @@ export default async function ProductPage({ params }: Props) {
               printifyProductId: product.printifyProductId,
               title: product.title,
               slug: product.slug,
-              description: product.description,
               images,
               options: Array.isArray(product.options) ? product.options : [],
               variants: product.variants
