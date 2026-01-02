@@ -1,3 +1,6 @@
 import { prisma } from '../db';
 
-export const getSiteSettings = () => prisma.siteSettings.findUnique({ where: { id: 'default' } });
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+
+export const getSiteSettings = () =>
+  hasDatabaseUrl ? prisma.siteSettings.findUnique({ where: { id: 'default' } }) : Promise.resolve(null);
