@@ -1,14 +1,34 @@
 import { prisma } from '@/lib/db';
-import { Trash2, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 export default async function UsersPage() {
-  const users = await prisma.user.findMany({
-    include: { 
-      orders: true,
-      _count: { select: { orders: true } }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  if (!hasDatabaseUrl) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Users</h1>
+          <p className="text-sm text-black/60">Database is not configured. Connect a DATABASE_URL to load users.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const [users, orderCounts] = await Promise.all([
+    prisma.user.findMany({
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.order.groupBy({
+      by: ['customerEmail'],
+      _count: { _all: true }
+    })
+  ]);
+
+  const orderCountByEmail = Object.fromEntries(
+    orderCounts
+      .filter((entry) => entry.customerEmail)
+      .map((entry) => [entry.customerEmail, entry._count._all])
+  ) as Record<string, number>;
 
   return (
     <div className="space-y-6">
@@ -38,7 +58,9 @@ export default async function UsersPage() {
                 <tr key={user.id} className="border-t border-black/5">
                   <td className="px-4 py-3 font-semibold">{user.name || 'No name'}</td>
                   <td className="px-4 py-3 text-black/70">{user.email || 'No email'}</td>
-                  <td className="px-4 py-3 text-black/70">{user._count.orders}</td>
+                  <td className="px-4 py-3 text-black/70">
+                    {user.email ? orderCountByEmail[user.email] ?? 0 : 0}
+                  </td>
                   <td className="px-4 py-3 text-black/70 text-xs">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>

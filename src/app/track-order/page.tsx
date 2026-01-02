@@ -30,7 +30,7 @@ export default async function TrackOrderPage() {
 
           {orders.length === 0 ? (
             <div className="rounded-xl border border-black/5 bg-white p-6 text-center">
-              <p className="text-black/60">You haven't placed any orders yet.</p>
+              <p className="text-black/60">You haven&apos;t placed any orders yet.</p>
               <a href="/shop" className="text-green hover:underline mt-2 inline-block">
                 Start shopping
               </a>

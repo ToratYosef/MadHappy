@@ -71,6 +71,16 @@ export async function POST(req: Request) {
       const priceCents = variant.priceCents;
       subtotalCents += priceCents * cartItem.qty;
 
+      const normalizedOptions =
+        variant.options && typeof variant.options === 'object' && !Array.isArray(variant.options)
+          ? Object.fromEntries(
+              Object.entries(variant.options as Record<string, unknown>).map(([key, value]) => [
+                key,
+                typeof value === 'string' ? value : String(value ?? '')
+              ])
+            )
+          : {};
+
       orderItems.push({
         printifyProductId: variant.product.printifyProductId,
         variantId: variant.variantId,
@@ -78,8 +88,10 @@ export async function POST(req: Request) {
         priceCents,
         title: variant.product.title,
         variantTitle: variant.title,
-        imageUrl: Array.isArray(variant.product.images) ? variant.product.images[0] : null,
-        options: variant.options || {}
+        imageUrl: Array.isArray(variant.product.images)
+          ? (variant.product.images.find((img): img is string => typeof img === 'string') ?? null)
+          : null,
+        options: normalizedOptions
       });
     }
 
