@@ -37,6 +37,18 @@ async function toggleBanner(formData: FormData) {
 }
 
 export default async function BannersPage() {
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  if (!hasDatabaseUrl) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Banners</h1>
+          <p className="text-sm text-black/60">Database is not configured. Connect a DATABASE_URL to manage banners.</p>
+        </div>
+      </div>
+    );
+  }
+
   const banners = await prisma.banner.findMany({ orderBy: { sortOrder: 'asc' } });
 
   return (

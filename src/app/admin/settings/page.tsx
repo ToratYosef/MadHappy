@@ -24,7 +24,20 @@ async function updateSettings(formData: FormData) {
 }
 
 export default async function SettingsPage() {
-  const settings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  const settings = hasDatabaseUrl
+    ? await prisma.siteSettings.findUnique({ where: { id: 'default' } })
+    : null;
+  if (!hasDatabaseUrl) {
+    return (
+      <div className="max-w-3xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Settings</h1>
+          <p className="text-sm text-black/60">Database is not configured. Connect a DATABASE_URL to edit settings.</p>
+        </div>
+      </div>
+    );
+  }
   async function action(formData: FormData) {
     'use server';
     await updateSettings(formData);
