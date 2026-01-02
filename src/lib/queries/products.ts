@@ -5,9 +5,11 @@ import type { PrintifyProduct } from '@/types/printify';
 const productInclude = {
   variants: {
     where: { isEnabled: true },
-    orderBy: { priceCents: 'asc' }
+    orderBy: { priceCents: Prisma.SortOrder.asc }
   }
-};
+} satisfies Prisma.PrintifyProductCacheInclude;
+
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
 
 const normalizeImages = (images: any): string[] =>
   Array.isArray(images)
@@ -48,6 +50,7 @@ export const mapPrintifyProduct = (record: any): PrintifyProduct => ({
 });
 
 export const getFeaturedProducts = async () => {
+  if (!hasDatabaseUrl) return [];
   const products = await prisma.printifyProductCache.findMany({
     include: productInclude,
     orderBy: { updatedAt: 'desc' },
@@ -57,6 +60,7 @@ export const getFeaturedProducts = async () => {
 };
 
 export const getProducts = async (params: { search?: string; sort?: string }) => {
+  if (!hasDatabaseUrl) return [];
   const where: Prisma.PrintifyProductCacheWhereInput = {};
   if (params.search) {
     where.OR = [
@@ -75,6 +79,7 @@ export const getProducts = async (params: { search?: string; sort?: string }) =>
 };
 
 export const getProductBySlug = async (slug: string) => {
+  if (!hasDatabaseUrl) return null;
   const product = await prisma.printifyProductCache.findFirst({
     where: {
       OR: [{ slug }, { printifyProductId: slug }]

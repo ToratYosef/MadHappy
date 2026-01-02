@@ -35,6 +35,18 @@ async function togglePromoCode(formData: FormData) {
 }
 
 export default async function PromoCodesPage() {
+  const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+  if (!hasDatabaseUrl) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold">Promo Codes</h1>
+          <p className="text-sm text-black/60">Database is not configured. Connect a DATABASE_URL to manage promo codes.</p>
+        </div>
+      </div>
+    );
+  }
+
   const promoCodes = await prisma.promoCode.findMany({ orderBy: { createdAt: 'desc' } });
 
   return (
