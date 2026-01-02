@@ -5,14 +5,16 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
-import type { Product } from '@prisma/client';
+import type { PrintifyProduct } from '@/types/printify';
 
 interface ProductCardProps {
-  product: Product & { images: { url: string; alt: string }[] };
+  product: PrintifyProduct;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const image = product.images?.[0]?.url;
+  const image = product.images?.[0];
+  const price = product.variants[0]?.priceCents ?? 0;
+
   return (
     <Link href={`/product/${product.slug}`}>
       <motion.div
@@ -23,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="relative aspect-[4/5] overflow-hidden">
             <Image
               src={image}
-              alt={product.name}
+              alt={product.title}
               fill
               priority
               className="object-cover transition duration-500 group-hover:scale-105"
@@ -34,9 +36,9 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <p className="text-sm uppercase tracking-[0.08em] text-black/50">{product.category}</p>
-            <h3 className="font-semibold">{product.name}</h3>
-            <p className="text-sm text-black/60">{formatCurrency(product.priceCents, product.currency)}</p>
+            <p className="text-sm uppercase tracking-[0.08em] text-black/50">Print on demand</p>
+            <h3 className="font-semibold">{product.title}</h3>
+            <p className="text-sm text-black/60">{formatCurrency(price, 'USD')}</p>
           </div>
           <span className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-black/70 transition group-hover:-translate-y-1 group-hover:text-green">
             <ArrowUpRight className="h-4 w-4" />

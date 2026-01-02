@@ -9,19 +9,19 @@ export const getRecentOrders = (limit = 5) =>
   });
 
 export const getOrders = async (params: {
-  status?: string;
+  paymentStatus?: string;
   fulfillmentStatus?: string;
   search?: string;
   skip?: number;
   take?: number;
 }) => {
   const where: Prisma.OrderWhereInput = {};
-  if (params.status) where.status = params.status as any;
+  if (params.paymentStatus) where.paymentStatus = params.paymentStatus as any;
   if (params.fulfillmentStatus) where.fulfillmentStatus = params.fulfillmentStatus as any;
   if (params.search)
     where.OR = [
-      { email: { contains: params.search, mode: 'insensitive' } },
-      { orderNumber: { contains: params.search, mode: 'insensitive' } }
+      { customerEmail: { contains: params.search, mode: 'insensitive' } },
+      { id: { contains: params.search, mode: 'insensitive' } }
     ];
 
   const [orders, total] = await Promise.all([

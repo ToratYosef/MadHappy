@@ -1,8 +1,8 @@
 import AnimatedSection from '@/components/ui/animated-section';
 import { ProductCard } from './product-card';
-import type { Product, ProductImage } from '@prisma/client';
+import type { PrintifyProduct } from '@/types/printify';
 
-export function FeaturedGrid({ products }: { products: (Product & { images: ProductImage[] })[] }) {
+export function FeaturedGrid({ products }: { products: PrintifyProduct[] }) {
   return (
     <AnimatedSection className="container-max py-12" id="featured">
       <div className="mb-6 flex items-center justify-between">

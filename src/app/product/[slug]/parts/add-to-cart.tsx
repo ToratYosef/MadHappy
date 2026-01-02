@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Variant } from '@prisma/client';
 import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
@@ -9,33 +8,61 @@ import { formatCurrency } from '@/lib/utils';
 interface Props {
   product: {
     id: string;
-    name: string;
+    printifyProductId: string;
+    title: string;
     slug: string;
-    priceCents: number;
-    currency: string;
-    images: { url: string }[];
-    variants: Variant[];
+    images: string[];
+    options: { name: string; values: string[] }[];
+    variants: {
+      variantId: string;
+      title: string;
+      priceCents: number;
+      options: Record<string, string>;
+      isEnabled: boolean;
+    }[];
   };
 }
 
 export default function AddToCart({ product }: Props) {
-  const [variantId, setVariantId] = useState(product.variants[0]?.id);
+  const initialSelections = Object.fromEntries(
+    product.options.map((opt) => [opt.name, opt.values[0]])
+  );
+  const [selections, setSelections] = useState<Record<string, string>>(initialSelections);
   const [qty, setQty] = useState(1);
   const addItem = useCartStore((s) => s.addItem);
   const openDrawer = useCartDrawer((s) => s.open);
 
-  const variant = product.variants.find((v) => v.id === variantId);
+  const variantLookup = product.variants.reduce<Record<string, (typeof product.variants)[number]>>((acc, variant) => {
+    const key = product.options
+      .map((opt) => {
+        const normalizedOptions = Object.fromEntries(
+          Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
+        );
+        return (
+          variant.options?.[opt.name] ||
+          normalizedOptions[opt.name.toLowerCase()] ||
+          ''
+        );
+      })
+      .join('|');
+    acc[key] = variant;
+    return acc;
+  }, {});
+
+  const selectionKey = product.options.map((opt) => selections[opt.name]).join('|');
+  const variant = variantLookup[selectionKey] || product.variants[0];
 
   const handleAdd = () => {
     if (!variant) return;
     addItem({
-      productId: product.id,
-      variantId: variant.id,
-      name: product.name,
+      productId: product.printifyProductId,
+      variantId: variant.variantId,
+      name: product.title,
       slug: product.slug,
-      priceCents: product.priceCents,
-      imageUrl: product.images[0]?.url,
-      size: variant.size,
+      priceCents: variant.priceCents,
+      imageUrl: product.images[0],
+      variantTitle: variant.title,
+      options: selections,
       qty
     });
     openDrawer();
@@ -43,22 +70,24 @@ export default function AddToCart({ product }: Props) {
 
   return (
     <div className="space-y-4 rounded-xl border border-black/5 bg-white p-5 shadow-soft">
-      <div>
-        <p className="text-sm font-semibold">Select size</p>
-        <div className="mt-2 grid grid-cols-3 gap-2">
-          {product.variants.map((v) => (
-            <button
-              key={v.id}
-              onClick={() => setVariantId(v.id)}
-              className={`rounded-lg border px-3 py-2 text-sm transition ${
-                variantId === v.id ? 'border-green bg-green/10 text-green' : 'border-black/10 bg-white'
-              }`}
-            >
-              {v.size}
-            </button>
-          ))}
+      {product.options.map((opt) => (
+        <div key={opt.name}>
+          <p className="text-sm font-semibold">{opt.name}</p>
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            {opt.values.map((value) => (
+              <button
+                key={value}
+                onClick={() => setSelections((prev) => ({ ...prev, [opt.name]: value }))}
+                className={`rounded-lg border px-3 py-2 text-sm transition ${
+                  selections[opt.name] === value ? 'border-green bg-green/10 text-green' : 'border-black/10 bg-white'
+                }`}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
       <div className="flex items-center gap-3">
         <label className="text-sm text-black/70">Qty</label>
         <input
@@ -71,7 +100,7 @@ export default function AddToCart({ product }: Props) {
         />
       </div>
       <button onClick={handleAdd} className="button-primary w-full">
-        Add to cart · {formatCurrency(product.priceCents * qty, product.currency)}
+        Add to cart · {formatCurrency((variant?.priceCents ?? 0) * qty, 'USD')}
       </button>
     </div>
   );

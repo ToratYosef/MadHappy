@@ -3,117 +3,116 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
+import { requirePrintifyConfig, submitPrintifyOrder } from '@/lib/printify';
+
+async function submitOrderToPrintify(order: any) {
+  try {
+    const { shopId, token } = requirePrintifyConfig();
+    const payload = {
+      external_id: order.id,
+      line_items: order.items.map((item: any) => ({
+        product_id: item.printifyProductId,
+        variant_id: Number(item.variantId) || item.variantId,
+        quantity: item.qty
+      })),
+      address_to: {
+        first_name: order.shippingName || order.customerName || order.customerEmail,
+        last_name: '',
+        email: order.customerEmail,
+        phone: order.customerPhone,
+        country: order.shippingCountry,
+        region: order.shippingState,
+        address1: order.shippingAddress1,
+        address2: order.shippingAddress2,
+        city: order.shippingCity,
+        zip: order.shippingPostal
+      }
+    };
+
+    const response = await submitPrintifyOrder(shopId, payload, token);
+    const printifyOrderId = response?.id || response?.order_id || response?.orderId || null;
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        printifyOrderId,
+        fulfillmentStatus: 'SUBMITTED'
+      }
+    });
+  } catch (error) {
+    console.error('Failed to submit order to Printify', error);
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { fulfillmentStatus: 'DRAFT' }
+    });
+  }
+}
+
+async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
+  const orderId = paymentIntent.metadata?.orderId;
+
+  let order = await prisma.order.findFirst({
+    where: {
+      OR: [{ stripePaymentIntentId: paymentIntent.id }, orderId ? { id: orderId } : undefined].filter(Boolean) as any
+    },
+    include: { items: true }
+  });
+
+  if (!order) {
+    console.error('Order not found for payment intent', paymentIntent.id);
+    return;
+  }
+
+  if (order.paymentStatus !== 'PAID') {
+    order = await prisma.order.update({
+      where: { id: order.id },
+      data: { paymentStatus: 'PAID' },
+      include: { items: true }
+    });
+  }
+
+  if (!order.printifyOrderId) {
+    await submitOrderToPrintify(order);
+  }
+}
 
 export async function POST(req: Request) {
-  const body = await req.text();
+  const rawBody = await req.text();
   const signature = headers().get('stripe-signature');
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, signature || '', process.env.STRIPE_WEBHOOK_SECRET || '');
+    event = stripe.webhooks.constructEvent(rawBody, signature || '', process.env.STRIPE_WEBHOOK_SECRET || '');
   } catch (err) {
-    console.error('Webhook signature verification failed.', err);
+    console.error('Stripe webhook signature verification failed.', err);
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
-  const createOrderFromPaymentIntent = async (
-    paymentIntent: Stripe.PaymentIntent,
-    session?: Stripe.Checkout.Session
-  ) => {
-    const existing = await prisma.order.findFirst({
-      where: {
-        OR: [
-          { stripePaymentIntentId: paymentIntent.id },
-          session?.id ? { stripeSessionId: session.id } : undefined
-        ].filter(Boolean) as any
-      }
+  try {
+    await prisma.webhookEvent.create({
+      data: { source: 'stripe', eventType: event.type, payload: event as any }
     });
-    if (existing) return existing;
-
-    const items = JSON.parse(paymentIntent.metadata?.items || '[]');
-    if (!Array.isArray(items) || items.length === 0) {
-      console.error('Missing items metadata on payment intent', paymentIntent.id);
-      return null;
-    }
-
-    const variantIds = items.map((i: any) => i.variantId).filter(Boolean);
-    const variants = await prisma.variant.findMany({
-      where: { id: { in: variantIds } },
-      include: { product: { include: { images: true } } }
-    });
-
-    const customer = session?.customer_details;
-    const address = customer?.address;
-
-    return prisma.$transaction(async (tx) => {
-      const order = await tx.order.create({
-        data: {
-          orderNumber: `LKH-${Math.floor(Math.random() * 999999)}`,
-          email: customer?.email || paymentIntent.receipt_email || 'unknown',
-          status: 'PAID',
-          fulfillmentStatus: 'UNFULFILLED',
-          currency: paymentIntent.currency || 'usd',
-          subtotalCents: paymentIntent.amount ?? 0,
-          shippingCents: 0,
-          totalCents: paymentIntent.amount ?? 0,
-          stripeSessionId: session?.id || paymentIntent.id,
-          stripePaymentIntentId: paymentIntent.id,
-          shippingName: customer?.name || null,
-          shippingAddress1: address?.line1 || null,
-          shippingAddress2: address?.line2 || null,
-          shippingCity: address?.city || null,
-          shippingState: address?.state || null,
-          shippingPostal: address?.postal_code || null,
-          shippingCountry: address?.country || null
-        }
-      });
-
-      for (const item of items) {
-        const variant = variants.find((v) => v.id === item.variantId);
-
-        await tx.orderItem.create({
-          data: {
-            orderId: order.id,
-            productId: variant?.productId,
-            nameSnapshot: variant?.product.name || 'Item',
-            priceCentsSnapshot: variant?.product.priceCents ?? 0,
-            imageSnapshot: variant?.product.images?.[0]?.url,
-            size: variant?.size,
-            qty: item.qty ?? 1
-          }
-        });
-
-        if (variant) {
-          await tx.variant.update({
-            where: { id: item.variantId },
-            data: { inventoryQty: { decrement: item.qty || 1 } }
-          });
-        }
-      }
-
-      return order;
-    });
-  };
+  } catch (error) {
+    console.error('Failed to persist Stripe webhook', error);
+  }
 
   try {
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const paymentIntentId = typeof session.payment_intent === 'string'
-        ? session.payment_intent
-        : session.payment_intent?.id;
-
-      if (paymentIntentId) {
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        await createOrderFromPaymentIntent(paymentIntent, session);
-      } else {
-        console.error('No payment_intent on completed session', session.id);
+    switch (event.type) {
+      case 'payment_intent.succeeded': {
+        await handlePaymentIntent(event.data.object as Stripe.PaymentIntent);
+        break;
       }
-    }
-
-    if (event.type === 'payment_intent.succeeded') {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      await createOrderFromPaymentIntent(paymentIntent);
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        await prisma.order.updateMany({
+          where: { stripePaymentIntentId: paymentIntent.id },
+          data: { paymentStatus: 'FAILED' }
+        });
+        break;
+      }
+      default:
+        break;
     }
 
     return NextResponse.json({ received: true });

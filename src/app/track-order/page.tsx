@@ -8,12 +8,12 @@ import { formatCurrency } from '@/lib/utils';
 export default async function TrackOrderPage() {
   const session = await getAuthSession();
 
-  if (!session?.user?.id) {
+  if (!session?.user?.id || !session.user.email) {
     redirect('/');
   }
 
   const orders = await prisma.order.findMany({
-    where: { userId: session.user.id },
+    where: { customerEmail: session.user.email },
     include: { items: true },
     orderBy: { createdAt: 'desc' }
   });
@@ -45,7 +45,7 @@ export default async function TrackOrderPage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <p className="text-xs uppercase tracking-[0.1em] text-black/50">Order Number</p>
-                      <p className="font-semibold text-lg">{order.orderNumber}</p>
+                      <p className="font-semibold text-lg">{order.id}</p>
                     </div>
                     <div>
                       <p className="text-xs uppercase tracking-[0.1em] text-black/50">Total</p>
@@ -56,19 +56,19 @@ export default async function TrackOrderPage() {
                     <div>
                       <p className="text-xs uppercase tracking-[0.1em] text-black/50">Status</p>
                       <p className={`font-semibold ${
-                        order.status === 'PAID' 
+                        order.paymentStatus === 'PAID' 
                           ? 'text-green' 
-                          : order.status === 'CANCELED'
+                          : order.paymentStatus === 'FAILED'
                           ? 'text-red-600'
                           : 'text-black/70'
                       }`}>
-                        {order.status}
+                        {order.paymentStatus}
                       </p>
                     </div>
                     <div>
                       <p className="text-xs uppercase tracking-[0.1em] text-black/50">Fulfillment</p>
                       <p className={`font-semibold ${
-                        order.fulfillmentStatus === 'FULFILLED' 
+                        order.fulfillmentStatus === 'DELIVERED' || order.fulfillmentStatus === 'SHIPPED'
                           ? 'text-green' 
                           : 'text-black/70'
                       }`}>
@@ -91,24 +91,24 @@ export default async function TrackOrderPage() {
                     </div>
                   )}
 
-                  <div className="border-t border-black/5 pt-4">
-                    <p className="text-xs uppercase tracking-[0.1em] text-black/50 mb-3">Items</p>
-                    <div className="space-y-2">
-                      {order.items.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm">
-                          <div>
-                            <p className="font-medium">{item.nameSnapshot}</p>
-                            {item.size && <p className="text-black/60">{item.size}</p>}
+                    <div className="border-t border-black/5 pt-4">
+                      <p className="text-xs uppercase tracking-[0.1em] text-black/50 mb-3">Items</p>
+                      <div className="space-y-2">
+                        {order.items.map((item) => (
+                          <div key={item.id} className="flex justify-between text-sm">
+                            <div>
+                              <p className="font-medium">{item.title}</p>
+                              {item.variantTitle && <p className="text-black/60">{item.variantTitle}</p>}
+                            </div>
+                            <div className="text-right">
+                              <p>x {item.qty}</p>
+                              <p className="text-black/60">
+                                {formatCurrency(item.priceCents * item.qty)}
+                              </p>
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p>x {item.qty}</p>
-                            <p className="text-black/60">
-                              {formatCurrency(item.priceCentsSnapshot * item.qty)}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
                   </div>
 
                   <div className="border-t border-black/5 pt-4 space-y-2 text-sm">

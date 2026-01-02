@@ -4,15 +4,23 @@ import { ProductCard } from '@/components/storefront/product-card';
 import { getProducts } from '@/lib/queries/products';
 
 interface ShopPageProps {
-  searchParams: { category?: string; sort?: string; q?: string };
+  searchParams: { sort?: string; q?: string };
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const products = await getProducts({
-    category: searchParams.category,
     sort: searchParams.sort,
     search: searchParams.q
   });
+
+  const sorted =
+    searchParams.sort?.startsWith('price') && products.length
+      ? [...products].sort((a, b) => {
+          const aPrice = a.variants[0]?.priceCents ?? 0;
+          const bPrice = b.variants[0]?.priceCents ?? 0;
+          return searchParams.sort === 'price-desc' ? bPrice - aPrice : aPrice - bPrice;
+        })
+      : products;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -25,7 +33,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           </div>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
+          {sorted.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
