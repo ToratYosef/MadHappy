@@ -19,6 +19,11 @@ const allowedOrigins = Array.from(
 
 const nextConfig = {
   reactStrictMode: true,
+  /**
+   * Generate a standalone server bundle alongside static assets, so server runtime code
+   * and static items can be deployed separately.
+   */
+  output: 'standalone',
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
