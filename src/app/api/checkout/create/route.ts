@@ -71,6 +71,13 @@ export async function POST(req: Request) {
       const priceCents = variant.priceCents;
       subtotalCents += priceCents * cartItem.qty;
 
+<<<<<<< HEAD
+=======
+      const imageUrl = Array.isArray(variant.product.images) 
+        ? (variant.product.images.find((img): img is string => typeof img === 'string') ?? null)
+        : null;
+
+>>>>>>> b570806 (Temp pre-rebase commit)
       const normalizedOptions =
         variant.options && typeof variant.options === 'object' && !Array.isArray(variant.options)
           ? Object.fromEntries(
@@ -88,9 +95,13 @@ export async function POST(req: Request) {
         priceCents,
         title: variant.product.title,
         variantTitle: variant.title,
+<<<<<<< HEAD
         imageUrl: Array.isArray(variant.product.images)
           ? (variant.product.images.find((img): img is string => typeof img === 'string') ?? null)
           : null,
+=======
+        imageUrl,
+>>>>>>> b570806 (Temp pre-rebase commit)
         options: normalizedOptions
       });
     }

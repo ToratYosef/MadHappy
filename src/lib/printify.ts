@@ -63,7 +63,7 @@ async function printifyRequest<T>(path: string, options: RequestInit, token: str
 export async function listPrintifyProducts(shopId: string, token: string) {
   const products: any[] = [];
   let page = 1;
-  const limit = 100;
+  const limit = 50;
 
   while (true) {
     const data = await printifyRequest<PrintifyListResponse<any>>(

@@ -17,7 +17,11 @@ export default async function PrintifyProductDetail({ params }: Props) {
 
   if (!product) return notFound();
 
+<<<<<<< HEAD
   const images = Array.isArray(product.images)
+=======
+  const images = Array.isArray(product.images) 
+>>>>>>> b570806 (Temp pre-rebase commit)
     ? product.images.filter((img): img is string => typeof img === 'string')
     : [];
   const options = Array.isArray(product.options) ? product.options : [];

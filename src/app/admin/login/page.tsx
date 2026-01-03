@@ -48,6 +48,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
+              autoComplete="username"
               className="w-full rounded-lg border border-black/10 px-4 py-2 text-sm focus:border-black/30 focus:outline-none"
               required
             />
@@ -63,6 +64,7 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              autoComplete="current-password"
               className="w-full rounded-lg border border-black/10 px-4 py-2 text-sm focus:border-black/30 focus:outline-none"
               required
             />

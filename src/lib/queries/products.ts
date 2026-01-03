@@ -8,8 +8,11 @@ const productInclude = {
     orderBy: { priceCents: Prisma.SortOrder.asc }
   }
 } satisfies Prisma.PrintifyProductCacheInclude;
+<<<<<<< HEAD
 
 const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+=======
+>>>>>>> b570806 (Temp pre-rebase commit)
 
 const normalizeImages = (images: any): string[] =>
   Array.isArray(images)

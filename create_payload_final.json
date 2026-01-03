@@ -1,0 +1,1888 @@
+{
+  "title": "Low-Key Script with Key Illustration Hoodie | Minimal Definition Backprint",
+  "description": "Soft, quiet confidence you can pull on and go. This cozy hooded sweatshirt settles around you like a calm moment—clean white canvas, delicate black line art, and subtle typography that reads like a private note. A small key motif on each sleeve and a understated ‘low-key’ definition on the back make the design thoughtful, not loud. Wear it to slow mornings with coffee, late-night walks, or when you want your outfit to whisper rather than shout. The roomy pouch and double-lined hood keep things comfortable; the neutral palette layers easily with denim, joggers, or a favorite coat. For someone who prefers understatement and craft over flash, this hoodie feels personal and steady.<br/><br/>Product features<br/>- Soft 50/50 cotton-poly blend for warmth and smooth printability<br/>- Kangaroo pouch pocket to warm hands and carry small items<br/>- Color-matched drawcord and double-lined hood for durability and style<br/>- Tubular knit (no side seams) for a clean look and reduced fabric waste<br/>- DTF/DTG-ready blank with optional embroidery placements on chest and wrists<br/><br/>Care instructions<br/>- Tumble dry: medium<br/>- Iron, steam or dry: low heat<br/>- Do not dryclean<br/>- Machine wash: cold (max 30C or 90F)<br/>- Non-chlorine: bleach as needed<br/>",
+  "blueprint_id": 77,
+  "print_provider_id": 99,
+  "variants": [
+    {
+      "id": 32878,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42252,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33386,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32911,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33409,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33361,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42167,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42262,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32894,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42214,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42230,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32919,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66452,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42156,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33394,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66363,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33377,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32895,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33380,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42157,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42267,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 81520,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32913,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33363,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32920,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42276,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42165,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33385,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32921,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33395,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42259,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32903,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42261,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32897,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42260,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33370,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95098,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42206,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32880,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33412,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33425,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33364,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42237,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 66365,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32910,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42197,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33402,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42254,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33410,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42198,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42211,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95088,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42151,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 66364,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 81519,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42166,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95089,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42275,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42158,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42212,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33396,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33379,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 81521,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42268,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33372,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42195,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42174,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64698,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32887,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42238,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32918,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33411,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32902,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95091,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32881,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66366,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33427,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32905,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42213,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33356,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42236,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42270,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42278,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66454,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33403,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32888,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42148,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42221,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42222,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33393,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42205,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33353,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32912,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33426,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 66455,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33362,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42229,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32886,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64699,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33387,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33369,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 81522,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 95097,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42220,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42235,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32879,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33378,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33404,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 66453,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32904,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42277,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95099,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33428,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42219,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42196,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 95096,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64700,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42227,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95090,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42228,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64697,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42251,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33371,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42159,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42203,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42173,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42175,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42204,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32896,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32889,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33354,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33388,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33355,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42269,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42164,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42150,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33401,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42172,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42149,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42253,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33420,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33419,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33418,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64691,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64689,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64692,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64690,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33346,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33347,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33348,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33345,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33417,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42207,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42168,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42279,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32914,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 81523,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42152,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32922,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33389,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42223,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32898,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42231,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42239,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 66367,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33413,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32890,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33405,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42160,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66456,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42271,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42176,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33429,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42215,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33373,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42199,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64701,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42255,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33397,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33381,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32882,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32906,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33357,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33365,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42263,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64693,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33349,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33421,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42162,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66458,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42209,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33407,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42225,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33367,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64703,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32892,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33391,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33359,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42233,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42241,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33399,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42257,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42281,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66369,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32900,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42217,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95094,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32884,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32908,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95102,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42178,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42265,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42170,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32924,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33375,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33415,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33431,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42273,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42154,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33383,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32916,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33351,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33423,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42201,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33368,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32925,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42226,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33400,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32885,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33360,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33384,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66370,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33432,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95095,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42274,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33392,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33408,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42210,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42218,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42282,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 95103,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33376,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42266,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42155,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42171,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32909,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66459,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32893,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33416,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64704,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42242,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42234,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42163,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42179,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32917,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32901,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42258,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42202,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33352,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33424,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42224,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42232,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42177,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66368,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33414,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 81524,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33358,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 64702,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 64694,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42240,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33390,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32915,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33398,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32923,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42208,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32907,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33430,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32891,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42161,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42216,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42264,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42153,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 32899,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32883,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33382,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42280,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42169,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 42256,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33366,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42200,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33374,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 66457,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33406,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 42272,
+      "price": 7500,
+      "is_enabled": true
+    },
+    {
+      "id": 33422,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 33350,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32870,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32872,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32871,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32873,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32874,
+      "price": 7500,
+      "is_enabled": false
+    },
+    {
+      "id": 32875,
+      "price": 7500,
+      "is_enabled": false
+    }
+  ],
+  "print_areas": [
+    {
+      "variant_ids": [
+        32878,
+        42252,
+        33386,
+        32911,
+        33409,
+        33361,
+        42167,
+        42262,
+        32894,
+        42214,
+        42230,
+        32919,
+        66452,
+        42156,
+        33394,
+        66363,
+        33377,
+        32895,
+        33380,
+        42157,
+        42267,
+        81520,
+        32913,
+        33363,
+        32920,
+        42276,
+        42165,
+        33385,
+        32921,
+        33395,
+        42259,
+        32903,
+        42261,
+        32897,
+        42260,
+        33370,
+        95098,
+        42206,
+        32880,
+        33412,
+        33425,
+        33364,
+        42237,
+        66365,
+        32910,
+        42197,
+        33402,
+        42254,
+        33410,
+        42198,
+        42211,
+        95088,
+        42151,
+        66364,
+        81519,
+        42166,
+        95089,
+        42275,
+        42158,
+        42212,
+        33396,
+        33379,
+        81521,
+        42268,
+        33372,
+        42195,
+        42174,
+        64698,
+        32887,
+        42238,
+        32918,
+        33411,
+        32902,
+        95091,
+        32881,
+        66366,
+        33427,
+        32905,
+        42213,
+        33356,
+        42236,
+        42270,
+        42278,
+        66454,
+        33403,
+        32888,
+        42148,
+        42221,
+        42222,
+        33393,
+        42205,
+        33353,
+        32912,
+        33426,
+        66455,
+        33362,
+        42229,
+        32886,
+        64699,
+        33387,
+        33369,
+        81522,
+        95097,
+        42220,
+        42235,
+        32879,
+        33378,
+        33404,
+        66453,
+        32904,
+        42277,
+        95099,
+        33428,
+        42219,
+        42196,
+        95096,
+        64700,
+        42227,
+        95090,
+        42228,
+        64697,
+        42251,
+        33371,
+        42159,
+        42203,
+        42173,
+        42175,
+        42204,
+        32896,
+        32889,
+        33354,
+        33388,
+        33355,
+        42269,
+        42164,
+        42150,
+        33401,
+        42172,
+        42149,
+        42253,
+        33420,
+        33419,
+        33418,
+        64691,
+        64689,
+        64692,
+        64690,
+        33346,
+        33347,
+        33348,
+        33345,
+        33417,
+        42207,
+        42168,
+        42279,
+        32914,
+        81523,
+        42152,
+        32922,
+        33389,
+        42223,
+        32898,
+        42231,
+        42239,
+        66367,
+        33413,
+        32890,
+        33405,
+        42160,
+        66456,
+        42271,
+        42176,
+        33429,
+        42215,
+        33373,
+        42199,
+        64701,
+        42255,
+        33397,
+        33381,
+        32882,
+        32906,
+        33357,
+        33365,
+        42263,
+        64693,
+        33349,
+        33421,
+        42162,
+        66458,
+        42209,
+        33407,
+        42225,
+        33367,
+        64703,
+        32892,
+        33391,
+        33359,
+        42233,
+        42241,
+        33399,
+        42257,
+        42281,
+        66369,
+        32900,
+        42217,
+        95094,
+        32884,
+        32908,
+        95102,
+        42178,
+        42265,
+        42170,
+        32924,
+        33375,
+        33415,
+        33431,
+        42273,
+        42154,
+        33383,
+        32916,
+        33351,
+        33423,
+        42201,
+        33368,
+        32925,
+        42226,
+        33400,
+        32885,
+        33360,
+        33384,
+        66370,
+        33432,
+        95095,
+        42274,
+        33392,
+        33408,
+        42210,
+        42218,
+        42282,
+        95103,
+        33376,
+        42266,
+        42155,
+        42171,
+        32909,
+        66459,
+        32893,
+        33416,
+        64704,
+        42242,
+        42234,
+        42163,
+        42179,
+        32917,
+        32901,
+        42258,
+        42202,
+        33352,
+        33424,
+        42224,
+        42232,
+        42177,
+        66368,
+        33414,
+        81524,
+        33358,
+        64702,
+        64694,
+        42240,
+        33390,
+        32915,
+        33398,
+        32923,
+        42208,
+        32907,
+        33430,
+        32891,
+        42161,
+        42216,
+        42264,
+        42153,
+        32899,
+        32883,
+        33382,
+        42280,
+        42169,
+        42256,
+        33366,
+        42200,
+        33374,
+        66457,
+        33406,
+        42272,
+        33422,
+        33350,
+        32870,
+        32872,
+        32871,
+        32873,
+        32874,
+        32875
+      ],
+      "placeholders": [
+        {
+          "position": "front",
+          "images": [
+            {
+              "id": "6957593af87ab223e6df0f3f",
+              "x": 0.5000000000000003,
+              "y": 0.5000000000000003,
+              "scale": 1.0572658269593231,
+              "angle": 0
+            }
+          ]
+        },
+        {
+          "position": "back",
+          "images": [
+            {
+              "id": "695759650d2e328d6e8c7437",
+              "x": 0.5000000000000004,
+              "y": 0.6404288029737362,
+              "scale": 1.0000000000000004,
+              "angle": 0
+            }
+          ]
+        },
+        {
+          "position": "right_sleeve",
+          "images": [
+            {
+              "id": "6957598ffeefa84577f4769b",
+              "x": 0.4999999999999992,
+              "y": 0.5000000000000004,
+              "scale": 1.5016469344010026,
+              "angle": 270
+            }
+          ]
+        },
+        {
+          "position": "left_sleeve",
+          "images": [
+            {
+              "id": "6957598ffeefa84577f4769b",
+              "x": 0.5,
+              "y": 0.5,
+              "scale": 1.501657144,
+              "angle": 270
+            }
+          ]
+        },
+        {
+          "position": "neck",
+          "images": [
+            {
+              "id": "6957598ffeefa84577f4769b",
+              "x": 0.4999999999999997,
+              "y": 0.42093923661435284,
+              "scale": 0.8280000000000004,
+              "angle": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

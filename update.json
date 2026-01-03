@@ -1,0 +1,2062 @@
+{
+  "title": "LowKeyHigh Hoodie",
+  "variants": [
+    {
+      "id": 64709,
+      "sku": "33834153282190691248",
+      "cost": 1580,
+      "price": 7500,
+      "title": "3XL / Dark Heather",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42673,
+      "sku": "31719497800303941245",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Maroon",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        395,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33794,
+      "sku": "94904863168249981773",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / White",
+      "grams": 290,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33778,
+      "sku": "51665362327100709624",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Red",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42656,
+      "sku": "32549306670785048051",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Irish Green",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        369,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42659,
+      "sku": "28767317518891511884",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Irish Green",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        369,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33797,
+      "sku": "12130609223631759276",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Black",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42662,
+      "sku": "97105333914384976728",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Light Blue",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33776,
+      "sku": "29227584942332717129",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Red",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42669,
+      "sku": "33664437927386601777",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Light Pink",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42712,
+      "sku": "16111858200267298655",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Navy",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42714,
+      "sku": "82910235407641058607",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Navy",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42668,
+      "sku": "15813513627131067094",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Light Pink",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42711,
+      "sku": "30736716388282047765",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Navy",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33988,
+      "sku": "50594017898353947229",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Sport Grey",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        358
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33793,
+      "sku": "16258855881509503233",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / White",
+      "grams": 270,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33782,
+      "sku": "25897396664743492913",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Royal",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42674,
+      "sku": "22962897602755964605",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Maroon",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        395,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42704,
+      "sku": "12570693379205778776",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Forest Green",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42701,
+      "sku": "23788350250366699071",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Forest Green",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42713,
+      "sku": "28283237263859941460",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Navy",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42672,
+      "sku": "17674424052413940511",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Maroon",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        395,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42658,
+      "sku": "12403416773702860911",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Irish Green",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        369,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42644,
+      "sku": "25750291466567405723",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Ash",
+      "grams": 290,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42691,
+      "sku": "16410519828568053187",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Dark Heather",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42694,
+      "sku": "19314859683707476481",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Dark Heather",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42643,
+      "sku": "27820573280437069252",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Ash",
+      "grams": 270,
+      "is_enabled": true,
+      "is_default": true,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42693,
+      "sku": "10542223764048626642",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Dark Heather",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42692,
+      "sku": "12586749284983731899",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Dark Heather",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42642,
+      "sku": "12371031305546977204",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Ash",
+      "grams": 250,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42641,
+      "sku": "22606998093195313981",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Ash",
+      "grams": 220,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42681,
+      "sku": "29611583167015288393",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Purple",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        398,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42706,
+      "sku": "25169771189177423031",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Gold",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        438,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42709,
+      "sku": "98077624771293143367",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Gold",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        438,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42684,
+      "sku": "15253427270144917207",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Purple",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        398,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 106717,
+      "sku": "12925984024093399768",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Safety Green",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        555
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42646,
+      "sku": "32137253179362404564",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Carolina Blue",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        368,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42708,
+      "sku": "11423281896829488376",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Gold",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        438,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42647,
+      "sku": "30861681813360928824",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Carolina Blue",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        368,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42648,
+      "sku": "16275318899284992617",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Carolina Blue",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        368,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42682,
+      "sku": "12666645861008070522",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Purple",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        398,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 106719,
+      "sku": "52825382157146597587",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Safety Green",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        555
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42649,
+      "sku": "18138808742623270840",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Carolina Blue",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        368,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 106715,
+      "sku": "24682418300058715767",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Safety Green",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        555
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 106721,
+      "sku": "36512337930060114611",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Safety Green",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        555
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42707,
+      "sku": "33250146089707769463",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Gold",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        438,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42686,
+      "sku": "33292021314980501702",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Dark Chocolate",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        362,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42687,
+      "sku": "27874698760215680201",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Dark Chocolate",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        362,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42689,
+      "sku": "13388984875236230387",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Dark Chocolate",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        362,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42688,
+      "sku": "10087813734951860166",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Dark Chocolate",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        362,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42683,
+      "sku": "26497179462359252321",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Purple",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        398,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33791,
+      "sku": "30763805391764985939",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / White",
+      "grams": 220,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33987,
+      "sku": "30868981830110672480",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Sport Grey",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        358
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42663,
+      "sku": "51130354762734977242",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Light Blue",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33796,
+      "sku": "14395667318613272085",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Black",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33781,
+      "sku": "23532373157382193863",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Royal",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        14,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42671,
+      "sku": "31575830891159654315",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Maroon",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        395,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42702,
+      "sku": "16943279657144121885",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Forest Green",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33777,
+      "sku": "24664298288020302219",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Red",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33792,
+      "sku": "57495577953932549397",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / White",
+      "grams": 250,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42657,
+      "sku": "19784873410822214632",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Irish Green",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        15,
+        369
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33990,
+      "sku": "28040098249473569092",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Sport Grey",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        358
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42661,
+      "sku": "20639975119674043387",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Light Blue",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42666,
+      "sku": "38353958581057774140",
+      "cost": 1259,
+      "price": 7500,
+      "title": "S / Light Pink",
+      "grams": 220,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        14
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33799,
+      "sku": "27046505842909871689",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Black",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42664,
+      "sku": "16258792957895710606",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Light Blue",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        17
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33784,
+      "sku": "11787683211141692820",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Royal",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33798,
+      "sku": "53761861724513538830",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Black",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33989,
+      "sku": "21661237901372336955",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Sport Grey",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        358
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33783,
+      "sku": "14911628096091531158",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Royal",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        16,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33779,
+      "sku": "24916891430363380750",
+      "cost": 1259,
+      "price": 7500,
+      "title": "XL / Red",
+      "grams": 290,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        17,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42703,
+      "sku": "20363726475530861336",
+      "cost": 1259,
+      "price": 7500,
+      "title": "L / Forest Green",
+      "grams": 270,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        16
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42667,
+      "sku": "30339591327735920593",
+      "cost": 1259,
+      "price": 7500,
+      "title": "M / Light Pink",
+      "grams": 250,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        15
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42660,
+      "sku": "13190029577547542329",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Irish Green",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        369,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33795,
+      "sku": "28155247391014160833",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / White",
+      "grams": 350,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42665,
+      "sku": "33239932103172682458",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Light Blue",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33780,
+      "sku": "11752100385508146119",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Red",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42715,
+      "sku": "36685233411179553371",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Navy",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33785,
+      "sku": "16941699239222015608",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Royal",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42670,
+      "sku": "95888093142958584834",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Light Pink",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42675,
+      "sku": "20862551002153274379",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Maroon",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        395,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33800,
+      "sku": "28990054715105830284",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Black",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42705,
+      "sku": "93482523983364212867",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Forest Green",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 33991,
+      "sku": "32405950707415566203",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Sport Grey",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        358
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42645,
+      "sku": "58424609265005197737",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Ash",
+      "grams": 350,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42695,
+      "sku": "31938513347756685769",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Dark Heather",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        367,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42690,
+      "sku": "25833264620563199973",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Dark Chocolate",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        362,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 106723,
+      "sku": "88224695897277089745",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Safety Green",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        18,
+        555
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42710,
+      "sku": "23072626445295753589",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Gold",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        438,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42685,
+      "sku": "32368444129088560504",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Purple",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        398,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 42650,
+      "sku": "20792410561827278263",
+      "cost": 1453,
+      "price": 7500,
+      "title": "2XL / Carolina Blue",
+      "grams": 350,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        368,
+        18
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77170,
+      "sku": "19337059726646854549",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / White",
+      "grams": 510,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77162,
+      "sku": "91732626992963875085",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Navy",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        511
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77166,
+      "sku": "81275986402736711925",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Royal",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77165,
+      "sku": "29089357146689520066",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Red",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77171,
+      "sku": "12602557794691352763",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Black",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77160,
+      "sku": "25604091814136305073",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Light Blue",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        392
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77157,
+      "sku": "25369666568124664243",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Dark Heather",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        367
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77173,
+      "sku": "71127049108878365641",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Forest Green",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        416
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77153,
+      "sku": "95387453135602999315",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Ash",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        451
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77176,
+      "sku": "10146208076462135397",
+      "cost": 1757,
+      "price": 7500,
+      "title": "5XL / Light Pink",
+      "grams": 510,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": false,
+      "is_printify_express_eligible": false,
+      "options": [
+        21,
+        433
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77138,
+      "sku": "33097996186579163052",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Navy",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        511
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77136,
+      "sku": "24197310165282075451",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Light Blue",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        392
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77149,
+      "sku": "36985489635507735842",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Forest Green",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        416
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77146,
+      "sku": "27701338060705924450",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / White",
+      "grams": 460,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        521
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77142,
+      "sku": "17298120123880623918",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Royal",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        425
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77152,
+      "sku": "29636054913972604934",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Light Pink",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        433
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77147,
+      "sku": "41550915705197239338",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Black",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        418
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77141,
+      "sku": "27790669586454376039",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Red",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        423
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77133,
+      "sku": "20180339217156171942",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Dark Heather",
+      "grams": 460,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        367
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 77129,
+      "sku": "12016693720161761528",
+      "cost": 1582,
+      "price": 7500,
+      "title": "4XL / Ash",
+      "grams": 460,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        20,
+        451
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64722,
+      "sku": "12878365629354757792",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / White",
+      "grams": 420,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        521,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64712,
+      "sku": "23068644358318965129",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Light Blue",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        392,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64726,
+      "sku": "17980405951676328759",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Light Pink",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        433,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64714,
+      "sku": "15500695687410302975",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Navy",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        511,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64721,
+      "sku": "18785975757225755640",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Sport Grey",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        358,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64723,
+      "sku": "27339322168590827242",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Black",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        418,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64717,
+      "sku": "20107462899213531467",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Red",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        423,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64724,
+      "sku": "32174015082414904654",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Forest Green",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        416,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64718,
+      "sku": "23634811422837509990",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Royal",
+      "grams": 420,
+      "is_enabled": false,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        425,
+        19
+      ],
+      "quantity": 1
+    },
+    {
+      "id": 64705,
+      "sku": "21918184730631920216",
+      "cost": 1582,
+      "price": 7500,
+      "title": "3XL / Ash",
+      "grams": 420,
+      "is_enabled": true,
+      "is_default": false,
+      "is_available": true,
+      "is_printify_express_eligible": false,
+      "options": [
+        451,
+        19
+      ],
+      "quantity": 1
+    }
+  ]
+}

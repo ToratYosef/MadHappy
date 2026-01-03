@@ -101,6 +101,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                autoComplete="name"
                 className="w-full rounded-lg border border-black/10 px-3 py-2"
                 placeholder="Your name"
               />

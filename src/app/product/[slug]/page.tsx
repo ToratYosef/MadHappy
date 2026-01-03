@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/storefront/footer';
 import Navbar from '@/components/storefront/navbar';
 import { getProductBySlug } from '@/lib/queries/products';
 import { formatCurrency } from '@/lib/utils';
-import AddToCart from './parts/add-to-cart';
+import ProductClient from './product-client';
 
 interface Props {
   params: { slug: string };
@@ -16,14 +15,18 @@ export default async function ProductPage({ params }: Props) {
   const images = Array.isArray(product.images)
     ? product.images.filter((img): img is string => typeof img === 'string')
     : [];
+<<<<<<< HEAD
   const featuredImage = images[0]
     ? { url: images[0], alt: product.title }
     : null;
+=======
+>>>>>>> b570806 (Temp pre-rebase commit)
   const price = product.variants[0]?.priceCents ?? 0;
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
+<<<<<<< HEAD
       <div className="container-max grid gap-10 py-12 lg:grid-cols-2">
         <div className="space-y-4">
           {featuredImage?.url && (
@@ -63,7 +66,26 @@ export default async function ProductPage({ params }: Props) {
               variants: product.variants
             }}
           />
+=======
+      <div className="container-max py-12">
+        <div className="mb-8">
+          <p className="text-xs uppercase tracking-[0.18em] text-black/50">Print on demand</p>
+          <h1 className="text-3xl font-semibold mt-2">{product.title}</h1>
+          <p className="text-lg text-black/70 mt-2">{formatCurrency(price, 'USD')}</p>
+          <p className="text-black/70 mt-4">{product.description}</p>
+>>>>>>> b570806 (Temp pre-rebase commit)
         </div>
+        <ProductClient
+          product={{
+            id: product.id,
+            printifyProductId: product.printifyProductId,
+            title: product.title,
+            slug: product.slug,
+            images,
+            options: Array.isArray(product.options) ? product.options : [],
+            variants: product.variants
+          }}
+        />
       </div>
       <Footer />
     </div>
