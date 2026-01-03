@@ -10,15 +10,25 @@ type SyncSummary = {
   variantsUpserted: number;
 };
 
-function normalizeImages(images: any[]): string[] {
+function normalizeImages(images: any[]): { url: string; variantIds?: string[]; position?: string | null; isDefault?: boolean }[] {
   if (!Array.isArray(images)) return [];
   return images
     .map((img) => {
       if (!img) return null;
-      if (typeof img === 'string') return img;
-      return img.src || img.url || img.preview || null;
+      if (typeof img === 'string') return { url: img, variantIds: [] };
+      const url = img.src || img.url || img.preview || null;
+      if (!url) return null;
+      const variantIds = Array.isArray(img.variant_ids || img.variantIds)
+        ? (img.variant_ids || img.variantIds).map((id: any) => String(id))
+        : undefined;
+      return {
+        url,
+        variantIds,
+        position: img.position ?? img.camera_label ?? null,
+        isDefault: Boolean(img.is_default ?? img.isDefault)
+      };
     })
-    .filter(Boolean) as string[];
+    .filter(Boolean) as { url: string; variantIds?: string[]; position?: string | null; isDefault?: boolean }[];
 }
 
 function normalizeOptions(options: any[]): PrintifyOption[] {

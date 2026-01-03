@@ -2,7 +2,6 @@ import { prisma } from '@/lib/db';
 import { Eye } from 'lucide-react';
 
 export default async function UsersPage() {
-<<<<<<< HEAD
   const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
   if (!hasDatabaseUrl) {
     return (
@@ -30,14 +29,6 @@ export default async function UsersPage() {
       .filter((entry) => entry.customerEmail)
       .map((entry) => [entry.customerEmail, entry._count._all])
   ) as Record<string, number>;
-=======
-  const users = await prisma.user.findMany({
-    include: { 
-      _count: { select: { accounts: true, sessions: true } }
-    },
-    orderBy: { createdAt: 'desc' }
-  });
->>>>>>> b570806 (Temp pre-rebase commit)
 
   return (
     <div className="space-y-6">
@@ -57,7 +48,7 @@ export default async function UsersPage() {
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Email</th>
-                <th className="px-4 py-3">Sessions</th>
+                <th className="px-4 py-3">Orders</th>
                 <th className="px-4 py-3">Joined</th>
                 <th className="px-4 py-3">Actions</th>
               </tr>
@@ -67,13 +58,9 @@ export default async function UsersPage() {
                 <tr key={user.id} className="border-t border-black/5">
                   <td className="px-4 py-3 font-semibold">{user.name || 'No name'}</td>
                   <td className="px-4 py-3 text-black/70">{user.email || 'No email'}</td>
-<<<<<<< HEAD
                   <td className="px-4 py-3 text-black/70">
                     {user.email ? orderCountByEmail[user.email] ?? 0 : 0}
                   </td>
-=======
-                  <td className="px-4 py-3 text-black/70">{user._count.sessions}</td>
->>>>>>> b570806 (Temp pre-rebase commit)
                   <td className="px-4 py-3 text-black/70 text-xs">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>

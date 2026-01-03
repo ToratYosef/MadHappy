@@ -13,6 +13,13 @@ export type PrintifyVariant = {
   shippingInfo?: Record<string, unknown> | null;
 };
 
+export type PrintifyImage = {
+  url: string;
+  variantIds?: string[];
+  position?: string | null;
+  isDefault?: boolean;
+};
+
 export type PrintifyProduct = {
   id: string;
   shopId: string;
@@ -20,7 +27,7 @@ export type PrintifyProduct = {
   title: string;
   slug: string;
   description: string;
-  images: string[];
+  images: PrintifyImage[];
   options: PrintifyOption[];
   variants: PrintifyVariant[];
   updatedAt: Date;

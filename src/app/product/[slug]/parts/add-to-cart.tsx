@@ -4,25 +4,12 @@ import { useState } from 'react';
 import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
+import type { PrintifyProduct } from '@/types/printify';
 
 interface Props {
-  product: {
-    id: string;
-    printifyProductId: string;
-    title: string;
-    slug: string;
-    images: string[];
-    options: { name: string; values: string[] }[];
-    variants: {
-      variantId: string;
-      title: string;
-      priceCents: number;
-      options: Record<string, string>;
-      isEnabled: boolean;
-    }[];
-  };
-  selections?: Record<string,string>;
-  onChangeSelections?: (s: Record<string,string>) => void;
+  product: PrintifyProduct;
+  selections?: Record<string, string>;
+  onChangeSelections?: (s: Record<string, string>) => void;
 }
 
 // Color mapping for visual display
@@ -69,7 +56,11 @@ const COLOR_MAP: Record<string, string> = {
 
 const ALLOWED_COLORS = new Set(Object.keys(COLOR_MAP));
 
-export default function AddToCart({ product, selections: controlledSelections, onChangeSelections }: Props & { selections?: Record<string,string>, onChangeSelections?: (s: Record<string,string>) => void }) {
+export default function AddToCart({
+  product,
+  selections: controlledSelections,
+  onChangeSelections
+}: Props & { selections?: Record<string, string>; onChangeSelections?: (s: Record<string, string>) => void }) {
   const initialSelections = Object.fromEntries(
     product.options.map((opt) => [opt.name, opt.values[0]])
   );
@@ -108,56 +99,21 @@ export default function AddToCart({ product, selections: controlledSelections, o
     opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colors'
   );
   const selectedColor = selectedColorOption ? selections[selectedColorOption.name] : null;
-
-  // Heuristic: filter images whose filename/url contains the color name (normalized).
   const normalize = (s: string) => s.replace(/[^a-z0-9]/gi, '').toLowerCase();
-  // Build a map from normalized option values -> variantIds (robust across option key names)
-  const colorToVariantIds = new Map<string, string[]>();
-  product.variants.forEach((v) => {
-    Object.values(v.options || {}).forEach((val) => {
-      if (val === undefined || val === null) return;
-      const norm = normalize(String(val));
-      const arr = colorToVariantIds.get(norm) || [];
-      arr.push(String(v.variantId));
-      colorToVariantIds.set(norm, arr);
-    });
-  });
-
-  const variantIdsForSelectedColor = selectedColor ? (colorToVariantIds.get(normalize(selectedColor)) || []) : [];
-
-  const displayImages = (() => {
-    if (!selectedColor || product.images.length === 0) return product.images;
-
-    // 1) Try variant-id match in image URL (reliable for Printify mockups)
-    if (variantIdsForSelectedColor.length > 0) {
-      const byVariant = product.images.filter((img) =>
-        variantIdsForSelectedColor.some((id) => img.includes(id))
-      );
-      if (byVariant.length > 0) return byVariant;
-    }
-
-    // 2) Fallback to color name heuristic
-    const normColor = normalize(selectedColor);
-    const matched = product.images.filter((img) => normalize(img).includes(normColor));
-    // debug info
-    try {
-      // eslint-disable-next-line no-console
-      console.debug('color match', { selectedColor, variantIdsForSelectedColor, matchedCount: matched.length, totalImages: product.images.length });
-    } catch (e) {}
-    return matched.length > 0 ? matched : product.images;
-  })();
 
   // Gallery is now handled by the page-level client. AddToCart only handles selections and add-to-cart.
 
   const handleAdd = () => {
     if (!variant) return;
+    const firstImage = product.images?.[0];
+    const imageUrl = typeof firstImage === 'string' ? firstImage : firstImage?.url;
     addItem({
       productId: product.printifyProductId,
       variantId: variant.variantId,
       name: product.title,
       slug: product.slug,
       priceCents: variant.priceCents,
-      imageUrl: product.images[0],
+      imageUrl: imageUrl ?? null,
       variantTitle: variant.title,
       options: selections,
       qty

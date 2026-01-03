@@ -17,12 +17,18 @@ export default async function PrintifyProductDetail({ params }: Props) {
 
   if (!product) return notFound();
 
-<<<<<<< HEAD
   const images = Array.isArray(product.images)
-=======
-  const images = Array.isArray(product.images) 
->>>>>>> b570806 (Temp pre-rebase commit)
-    ? product.images.filter((img): img is string => typeof img === 'string')
+    ? product.images
+        .map((img: any) => {
+          if (typeof img === 'string') return { url: img, variantIds: [] as string[] };
+          const url = img?.src || img?.url || img?.preview || null;
+          if (!url) return null;
+          const variantIds = Array.isArray(img?.variant_ids || img?.variantIds)
+            ? (img.variant_ids || img.variantIds).map((id: any) => String(id))
+            : [];
+          return { url, variantIds };
+        })
+        .filter(Boolean)
     : [];
   const options = Array.isArray(product.options) ? product.options : [];
 
@@ -89,8 +95,13 @@ export default async function PrintifyProductDetail({ params }: Props) {
           {images.length === 0 && <p className="text-sm text-black/60">No cached images.</p>}
           <div className="grid gap-3 sm:grid-cols-2">
             {images.map((img) => (
-              <div key={img} className="relative aspect-square overflow-hidden rounded-lg border border-black/5">
-                <Image src={img} alt={product.title} fill className="object-cover" />
+              <div key={img.url} className="relative aspect-square overflow-hidden rounded-lg border border-black/5">
+                <Image src={img.url} alt={product.title} fill className="object-cover" />
+                {img.variantIds && img.variantIds.length > 0 && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-[11px] text-white">
+                    Variants: {img.variantIds.join(', ')}
+                  </div>
+                )}
               </div>
             ))}
           </div>

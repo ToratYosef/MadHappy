@@ -1,16 +1,25 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import type { PrintifyImage } from '@/types/printify';
 
-function normalizeImages(images: any): string[] {
+function normalizeImages(images: any): PrintifyImage[] {
   if (!Array.isArray(images)) return [];
   return images
     .map((img) => {
-      if (typeof img === 'string') return img;
-      if (img?.src) return img.src;
-      if (img?.url) return img.url;
-      return null;
+      if (typeof img === 'string') return { url: img, variantIds: [] };
+      const url = img?.src || img?.url || img?.preview || null;
+      if (!url) return null;
+      const variantIds = Array.isArray(img?.variant_ids || img?.variantIds)
+        ? (img.variant_ids || img.variantIds).map((id: any) => String(id))
+        : undefined;
+      return {
+        url,
+        variantIds,
+        position: img?.position ?? img?.camera_label ?? null,
+        isDefault: Boolean(img?.is_default ?? img?.isDefault)
+      } as PrintifyImage;
     })
-    .filter(Boolean) as string[];
+    .filter(Boolean) as PrintifyImage[];
 }
 
 export async function GET() {

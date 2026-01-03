@@ -13,6 +13,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const image = product.images?.[0];
+  const imageUrl = typeof image === 'string' ? image : image?.url;
   const price = product.variants[0]?.priceCents ?? 0;
 
   return (
@@ -21,10 +22,10 @@ export function ProductCard({ product }: ProductCardProps) {
         whileHover={{ translateY: -6 }}
         className="group overflow-hidden rounded-xl border border-black/5 bg-white shadow-soft"
       >
-        {image && (
+        {imageUrl && (
           <div className="relative aspect-[4/5] overflow-hidden">
             <Image
-              src={image}
+              src={imageUrl}
               alt={product.title}
               fill
               priority
