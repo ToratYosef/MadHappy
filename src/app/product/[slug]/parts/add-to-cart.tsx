@@ -6,7 +6,13 @@ import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
 import { getFeaturedImage } from '@/lib/printify-images';
 import type { PrintifyImage, PrintifyOption, PrintifyVariant } from '@/types/printify';
-import { buildSelectionKey, buildVariantLookup, getInitialSelections } from './selection-helpers';
+import {
+  buildSelectionKey,
+  buildVariantLookup,
+  getAvailableValues,
+  getInitialSelections,
+  isColorOption
+} from './selection-helpers';
 
 interface Props {
   product: {
@@ -89,21 +95,56 @@ export default function AddToCart({
     return map[key] || toHashColor(normalized);
   };
 
-  const isColorOption = (name: string) => /color/i.test(name);
+  const enabledVariants = useMemo(
+    () => product.variants.filter((variant) => variant.isEnabled),
+    [product.variants]
+  );
 
   const defaultSelections = useMemo(
-    () => initialSelections ?? getInitialSelections(product.options, product.variants),
-    [initialSelections, product.options, product.variants]
+    () => initialSelections ?? getInitialSelections(product.options, enabledVariants),
+    [initialSelections, product.options, enabledVariants]
   );
   const [selections, setSelections] = useState<Record<string, string>>(defaultSelections);
   const [qty, setQty] = useState(1);
   const addItem = useCartStore((s) => s.addItem);
   const openDrawer = useCartDrawer((s) => s.open);
 
-  const variantLookup = buildVariantLookup(product.options, product.variants);
+  const variantLookup = buildVariantLookup(product.options, enabledVariants);
 
   const selectionKey = buildSelectionKey(product.options, selections);
-  const variant = variantLookup[selectionKey] || product.variants[0];
+  const variant = variantLookup[selectionKey] || enabledVariants[0] || product.variants[0];
+
+  const availability = useMemo(() => {
+    const map: Record<string, string[]> = {};
+    product.options.forEach((opt) => {
+      map[opt.name] = getAvailableValues(product.options, enabledVariants, selections, opt.name);
+    });
+    return map;
+  }, [product.options, enabledVariants, selections]);
+
+  useEffect(() => {
+    setSelections((prev) => {
+      let updatedSelections = prev;
+      let changed = false;
+
+      product.options.forEach((opt) => {
+        const available = availability[opt.name];
+        const fallbackValue = defaultSelections[opt.name] ?? opt.values?.[0];
+
+        if (available?.length) {
+          if (!available.includes(prev[opt.name])) {
+            updatedSelections = { ...updatedSelections, [opt.name]: available[0] };
+            changed = true;
+          }
+        } else if (fallbackValue && prev[opt.name] !== fallbackValue) {
+          updatedSelections = { ...updatedSelections, [opt.name]: fallbackValue };
+          changed = true;
+        }
+      });
+
+      return changed ? updatedSelections : prev;
+    });
+  }, [availability, product.options, defaultSelections]);
 
   const variantImage = useMemo(
     () => getFeaturedImage(product.images, variant?.variantId),
@@ -146,52 +187,83 @@ export default function AddToCart({
     setSelections(defaultSelections);
   }, [defaultSelections]);
 
+  const colorOptions = product.options.filter((opt) => isColorOption(opt.name));
+  const otherOptions = product.options.filter((opt) => !isColorOption(opt.name));
+
+  const renderColorSwatches = (opt: PrintifyOption) => (
+    <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+      {(opt.values || []).map((value) => {
+        const isSelected = selections[opt.name] === value;
+        const isAvailable = (availability[opt.name] || []).includes(value);
+        return (
+          <button
+            key={value}
+            onClick={() => isAvailable && handleSelection(opt.name, value)}
+            className={`group flex h-11 w-11 items-center justify-center rounded-full border-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green/40 ${
+              isSelected ? 'border-green ring-2 ring-green/40' : 'border-black/10'
+            } ${!isAvailable ? 'opacity-40 grayscale' : 'hover:border-green/70'}`}
+            style={{
+              backgroundColor: resolveSwatchColor(value)
+            }}
+            title={value}
+            aria-label={value}
+            disabled={!isAvailable}
+          >
+            <span className="sr-only">{value}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  const renderOptionPills = (opt: PrintifyOption) => (
+    <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      {(opt.values || []).map((value) => {
+        const isSelected = selections[opt.name] === value;
+        const isAvailable = (availability[opt.name] || []).includes(value);
+        return (
+          <button
+            key={value}
+            onClick={() => isAvailable && handleSelection(opt.name, value)}
+            className={`rounded-lg border px-3 py-2 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green/40 ${
+              isSelected ? 'border-green bg-green/10 text-green' : 'border-black/10 bg-white text-black'
+            } ${!isAvailable ? 'cursor-not-allowed opacity-40' : 'hover:border-green/60 hover:text-green/90'}`}
+            title={value}
+            disabled={!isAvailable}
+          >
+            {value}
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="space-y-4 rounded-xl border border-black/5 bg-white p-5 shadow-soft">
-      {product.options.map((opt) => (
-        <div key={opt.name}>
-          <p className="text-sm font-semibold">{opt.name}</p>
-          {isColorOption(opt.name) ? (
-            <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-6">
-              {opt.values.map((value) => (
-                <button
-                  key={value}
-                  onClick={() => handleSelection(opt.name, value)}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition ${
-                    selections[opt.name] === value
-                      ? 'border-green ring-2 ring-green/40'
-                      : 'border-black/10'
-                  }`}
-                  style={{
-                    backgroundColor: resolveSwatchColor(value)
-                  }}
-                  title={value}
-                  aria-label={value}
-                >
-                  <span className="sr-only">{value}</span>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {opt.values.map((value) => (
-                <button
-                  key={value}
-                  onClick={() => handleSelection(opt.name, value)}
-                  className={`rounded-lg border px-3 py-2 text-sm transition ${
-                    selections[opt.name] === value
-                      ? 'border-green bg-green/10 text-green'
-                      : 'border-black/10 bg-white'
-                  }`}
-                  title={value}
-                >
-                  {value}
-                </button>
-              ))}
-            </div>
-          )}
+      {colorOptions.map((opt) => (
+        <div key={opt.name} className="space-y-1">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-semibold">Color</p>
+            <p className="text-xs uppercase tracking-[0.12em] text-black/50">
+              {selections[opt.name] || 'Select'}
+            </p>
+          </div>
+          {renderColorSwatches(opt)}
         </div>
       ))}
+
+      {otherOptions.map((opt) => (
+        <div key={opt.name} className="space-y-1">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-semibold">{opt.name}</p>
+            <p className="text-xs uppercase tracking-[0.12em] text-black/50">
+              {selections[opt.name] || 'Select'}
+            </p>
+          </div>
+          {renderOptionPills(opt)}
+        </div>
+      ))}
+
       <div className="flex items-center gap-3">
         <label className="text-sm text-black/70">Qty</label>
         <input
