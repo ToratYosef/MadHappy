@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
 import { filterImagesByVariant, getFeaturedImage } from '@/lib/printify-images';
 import type { PrintifyImage, PrintifyProduct, PrintifyVariant } from '@/types/printify';
+import { orderProductOptions } from '@/lib/printify-options';
 import AddToCart from './add-to-cart';
 import { getInitialSelections, isColorOption, resolveVariant } from './selection-helpers';
 
@@ -13,19 +14,21 @@ interface Props {
 }
 
 export default function ProductDetail({ product }: Props) {
+  const orderedOptions = useMemo(() => orderProductOptions(Array.isArray(product.options) ? product.options : []), [product.options]);
   const initialSelections = useMemo(
-    () => getInitialSelections(product.options, product.variants),
-    [product.options, product.variants]
+    () => getInitialSelections(orderedOptions, product.variants),
+    [orderedOptions, product.variants]
   );
+
   const [selections, setSelections] = useState<Record<string, string>>(initialSelections);
   const [activeVariant, setActiveVariant] = useState<PrintifyVariant | null>(() =>
-    resolveVariant(product.options, product.variants, initialSelections)
+    resolveVariant(orderedOptions, product.variants, initialSelections)
   );
 
   useEffect(() => {
     setSelections(initialSelections);
-    setActiveVariant(resolveVariant(product.options, product.variants, initialSelections));
-  }, [initialSelections, product.options, product.variants]);
+    setActiveVariant(resolveVariant(orderedOptions, product.variants, initialSelections));
+  }, [initialSelections, orderedOptions, product.variants]);
 
   const variantImages = useMemo(
     () => filterImagesByVariant(product.images, activeVariant?.variantId),
