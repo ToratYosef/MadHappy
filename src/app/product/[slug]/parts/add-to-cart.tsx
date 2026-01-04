@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
+import { getFeaturedImage } from '@/lib/printify-images';
 import type { PrintifyImage, PrintifyOption, PrintifyVariant } from '@/types/printify';
 import { buildSelectionKey, buildVariantLookup, getInitialSelections } from './selection-helpers';
 
@@ -44,7 +45,12 @@ export default function AddToCart({
   const selectionKey = buildSelectionKey(product.options, selections);
   const variant = variantLookup[selectionKey] || product.variants[0];
 
-  const imageForCart = selectedImageUrl || product.images[0]?.url || null;
+  const variantImage = useMemo(
+    () => getFeaturedImage(product.images, variant?.variantId),
+    [product.images, variant?.variantId]
+  );
+
+  const imageForCart = selectedImageUrl || variantImage?.url || product.images[0]?.url || null;
 
   const handleAdd = () => {
     if (!variant) return;
