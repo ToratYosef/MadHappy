@@ -16,8 +16,11 @@ const normalizeOptionValue = (opt: PrintifyOption, value: unknown) => {
 };
 
 export const getInitialSelections = (options: PrintifyOption[], variants: PrintifyVariant[] = []) => {
-  const firstVariant = variants[0];
-  if (firstVariant) {
+  const preferredVariant = findPreferredVariant(options, variants);
+  const fallbackVariant = variants[0];
+  const variantForDefaults = preferredVariant ?? fallbackVariant;
+
+  if (variantForDefaults) {
     return Object.fromEntries(
       options.map((opt) => {
         const normalizedOptions = Object.fromEntries(
@@ -53,6 +56,7 @@ export const buildVariantLookup = (options: PrintifyOption[], variants: Printify
         })
       )
     );
+    const key = selectionKey(options, selectionsForVariant);
     acc[key] = variant;
     return acc;
   }, {});
@@ -65,6 +69,28 @@ export const resolveVariant = (
   const lookup = buildVariantLookup(options, variants);
   const key = selectionKey(options, selections);
   return lookup[key] || variants[0] || null;
+};
+
+export const getAvailableValues = (
+  options: PrintifyOption[],
+  variants: PrintifyVariant[],
+  selections: Record<string, string>,
+  optionName: string
+) => {
+  const targetOption = options.find((opt) => opt.name === optionName);
+  if (!targetOption) return [];
+
+  const filteredVariants = variants.filter((variant) =>
+    options.every((opt) => {
+      if (opt.name === targetOption.name) return true;
+      const selected = selections[opt.name];
+      if (!selected) return true;
+      return getVariantOptionValue(variant, opt) === normalizeOptionValue(opt, selected);
+    })
+  );
+
+  const values = filteredVariants.map((variant) => getVariantOptionValue(variant, targetOption)).filter(Boolean);
+  return sortByOptionOrder(values, targetOption);
 };
 
 export const buildSelectionKey = selectionKey;
