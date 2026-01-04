@@ -1,15 +1,28 @@
 import type { PrintifyImage } from '@/types/printify';
 
-const normalizeVariantIds = (variantId?: string | string[] | null): string[] => {
+const toIdString = (value: unknown): string | null => {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'object') {
+    const fromObject =
+      (value as any).id ?? (value as any).variantId ?? (value as any).value ?? (value as any).valueId;
+    if (fromObject !== null && fromObject !== undefined) return String(fromObject);
+    return null;
+  }
+  return String(value);
+};
+
+const normalizeVariantIds = (variantId?: string | string[] | Record<string, unknown> | null): string[] => {
   if (!variantId) return [];
   const ids = Array.isArray(variantId) ? variantId : [variantId];
-  return Array.from(new Set(ids.map((id) => String(id)).filter(Boolean)));
+  return Array.from(new Set(ids.map(toIdString).filter((id): id is string => Boolean(id))));
 };
 
 const getVariantIds = (img: any): string[] => {
   const raw = img?.variantIds ?? img?.variant_ids ?? img?.variants;
   if (!Array.isArray(raw)) return [];
-  return raw.map((id) => String(id)).filter(Boolean);
+  return raw
+    .map((id) => toIdString(id))
+    .filter((id): id is string => Boolean(id));
 };
 
 /**

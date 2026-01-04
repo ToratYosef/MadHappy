@@ -11,13 +11,41 @@ const normalizeImages = (images: any): PrintifyImage[] =>
           if (!url) return null;
           const rawVariantIds = (img as any).variantIds || (img as any).variant_ids || (img as any).variants;
           const variantIds = Array.isArray(rawVariantIds)
-            ? rawVariantIds.map((id: any) => String(id)).filter(Boolean)
+            ? rawVariantIds
+                .map((id: any) => {
+                  if (id === null || id === undefined) return null;
+                  if (typeof id === 'object') {
+                    const fromObject =
+                      (id as any).id ?? (id as any).variantId ?? (id as any).value ?? (id as any).valueId;
+                    return fromObject !== null && fromObject !== undefined ? String(fromObject) : null;
+                  }
+                  return String(id);
+                })
+                .filter(Boolean)
             : undefined;
           const isDefault = Boolean((img as any).isDefault ?? (img as any).is_default ?? false);
           return { url, variantIds, isDefault };
         })
         .filter((img): img is PrintifyImage => Boolean(img))
     : [];
+
+const normalizeOptionValue = (opt: any, value: any): string => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object') {
+    const candidate = (value as any).title ?? (value as any).name ?? (value as any).value;
+    if (candidate) return String(candidate);
+    const fromId = (value as any).id ?? (value as any).value_id ?? null;
+    if (fromId !== null && fromId !== undefined && opt?.valueIdMap?.[fromId]) {
+      return String(opt.valueIdMap[fromId]);
+    }
+  }
+
+  if (opt?.valueIdMap && typeof opt.valueIdMap === 'object' && opt.valueIdMap[String(value)]) {
+    return String(opt.valueIdMap[String(value)]);
+  }
+
+  return String(value);
+};
 
 const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]) => {
   if (!Array.isArray(options)) return [];
@@ -33,13 +61,13 @@ const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]
       const match = entries.find(
         ([key]) => key === name || key.toLowerCase() === name.toLowerCase()
       );
-      return match ? [String(match[1])] : [];
+      return match ? [normalizeOptionValue(opt, match[1])] : [];
     });
 
     const uniqueValueIds = Array.from(new Set(valuesFromVariants.map((v) => String(v)))).filter(
       (v) => v.trim().length > 0
     );
-    const baseValues = (Array.isArray(opt?.values) ? opt.values : []).map((v) => String(v));
+    const baseValues = (Array.isArray(opt?.values) ? opt.values : []).map((v) => normalizeOptionValue(opt, v));
 
     // Build a mapping from value id -> label
     const valueIdMap: Record<string, string> | undefined = rawValueIdMap && typeof rawValueIdMap === 'object'
