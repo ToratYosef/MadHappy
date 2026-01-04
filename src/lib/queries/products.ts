@@ -2,7 +2,7 @@ import { prisma } from '../db';
 import { Prisma } from '@prisma/client';
 import type { PrintifyImage, PrintifyProduct } from '@/types/printify';
 
-const productInclude = {
+const productInclude: Prisma.PrintifyProductCacheInclude = {
   variants: {
     where: { isEnabled: true },
     orderBy: { priceCents: 'asc' }
@@ -12,7 +12,7 @@ const productInclude = {
 const normalizeImages = (images: any): PrintifyImage[] =>
   Array.isArray(images)
     ? images
-        .map((img) => {
+        .map((img): PrintifyImage | null => {
           if (!img) return null;
           const url =
             (typeof img === 'string' ? img : img.url || img.src || img.preview || img.preview_url) || null;
@@ -24,7 +24,7 @@ const normalizeImages = (images: any): PrintifyImage[] =>
           const isDefault = Boolean((img as any).isDefault ?? (img as any).is_default ?? false);
           return { url, variantIds, isDefault };
         })
-        .filter(Boolean)
+        .filter((img): img is PrintifyImage => Boolean(img))
     : [];
 
 export const mapPrintifyProduct = (record: any): PrintifyProduct => ({

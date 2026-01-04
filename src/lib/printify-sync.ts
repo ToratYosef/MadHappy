@@ -13,7 +13,7 @@ type SyncSummary = {
 function normalizeImages(images: any[]): PrintifyImage[] {
   if (!Array.isArray(images)) return [];
   return images
-    .map((img) => {
+    .map((img): PrintifyImage | null => {
       if (!img) return null;
       const url =
         (typeof img === 'string' ? img : img.src || img.url || img.preview || img.preview_url) || null;
@@ -30,7 +30,7 @@ function normalizeImages(images: any[]): PrintifyImage[] {
         isDefault: Boolean((img as any).is_default ?? (img as any).isDefault ?? false)
       };
     })
-    .filter(Boolean);
+    .filter((img): img is PrintifyImage => Boolean(img));
 }
 
 function normalizeOptions(options: any[]): PrintifyOption[] {

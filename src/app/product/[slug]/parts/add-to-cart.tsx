@@ -54,7 +54,7 @@ export default function AddToCart({
       name: product.title,
       slug: product.slug,
       priceCents: variant.priceCents,
-      imageUrl: imageForCart,
+      imageUrl: imageForCart ?? undefined,
       variantTitle: variant.title,
       options: selections,
       qty
