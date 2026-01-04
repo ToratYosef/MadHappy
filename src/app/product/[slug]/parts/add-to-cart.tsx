@@ -89,6 +89,8 @@ export default function AddToCart({
     return map[key] || toHashColor(normalized);
   };
 
+  const isColorOption = (name: string) => /color/i.test(name);
+
   const defaultSelections = useMemo(
     () => initialSelections ?? getInitialSelections(product.options, product.variants),
     [initialSelections, product.options, product.variants]
@@ -149,28 +151,45 @@ export default function AddToCart({
       {product.options.map((opt) => (
         <div key={opt.name}>
           <p className="text-sm font-semibold">{opt.name}</p>
-          <div className="mt-2 grid grid-cols-3 gap-2">
-            {opt.values.map((value) => (
-              <button
-                key={value}
-                onClick={() => handleSelection(opt.name, value)}
-                className={`flex items-center justify-center rounded-full border-2 transition ${
-                  selections[opt.name] === value
-                    ? 'border-green ring-2 ring-green/40'
-                    : 'border-black/10'
-                }`}
-                style={{
-                  backgroundColor: resolveSwatchColor(value),
-                  height: '44px',
-                  width: '44px'
-                }}
-                title={value}
-                aria-label={value}
-              >
-                <span className="sr-only">{value}</span>
-              </button>
-            ))}
-          </div>
+          {isColorOption(opt.name) ? (
+            <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-6">
+              {opt.values.map((value) => (
+                <button
+                  key={value}
+                  onClick={() => handleSelection(opt.name, value)}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition ${
+                    selections[opt.name] === value
+                      ? 'border-green ring-2 ring-green/40'
+                      : 'border-black/10'
+                  }`}
+                  style={{
+                    backgroundColor: resolveSwatchColor(value)
+                  }}
+                  title={value}
+                  aria-label={value}
+                >
+                  <span className="sr-only">{value}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {opt.values.map((value) => (
+                <button
+                  key={value}
+                  onClick={() => handleSelection(opt.name, value)}
+                  className={`rounded-lg border px-3 py-2 text-sm transition ${
+                    selections[opt.name] === value
+                      ? 'border-green bg-green/10 text-green'
+                      : 'border-black/10 bg-white'
+                  }`}
+                  title={value}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       ))}
       <div className="flex items-center gap-3">

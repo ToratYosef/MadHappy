@@ -41,8 +41,10 @@ const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]
       return match ? [String(match[1])] : [];
     });
 
-    const uniqueValues = Array.from(new Set(valuesFromVariants)).filter(Boolean);
-    const baseValues = Array.isArray(opt?.values) ? opt.values : [];
+    const uniqueValues = Array.from(new Set(valuesFromVariants.map((v) => String(v)))).filter(
+      (v) => v.trim().length > 0
+    );
+    const baseValues = (Array.isArray(opt?.values) ? opt.values : []).map((v) => String(v));
 
     return {
       name,
