@@ -75,7 +75,6 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
           firstVariant.options?.[opt.name.toLowerCase()];
         const label = raw && opt.valueIdMap ? opt.valueIdMap[String(raw)] : undefined;
         return [opt.name, label ?? (raw ? String(raw) : opt.values?.[0] ?? '')];
->>>>>>> ae7fdb2 (Temp pre-rebase commit)
       })
     );
   }
