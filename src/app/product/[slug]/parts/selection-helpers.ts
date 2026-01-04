@@ -1,7 +1,21 @@
 import type { PrintifyOption, PrintifyVariant } from '@/types/printify';
 
-export const getInitialSelections = (options: PrintifyOption[]) =>
-  Object.fromEntries(options.map((opt) => [opt.name, opt.values?.[0] ?? '']));
+export const getInitialSelections = (options: PrintifyOption[], variants: PrintifyVariant[] = []) => {
+  const firstVariant = variants[0];
+  if (firstVariant) {
+    return Object.fromEntries(
+      options.map((opt) => [
+        opt.name,
+        (firstVariant.options?.[opt.name] as string | undefined) ??
+          firstVariant.options?.[opt.name.toLowerCase()] ??
+          opt.values?.[0] ??
+          ''
+      ])
+    );
+  }
+
+  return Object.fromEntries(options.map((opt) => [opt.name, opt.values?.[0] ?? '']));
+};
 
 const selectionKey = (options: PrintifyOption[], selections: Record<string, string>) =>
   options.map((opt) => selections[opt.name] ?? '').join('|');

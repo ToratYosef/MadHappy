@@ -24,7 +24,10 @@ interface Props {
 }
 
 export default function ProductDetail({ product }: Props) {
-  const initialSelections = useMemo(() => getInitialSelections(product.options), [product.options]);
+  const initialSelections = useMemo(
+    () => getInitialSelections(product.options, product.variants),
+    [product.options, product.variants]
+  );
   const [selections, setSelections] = useState<Record<string, string>>(initialSelections);
   const [activeVariant, setActiveVariant] = useState<PrintifyVariant | null>(() =>
     resolveVariant(product.options, product.variants, initialSelections)

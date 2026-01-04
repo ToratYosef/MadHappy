@@ -31,8 +31,8 @@ export default function AddToCart({
   selectedImageUrl
 }: Props) {
   const defaultSelections = useMemo(
-    () => initialSelections ?? getInitialSelections(product.options),
-    [initialSelections, product.options]
+    () => initialSelections ?? getInitialSelections(product.options, product.variants),
+    [initialSelections, product.options, product.variants]
   );
   const [selections, setSelections] = useState<Record<string, string>>(defaultSelections);
   const [qty, setQty] = useState(1);

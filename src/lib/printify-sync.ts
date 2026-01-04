@@ -115,8 +115,9 @@ export async function syncPrintifyCatalog(shopId: string, token: string): Promis
     await prisma.printifyVariantCache.deleteMany({ where: { productId: record.id } });
 
     const variants = Array.isArray(detail?.variants) ? detail.variants : [];
-    if (variants.length) {
-      const data = variants.map((variant: any) => ({
+    const enabledVariants = variants.filter((variant: any) => variant?.is_enabled ?? true);
+    if (enabledVariants.length) {
+      const data = enabledVariants.map((variant: any) => ({
         productId: record.id,
         variantId: String(variant?.id ?? variant?.variant_id),
         title: variant?.title || variant?.name || 'Variant',
