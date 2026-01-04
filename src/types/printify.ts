@@ -1,6 +1,7 @@
 export type PrintifyOption = {
   name: string;
   values: string[];
+  valueIdMap?: Record<string, string>;
 };
 
 export type PrintifyVariant = {

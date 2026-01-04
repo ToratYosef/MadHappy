@@ -35,12 +35,31 @@ function normalizeImages(images: any[]): PrintifyImage[] {
 
 function normalizeOptions(options: any[]): PrintifyOption[] {
   if (!Array.isArray(options)) return [];
-  return options.map((opt, idx) => ({
-    name: opt?.name || opt?.type || `Option ${idx + 1}`,
-    values: Array.isArray(opt?.values)
-      ? opt.values.map((v: any) => v?.title || v?.name || v?.value || String(v)).filter(Boolean)
-      : []
-  }));
+  return options.map((opt, idx) => {
+    const name = opt?.name || opt?.type || `Option ${idx + 1}`;
+    const valueIdMap: Record<string, string> = {};
+    const values = Array.isArray(opt?.values)
+      ? opt.values
+          .map((v: any) => {
+            const title =
+              v?.title || v?.name || v?.value || (typeof v === 'string' ? v : undefined) || null;
+            const id =
+              v?.id ?? v?.value_id ?? v?.valueId ?? v?.value ?? (typeof v === 'number' ? v : null);
+            if (title && id !== null && id !== undefined) {
+              valueIdMap[String(id)] = String(title);
+            }
+            return title;
+          })
+          .filter(Boolean)
+          .map(String)
+      : [];
+
+    return {
+      name,
+      values,
+      valueIdMap: Object.keys(valueIdMap).length ? valueIdMap : undefined
+    };
+  });
 }
 
 function buildVariantOptionMap(productOptions: PrintifyOption[], variantOptions: any[]): Record<string, string> {
@@ -52,8 +71,21 @@ function buildVariantOptionMap(productOptions: PrintifyOption[], variantOptions:
     if (variantValue === undefined || variantValue === null) return;
 
     let resolved: string | null = null;
+    const idLookup = opt.valueIdMap || {};
+    const maybeFromId =
+      typeof variantValue === 'object' && variantValue !== null
+        ? idLookup[String((variantValue as any).id ?? (variantValue as any).value ?? '')]
+        : idLookup[String(variantValue)];
+    if (maybeFromId) {
+      resolved = maybeFromId;
+    }
 
-    if (typeof variantValue === 'number' && opt.values[variantValue]) {
+    if (!resolved && typeof variantValue === 'object' && variantValue !== null) {
+      const titledValue = (variantValue as any).title ?? (variantValue as any).name ?? null;
+      if (titledValue) resolved = String(titledValue);
+    }
+
+    if (!resolved && typeof variantValue === 'number' && variantValue >= 0 && opt.values[variantValue]) {
       resolved = String(opt.values[variantValue]);
     } else if (typeof variantValue === 'string') {
       resolved = variantValue;
@@ -115,7 +147,7 @@ export async function syncPrintifyCatalog(shopId: string, token: string): Promis
     await prisma.printifyVariantCache.deleteMany({ where: { productId: record.id } });
 
     const variants = Array.isArray(detail?.variants) ? detail.variants : [];
-    const enabledVariants = variants.filter((variant: any) => variant?.is_enabled ?? true);
+    const enabledVariants = variants.filter((variant: any) => variant?.is_enabled === true);
     if (enabledVariants.length) {
       const data = enabledVariants.map((variant: any) => ({
         productId: record.id,
@@ -123,7 +155,7 @@ export async function syncPrintifyCatalog(shopId: string, token: string): Promis
         title: variant?.title || variant?.name || 'Variant',
         options: buildVariantOptionMap(normalizedOptions, variant?.options || []),
         priceCents: Number(variant?.price ?? 0),
-        isEnabled: Boolean(variant?.is_enabled ?? true),
+        isEnabled: variant?.is_enabled === true,
         shippingInfo: variant?.shipping_profile || variant?.shipping
       }));
 
