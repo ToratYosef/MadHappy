@@ -240,6 +240,7 @@ export default function AddToCart({
 
   return (
     <div className="space-y-4 rounded-xl border border-black/5 bg-white p-5 shadow-soft">
+<<<<<<< HEAD
       {colorOptions.map((opt) => (
         <div key={opt.name} className="space-y-1">
           <div className="flex items-center justify-between">
@@ -249,6 +250,75 @@ export default function AddToCart({
             </p>
           </div>
           {renderColorSwatches(opt)}
+=======
+      {product.options.map((opt) => (
+        <div key={opt.name}>
+          <p className="text-sm font-semibold">{opt.name}</p>
+          {isColorOption(opt.name) ? (
+            <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-6">
+              {(() => {
+                // Build unique label entries: prefer valueIdMap when present
+                const entries: Array<[string, string]> = [];
+                if (opt.valueIdMap && typeof opt.valueIdMap === 'object') {
+                  const byLabel: Record<string, string[]> = {};
+                  Object.entries(opt.valueIdMap).forEach(([id, label]) => {
+                    const lbl = String(label);
+                    byLabel[lbl] = byLabel[lbl] || [];
+                    byLabel[lbl].push(String(id));
+                  });
+                  Object.entries(byLabel).forEach(([label, ids]) => entries.push([ids[0], label]));
+                } else {
+                  (opt.values || []).forEach((v: any) => entries.push([String(v), String(v)]));
+                }
+
+                return entries.map(([id, label]) => (
+                  <button
+                    key={`${opt.name}-${label}`}
+                    onClick={() => handleSelection(opt.name, label)}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition ${
+                      selections[opt.name] === label ? 'border-green ring-2 ring-green/40' : 'border-black/10'
+                    }`}
+                    style={{ backgroundColor: resolveSwatchColor(label) }}
+                    title={label}
+                    aria-label={label}
+                  >
+                    <span className="sr-only">{label}</span>
+                  </button>
+                ));
+              })()}
+            </div>
+          ) : (
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {(() => {
+                const entries: Array<[string, string]> = [];
+                if (opt.valueIdMap && typeof opt.valueIdMap === 'object') {
+                  const byLabel: Record<string, string[]> = {};
+                  Object.entries(opt.valueIdMap).forEach(([id, label]) => {
+                    const lbl = String(label);
+                    byLabel[lbl] = byLabel[lbl] || [];
+                    byLabel[lbl].push(String(id));
+                  });
+                  Object.entries(byLabel).forEach(([label, ids]) => entries.push([ids[0], label]));
+                } else {
+                  (opt.values || []).forEach((v: any) => entries.push([String(v), String(v)]));
+                }
+
+                return entries.map(([id, label]) => (
+                  <button
+                    key={`${opt.name}-${label}`}
+                    onClick={() => handleSelection(opt.name, label)}
+                    className={`rounded-lg border px-3 py-2 text-sm transition ${
+                      selections[opt.name] === label ? 'border-green bg-green/10 text-green' : 'border-black/10 bg-white'
+                    }`}
+                    title={label}
+                  >
+                    {label}
+                  </button>
+                ));
+              })()}
+            </div>
+          )}
+>>>>>>> 55ffe22 (Auto-commit on Sunday, Jan 04 @ 02:01)
         </div>
       ))}
 
