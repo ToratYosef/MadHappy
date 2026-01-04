@@ -83,7 +83,6 @@ export default function ProductDetail({ product }: Props) {
             </div>
           )}
         </div>
-<<<<<<< HEAD
 
         <div className="space-y-6 rounded-2xl border border-black/5 bg-white/80 p-6 shadow-lg shadow-black/5 backdrop-blur">
           <div className="space-y-3">
@@ -123,16 +122,6 @@ export default function ProductDetail({ product }: Props) {
             selectedImageUrl={featuredImage?.url}
           />
         </div>
-=======
-        <p className="text-black/70">{product.description}</p>
-        <AddToCart
-          product={{ ...product, options: orderedOptions }}
-          initialSelections={initialSelections}
-          onSelectionChange={setSelections}
-          onVariantChange={setActiveVariant}
-          selectedImageUrl={featuredImage?.url}
-        />
->>>>>>> 55ffe22 (Auto-commit on Sunday, Jan 04 @ 02:01)
       </div>
     </div>
   );
