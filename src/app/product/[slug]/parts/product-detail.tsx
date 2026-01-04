@@ -3,21 +3,10 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
+import { filterImagesByVariant, getFeaturedImage } from '@/lib/printify-images';
 import type { PrintifyImage, PrintifyProduct, PrintifyVariant } from '@/types/printify';
 import AddToCart from './add-to-cart';
 import { getInitialSelections, resolveVariant } from './selection-helpers';
-
-const filterImagesByVariant = (images: PrintifyImage[], variantId?: string | null) => {
-  if (!Array.isArray(images)) return [];
-  if (!variantId) return images;
-
-  const targetId = String(variantId);
-  const matching = images.filter((img) => (img.variantIds || []).map(String).includes(targetId));
-  if (matching.length) return matching;
-
-  const generic = images.filter((img) => !img.variantIds || img.variantIds.length === 0);
-  return generic.length ? generic : images;
-};
 
 interface Props {
   product: PrintifyProduct;
@@ -43,15 +32,16 @@ export default function ProductDetail({ product }: Props) {
     [product.images, activeVariant?.variantId]
   );
 
-  const fallbackImage = product.images[0] ?? null;
+  const fallbackImage =
+    product.images.find((img) => img.isDefault) ?? getFeaturedImage(product.images) ?? null;
   const [featuredImage, setFeaturedImage] = useState<PrintifyImage | null>(
-    variantImages[0] ?? fallbackImage ?? null
+    getFeaturedImage(product.images, activeVariant?.variantId) ?? fallbackImage ?? null
   );
 
   useEffect(() => {
-    const nextFeatured = variantImages[0] ?? fallbackImage ?? null;
+    const nextFeatured = getFeaturedImage(product.images, activeVariant?.variantId) ?? fallbackImage ?? null;
     setFeaturedImage(nextFeatured);
-  }, [variantImages, fallbackImage]);
+  }, [product.images, activeVariant?.variantId, fallbackImage]);
 
   const price = activeVariant?.priceCents ?? product.variants[0]?.priceCents ?? 0;
 
