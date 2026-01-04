@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { verifyPrintifySignature } from '@/lib/printify';
 
-const statusMap: Record<string, import('@prisma/client').FulfillmentStatus> = {
+type FulfillmentStatus = 'DRAFT' | 'SUBMITTED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELED';
+
+const statusMap: Record<string, FulfillmentStatus> = {
   'order:submitted': 'SUBMITTED',
   'order:created': 'SUBMITTED',
   'order:processing': 'PROCESSING',

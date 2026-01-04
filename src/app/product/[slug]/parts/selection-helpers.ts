@@ -56,8 +56,8 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
   if (variantForDefaults) {
     return Object.fromEntries(
       options.map((opt) => {
-        const value = getVariantOptionValue(variantForDefaults, opt);
-        return [opt.name, value || opt.values?.[0] ?? ''];
+        const rawValue = getVariantOptionValue(variantForDefaults, opt) || opt.values?.[0] || '';
+        return [opt.name, normalizeOptionValue(opt, rawValue)];
       })
     );
   }
@@ -70,8 +70,9 @@ const selectionKey = (options: PrintifyOption[], selections: Record<string, stri
 
 export const buildVariantLookup = (options: PrintifyOption[], variants: PrintifyVariant[]) =>
   variants.reduce<Record<string, PrintifyVariant>>((acc, variant) => {
-    const selectionsForVariant = Object.fromEntries(
-      options.map((opt) => [opt.name, getVariantOptionValue(variant, opt)])
+    const key = selectionKey(
+      options,
+      Object.fromEntries(options.map((opt) => [opt.name, getVariantOptionValue(variant, opt)]))
     );
     const key = selectionKey(options, selectionsForVariant);
     acc[key] = variant;

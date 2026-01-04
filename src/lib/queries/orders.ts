@@ -1,5 +1,4 @@
 import { prisma } from '../db';
-import { Prisma } from '@prisma/client';
 
 export const getRecentOrders = (limit = 5) =>
   prisma.order.findMany({
@@ -15,7 +14,7 @@ export const getOrders = async (params: {
   skip?: number;
   take?: number;
 }) => {
-  const where: Prisma.OrderWhereInput = {};
+  const where: Record<string, any> = {};
   if (params.paymentStatus) where.paymentStatus = params.paymentStatus as any;
   if (params.fulfillmentStatus) where.fulfillmentStatus = params.fulfillmentStatus as any;
   if (params.search)
