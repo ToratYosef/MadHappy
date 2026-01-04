@@ -1,5 +1,11 @@
 import type { PrintifyImage } from '@/types/printify';
 
+const normalizeVariantIds = (variantId?: string | string[] | null): string[] => {
+  if (!variantId) return [];
+  const ids = Array.isArray(variantId) ? variantId : [variantId];
+  return Array.from(new Set(ids.map((id) => String(id)).filter(Boolean)));
+};
+
 const getVariantIds = (img: any): string[] => {
   const raw = img?.variantIds ?? img?.variant_ids ?? img?.variants;
   if (!Array.isArray(raw)) return [];
@@ -12,13 +18,16 @@ const getVariantIds = (img: any): string[] => {
  */
 export const filterImagesByVariant = (
   images: PrintifyImage[] = [],
-  variantId?: string | null
+  variantId?: string | string[] | null
 ): PrintifyImage[] => {
   if (!Array.isArray(images)) return [];
 
-  const normalizedVariantId = variantId ? String(variantId) : null;
-  const matching = normalizedVariantId
-    ? images.filter((img) => getVariantIds(img).includes(normalizedVariantId))
+  const normalizedVariantIds = normalizeVariantIds(variantId);
+  const matching = normalizedVariantIds.length
+    ? images.filter((img) => {
+        const imgVariantIds = getVariantIds(img);
+        return imgVariantIds.length > 0 && imgVariantIds.some((id) => normalizedVariantIds.includes(id));
+      })
     : [];
 
   if (matching.length) return matching;

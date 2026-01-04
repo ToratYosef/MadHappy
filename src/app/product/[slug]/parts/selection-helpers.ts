@@ -1,16 +1,34 @@
 import type { PrintifyOption, PrintifyVariant } from '@/types/printify';
 
+const normalizeOptionValue = (opt: PrintifyOption, value: unknown) => {
+  if (value === null || value === undefined) return '';
+  const stringValue = String(value);
+  const mappedById = opt.valueIdMap?.[stringValue];
+  if (mappedById) return mappedById;
+
+  const matchedEntry = Object.entries(opt.valueIdMap || {}).find(
+    ([, title]) => title.toLowerCase() === stringValue.toLowerCase()
+  );
+  if (matchedEntry) return matchedEntry[1];
+
+  return stringValue;
+};
+
 export const getInitialSelections = (options: PrintifyOption[], variants: PrintifyVariant[] = []) => {
   const firstVariant = variants[0];
   if (firstVariant) {
     return Object.fromEntries(
-      options.map((opt) => [
-        opt.name,
-        (firstVariant.options?.[opt.name] as string | undefined) ??
-          firstVariant.options?.[opt.name.toLowerCase()] ??
+      options.map((opt) => {
+        const normalizedOptions = Object.fromEntries(
+          Object.entries(firstVariant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
+        );
+        const rawValue =
+          (firstVariant.options?.[opt.name] as string | undefined) ??
+          normalizedOptions[opt.name.toLowerCase()] ??
           opt.values?.[0] ??
-          ''
-      ])
+          '';
+        return [opt.name, normalizeOptionValue(opt, rawValue)];
+      })
     );
   }
 
@@ -18,7 +36,7 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
 };
 
 const selectionKey = (options: PrintifyOption[], selections: Record<string, string>) =>
-  options.map((opt) => selections[opt.name] ?? '').join('|');
+  options.map((opt) => normalizeOptionValue(opt, selections[opt.name])).join('|');
 
 export const buildVariantLookup = (options: PrintifyOption[], variants: PrintifyVariant[]) =>
   variants.reduce<Record<string, PrintifyVariant>>((acc, variant) => {
@@ -29,10 +47,8 @@ export const buildVariantLookup = (options: PrintifyOption[], variants: Printify
           const normalizedOptions = Object.fromEntries(
             Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
           );
-          return [
-            opt.name,
-            variant.options?.[opt.name] || normalizedOptions[opt.name.toLowerCase()] || ''
-          ];
+          const rawValue = variant.options?.[opt.name] || normalizedOptions[opt.name.toLowerCase()] || '';
+          return [opt.name, normalizeOptionValue(opt, rawValue)];
         })
       )
     );
