@@ -36,9 +36,6 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 ADMIN_EMAIL=
 ADMIN_PASSWORD=
-PRINTIFY_TOKEN=
-PRINTIFY_SHOP_ID=
-PRINTIFY_WEBHOOK_SECRET=
 ```
 
 3. **Prisma & database**
@@ -71,11 +68,9 @@ Use the Stripe CLI to forward events:
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
-## Printify integration
-- Products are synced from Printify via `POST /api/admin/printify/sync-products` and cached in the database (`printify_products_cache`, `printify_variant_cache`).
-- Store your Printify token and shop ID in `PRINTIFY_TOKEN` and `PRINTIFY_SHOP_ID`. Webhook HMAC verification uses `PRINTIFY_WEBHOOK_SECRET`.
-- Public catalog routes (`/api/products`, `/api/products/:id`) serve from the cache; no Printify calls are made from the browser.
-- Checkout uses Stripe Payment Element with a custom UI, creates a pending order, and Stripe webhooks submit paid orders to Printify for fulfillment.
+## Products
+- Products are stored locally in the `Product` and `ProductVariant` tables. You can seed or manage them directly via the admin UI.
+- Checkout uses Stripe Payment Element with a custom UI and creates pending orders; fulfillment is managed in-house.
 
 ## Notes
 - Admin routes are protected by middleware and NextAuth; only emails in `ADMIN_EMAILS` or `AdminUser` records can sign in.

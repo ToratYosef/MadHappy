@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
-import { PrintifySyncButton } from '@/components/admin/printify-sync-button';
 import { ProductActions } from '@/components/admin/product-actions';
 
 export default async function ProductsPage() {
-  const products = await prisma.printifyProductCache.findMany({
+  const products = await prisma.product.findMany({
     include: { variants: true },
     orderBy: { updatedAt: 'desc' }
   });
@@ -14,10 +13,15 @@ export default async function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Printify Catalog</h1>
-          <p className="text-sm text-black/60">Products are synced from Printify. Manage pricing and enablement there.</p>
+          <h1 className="text-2xl font-semibold">Product Catalog</h1>
+          <p className="text-sm text-black/60">Manage in-house products, pricing, and enablement here.</p>
         </div>
-        <PrintifySyncButton />
+        <Link
+          href="/admin/products/new"
+          className="rounded-lg border border-black/10 px-4 py-2 text-sm font-medium text-green hover:border-green/50"
+        >
+          New product
+        </Link>
       </div>
       <div className="overflow-x-auto rounded-xl border border-black/5 bg-white shadow-soft">
         <table className="min-w-full text-sm">
@@ -39,7 +43,7 @@ export default async function ProductsPage() {
                     <Link href={`/admin/products/${product.id}`} className="font-semibold text-green hover:underline">
                       {product.title}
                     </Link>
-                    <p className="text-xs text-black/50">{product.printifyProductId}</p>
+                    <p className="text-xs text-black/50">{product.slug}</p>
                   </td>
                   <td className="px-4 py-3">{formatCurrency(price)}</td>
                   <td className="px-4 py-3 text-black/70">{product.variants.length}</td>

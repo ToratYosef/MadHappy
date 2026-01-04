@@ -23,7 +23,7 @@ export function ProductEditForm({ product }: { product: Product }) {
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch(`/api/admin/printify/products/${product.id}`, {
+      const res = await fetch(`/api/admin/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, slug })

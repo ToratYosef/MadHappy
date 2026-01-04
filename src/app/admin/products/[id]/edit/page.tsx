@@ -7,10 +7,8 @@ interface Props {
 }
 
 export default async function EditProductPage({ params }: Props) {
-  const product = await prisma.printifyProductCache.findFirst({
-    where: {
-      OR: [{ id: params.id }, { printifyProductId: params.id }]
-    }
+  const product = await prisma.product.findFirst({
+    where: { id: params.id }
   });
 
   if (!product) return notFound();
@@ -18,9 +16,9 @@ export default async function EditProductPage({ params }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-black/60">Edit Printify product</p>
+        <p className="text-sm text-black/60">Edit product</p>
         <h1 className="text-2xl font-semibold">{product.title}</h1>
-        <p className="text-sm text-black/60">Printify ID: {product.printifyProductId}</p>
+        <p className="text-sm text-black/60">Slug: {product.slug}</p>
       </div>
 
       <ProductEditForm product={{ id: product.id, title: product.title, description: product.description, slug: product.slug }} />

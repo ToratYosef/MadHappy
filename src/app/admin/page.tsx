@@ -17,7 +17,7 @@ async function getMetrics() {
         fulfillmentStatus: { notIn: ['SHIPPED', 'DELIVERED', 'CANCELED'] }
       }
     }),
-    prisma.printifyVariantCache.count({ where: { isEnabled: false } })
+    prisma.productVariant.count({ where: { isEnabled: false } })
   ]);
 
   return {

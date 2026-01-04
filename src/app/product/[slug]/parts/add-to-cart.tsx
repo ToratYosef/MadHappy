@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { formatCurrency } from '@/lib/utils';
-import { getFeaturedImage } from '@/lib/printify-images';
-import type { PrintifyImage, PrintifyOption, PrintifyVariant } from '@/types/printify';
+import { getFeaturedImage } from '@/lib/product-images';
+import type { ProductImage, ProductOption, ProductVariant } from '@/types/product';
 import {
   buildSelectionKey,
   buildVariantLookup,
@@ -17,16 +17,15 @@ import {
 interface Props {
   product: {
     id: string;
-    printifyProductId: string;
     title: string;
     slug: string;
-    images: PrintifyImage[];
-    options: PrintifyOption[];
-    variants: PrintifyVariant[];
+    images: ProductImage[];
+    options: ProductOption[];
+    variants: ProductVariant[];
   };
   initialSelections?: Record<string, string>;
   onSelectionChange?: (selections: Record<string, string>) => void;
-  onVariantChange?: (variant: PrintifyVariant | null) => void;
+  onVariantChange?: (variant: ProductVariant | null) => void;
   selectedImageUrl?: string | null;
 }
 
@@ -147,8 +146,8 @@ export default function AddToCart({
   }, [availability, product.options, defaultSelections]);
 
   const variantImage = useMemo(
-    () => getFeaturedImage(product.images, variant?.variantId),
-    [product.images, variant?.variantId]
+    () => getFeaturedImage(product.images, variant?.id),
+    [product.images, variant?.id]
   );
 
   const imageForCart = selectedImageUrl || variantImage?.url || product.images[0]?.url || null;
@@ -156,8 +155,8 @@ export default function AddToCart({
   const handleAdd = () => {
     if (!variant) return;
     addItem({
-      productId: product.printifyProductId,
-      variantId: variant.variantId,
+      productId: product.id,
+      variantId: variant.id,
       name: product.title,
       slug: product.slug,
       priceCents: variant.priceCents,
@@ -190,7 +189,7 @@ export default function AddToCart({
   const colorOptions = product.options.filter((opt) => isColorOption(opt.name));
   const otherOptions = product.options.filter((opt) => !isColorOption(opt.name));
 
-  const renderColorSwatches = (opt: PrintifyOption) => (
+  const renderColorSwatches = (opt: ProductOption) => (
     <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
       {(opt.values || []).map((value) => {
         const isSelected = selections[opt.name] === value;
@@ -216,7 +215,7 @@ export default function AddToCart({
     </div>
   );
 
-  const renderOptionPills = (opt: PrintifyOption) => (
+  const renderOptionPills = (opt: ProductOption) => (
     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
       {(opt.values || []).map((value) => {
         const isSelected = selections[opt.name] === value;

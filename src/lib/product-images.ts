@@ -1,4 +1,4 @@
-import type { PrintifyImage } from '@/types/printify';
+import type { ProductImage } from '@/types/product';
 
 const toIdString = (value: unknown): string | null => {
   if (value === null || value === undefined) return null;
@@ -30,9 +30,9 @@ const getVariantIds = (img: any): string[] => {
  * Falls back to a default image, then any generic/unscoped image, then all images.
  */
 export const filterImagesByVariant = (
-  images: PrintifyImage[] = [],
+  images: ProductImage[] = [],
   variantId?: string | string[] | null
-): PrintifyImage[] => {
+): ProductImage[] => {
   if (!Array.isArray(images)) return [];
 
   const normalizedVariantIds = normalizeVariantIds(variantId);
@@ -55,5 +55,5 @@ export const filterImagesByVariant = (
   return generic.length ? generic : images;
 };
 
-export const getFeaturedImage = (images: PrintifyImage[] = [], variantId?: string | null) =>
+export const getFeaturedImage = (images: ProductImage[] = [], variantId?: string | null) =>
   filterImagesByVariant(images, variantId)[0] ?? null;

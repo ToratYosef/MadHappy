@@ -1,8 +1,8 @@
 import AnimatedSection from '@/components/ui/animated-section';
 import { ProductCard } from './product-card';
-import type { PrintifyProduct } from '@/types/printify';
+import type { Product } from '@/types/product';
 
-export function FeaturedGrid({ products }: { products: PrintifyProduct[] }) {
+export function FeaturedGrid({ products }: { products: Product[] }) {
   return (
     <AnimatedSection className="container-max py-12" id="featured">
       <div className="mb-6 flex items-center justify-between">

@@ -9,10 +9,10 @@ export function ProductActions({ productId }: { productId: string }) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm('Delete this product from the cache?')) return;
+    if (!confirm('Delete this product?')) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/printify/products/${productId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/products/${productId}`, { method: 'DELETE' });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || 'Failed to delete product');

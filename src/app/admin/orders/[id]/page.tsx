@@ -39,9 +39,6 @@ export default async function OrderDetailPage({ params }: Props) {
             <h3 className="text-sm text-black/60">Status</h3>
             <p className="text-lg font-semibold">{order.paymentStatus}</p>
             <p className="text-sm text-black/60">Fulfillment: {order.fulfillmentStatus}</p>
-            {order.printifyOrderId && (
-              <p className="text-xs text-black/50">Printify ID: {order.printifyOrderId}</p>
-            )}
           </div>
           <div>
             <h3 className="text-sm text-black/60">Customer</h3>

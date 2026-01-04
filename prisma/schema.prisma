@@ -23,7 +23,6 @@ model Order {
   shippingCountry       String?
   paymentStatus         PaymentStatus     @default(PENDING)
   fulfillmentStatus     FulfillmentStatus @default(DRAFT)
-  printifyOrderId       String?
   trackingCarrier       String?
   trackingNumber        String?
   trackingUrl           String?
@@ -39,7 +38,7 @@ model Order {
 model OrderItem {
   id               String   @id @default(uuid())
   orderId          String
-  printifyProductId String
+  productId        String
   variantId        String
   title            String?
   variantTitle     String?
@@ -162,34 +161,32 @@ enum PaymentStatus {
   REFUNDED
 }
 
-model PrintifyProductCache {
-  id                String                 @id @default(uuid())
-  shopId            String
-  printifyProductId String                 @unique
-  title             String
-  slug              String                 @unique
-  description       String
-  images            Json
-  options           Json
-  variants          PrintifyVariantCache[]
-  updatedAt         DateTime               @updatedAt
-  createdAt         DateTime               @default(now())
+model Product {
+  id          String            @id @default(uuid())
+  title       String
+  slug        String            @unique
+  description String
+  images      Json
+  options     Json
+  variants    ProductVariant[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
-model PrintifyVariantCache {
-  id           String               @id @default(uuid())
+model ProductVariant {
+  id           String   @id @default(uuid())
   productId    String
-  variantId    String
+  sku          String?
   title        String
   options      Json
   priceCents   Int
-  isEnabled    Boolean              @default(true)
+  isEnabled    Boolean  @default(true)
   shippingInfo Json?
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-  product      PrintifyProductCache @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@unique([productId, variantId])
+  @@unique([productId, sku])
 }
 
 model WebhookEvent {

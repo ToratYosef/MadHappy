@@ -7,11 +7,9 @@ interface Props {
   params: { id: string };
 }
 
-export default async function PrintifyProductDetail({ params }: Props) {
-  const product = await prisma.printifyProductCache.findFirst({
-    where: {
-      OR: [{ id: params.id }, { printifyProductId: params.id }]
-    },
+export default async function ProductDetailPage({ params }: Props) {
+  const product = await prisma.product.findFirst({
+    where: { id: params.id },
     include: { variants: true }
   });
 
@@ -23,9 +21,9 @@ export default async function PrintifyProductDetail({ params }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm text-black/60">Printify product</p>
+        <p className="text-sm text-black/60">Product</p>
         <h1 className="text-2xl font-semibold">{product.title}</h1>
-        <p className="text-sm text-black/60">Printify ID: {product.printifyProductId}</p>
+        <p className="text-sm text-black/60">Slug: {product.slug}</p>
       </div>
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-4">
@@ -62,7 +60,7 @@ export default async function PrintifyProductDetail({ params }: Props) {
                     <tr key={variant.id} className="border-t border-black/5">
                       <td className="px-3 py-2">
                         <div className="font-semibold">{variant.title}</div>
-                        <div className="text-xs text-black/50">ID: {variant.variantId}</div>
+                        {variant.sku && <div className="text-xs text-black/50">SKU: {variant.sku}</div>}
                       </td>
                       <td className="px-3 py-2 text-black/70">
                         {Object.entries((variant.options as Record<string, string>) || {})

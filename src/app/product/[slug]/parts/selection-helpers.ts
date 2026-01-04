@@ -1,12 +1,12 @@
-import type { PrintifyOption, PrintifyVariant } from '@/types/printify';
+import type { ProductOption, ProductVariant } from '@/types/product';
 
-const normalizeOptionValue = (opt: PrintifyOption, value: unknown) => {
+const normalizeOptionValue = (opt: ProductOption, value: unknown) => {
   if (value === null || value === undefined) return '';
   const stringValue = String(value);
   const mappedById = opt.valueIdMap?.[stringValue];
   if (mappedById) return mappedById;
 
-  const matchedEntry = Object.entries(opt.valueIdMap || {}).find(([_, title]) => {
+  const matchedEntry = Object.entries(opt.valueIdMap || {}).find(([, title]) => {
     if (typeof title !== 'string') return false;
     return title.toLowerCase() === stringValue.toLowerCase();
   });
@@ -15,7 +15,24 @@ const normalizeOptionValue = (opt: PrintifyOption, value: unknown) => {
   return stringValue;
 };
 
-export const getInitialSelections = (options: PrintifyOption[], variants: PrintifyVariant[] = []) => {
+const getVariantOptionValue = (variant: ProductVariant, option: ProductOption) => {
+  const normalizedOptions = Object.fromEntries(
+    Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
+  );
+  const rawValue = variant.options?.[option.name] || normalizedOptions[option.name.toLowerCase()] || '';
+  return normalizeOptionValue(option, rawValue);
+};
+
+const findPreferredVariant = (options: ProductOption[], variants: ProductVariant[]) => {
+  const enabled = variants.filter((v) => v.isEnabled);
+  if (!enabled.length) return null;
+  const sorted = options.length
+    ? enabled.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
+    : enabled;
+  return sorted[0];
+};
+
+export const getInitialSelections = (options: ProductOption[], variants: ProductVariant[] = []) => {
   const preferredVariant = findPreferredVariant(options, variants);
   const fallbackVariant = variants[0];
   const variantForDefaults = preferredVariant ?? fallbackVariant;
@@ -23,12 +40,11 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
   if (variantForDefaults) {
     return Object.fromEntries(
       options.map((opt) => {
-        const normalizedOptions = Object.fromEntries(
-          Object.entries(firstVariant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
-        );
         const rawValue =
-          (firstVariant.options?.[opt.name] as string | undefined) ??
-          normalizedOptions[opt.name.toLowerCase()] ??
+          (variantForDefaults.options?.[opt.name] as string | undefined) ??
+          Object.fromEntries(Object.entries(variantForDefaults.options || {}).map(([k, v]) => [k.toLowerCase(), v]))[
+            opt.name.toLowerCase()
+          ] ??
           opt.values?.[0] ??
           '';
         return [opt.name, normalizeOptionValue(opt, rawValue)];
@@ -39,31 +55,27 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
   return Object.fromEntries(options.map((opt) => [opt.name, opt.values?.[0] ?? '']));
 };
 
-const selectionKey = (options: PrintifyOption[], selections: Record<string, string>) =>
+const selectionKey = (options: ProductOption[], selections: Record<string, string>) =>
   options.map((opt) => normalizeOptionValue(opt, selections[opt.name])).join('|');
 
-export const buildVariantLookup = (options: PrintifyOption[], variants: PrintifyVariant[]) =>
-  variants.reduce<Record<string, PrintifyVariant>>((acc, variant) => {
+export const buildVariantLookup = (options: ProductOption[], variants: ProductVariant[]) =>
+  variants.reduce<Record<string, ProductVariant>>((acc, variant) => {
     const key = selectionKey(
       options,
       Object.fromEntries(
         options.map((opt) => {
-          const normalizedOptions = Object.fromEntries(
-            Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
-          );
-          const rawValue = variant.options?.[opt.name] || normalizedOptions[opt.name.toLowerCase()] || '';
-          return [opt.name, normalizeOptionValue(opt, rawValue)];
+          const rawValue = getVariantOptionValue(variant, opt);
+          return [opt.name, rawValue];
         })
       )
     );
-    const key = selectionKey(options, selectionsForVariant);
     acc[key] = variant;
     return acc;
   }, {});
 
 export const resolveVariant = (
-  options: PrintifyOption[],
-  variants: PrintifyVariant[],
+  options: ProductOption[],
+  variants: ProductVariant[],
   selections: Record<string, string>
 ) => {
   const lookup = buildVariantLookup(options, variants);
@@ -72,8 +84,8 @@ export const resolveVariant = (
 };
 
 export const getAvailableValues = (
-  options: PrintifyOption[],
-  variants: PrintifyVariant[],
+  options: ProductOption[],
+  variants: ProductVariant[],
   selections: Record<string, string>,
   optionName: string
 ) => {
@@ -93,4 +105,18 @@ export const getAvailableValues = (
   return sortByOptionOrder(values, targetOption);
 };
 
+const sortByOptionOrder = (values: string[], option: ProductOption) => {
+  const order = option.values || [];
+  return [...new Set(values)].sort((a, b) => {
+    const aIndex = order.indexOf(a);
+    const bIndex = order.indexOf(b);
+    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
+};
+
 export const buildSelectionKey = selectionKey;
+
+export const isColorOption = (name: string) => name.toLowerCase().includes('color');
