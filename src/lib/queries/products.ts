@@ -1,24 +1,30 @@
 import { prisma } from '../db';
 import { Prisma } from '@prisma/client';
-import type { PrintifyProduct } from '@/types/printify';
+import type { PrintifyImage, PrintifyProduct } from '@/types/printify';
 
-const productInclude = {
+const productInclude: Prisma.PrintifyProductCacheInclude = {
   variants: {
     where: { isEnabled: true },
     orderBy: { priceCents: 'asc' }
   }
 };
 
-const normalizeImages = (images: any): string[] =>
+const normalizeImages = (images: any): PrintifyImage[] =>
   Array.isArray(images)
     ? images
-        .map((img) => {
-          if (typeof img === 'string') return img;
-          if (img?.src) return img.src;
-          if (img?.url) return img.url;
-          return null;
+        .map((img): PrintifyImage | null => {
+          if (!img) return null;
+          const url =
+            (typeof img === 'string' ? img : img.url || img.src || img.preview || img.preview_url) || null;
+          if (!url) return null;
+          const rawVariantIds = (img as any).variantIds || (img as any).variant_ids || (img as any).variants;
+          const variantIds = Array.isArray(rawVariantIds)
+            ? rawVariantIds.map((id: any) => String(id)).filter(Boolean)
+            : undefined;
+          const isDefault = Boolean((img as any).isDefault ?? (img as any).is_default ?? false);
+          return { url, variantIds, isDefault };
         })
-        .filter(Boolean) as string[]
+        .filter((img): img is PrintifyImage => Boolean(img))
     : [];
 
 export const mapPrintifyProduct = (record: any): PrintifyProduct => ({
