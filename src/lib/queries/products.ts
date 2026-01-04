@@ -1,6 +1,6 @@
 import { prisma } from '../db';
 import { Prisma } from '@prisma/client';
-import type { PrintifyImage, PrintifyProduct } from '@/types/printify';
+import type { PrintifyImage, PrintifyProduct, PrintifyVariant } from '@/types/printify';
 
 const productInclude: Prisma.PrintifyProductCacheInclude = {
   variants: {
@@ -27,6 +27,32 @@ const normalizeImages = (images: any): PrintifyImage[] =>
         .filter((img): img is PrintifyImage => Boolean(img))
     : [];
 
+const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]) => {
+  if (!Array.isArray(options)) return [];
+  const normalizedVariants = Array.isArray(variants) ? variants : [];
+
+  return options.map((opt: any) => {
+    const name = opt?.name || 'Option';
+    const valuesFromVariants = normalizedVariants.flatMap((variant) => {
+      const entries = Object.entries(variant.options || {});
+      const match = entries.find(
+        ([key]) => key === name || key.toLowerCase() === name.toLowerCase()
+      );
+      return match ? [String(match[1])] : [];
+    });
+
+    const uniqueValues = Array.from(new Set(valuesFromVariants.map((v) => String(v)))).filter(
+      (v) => v.trim().length > 0
+    );
+    const baseValues = (Array.isArray(opt?.values) ? opt.values : []).map((v) => String(v));
+
+    return {
+      name,
+      values: uniqueValues.length ? uniqueValues : baseValues
+    };
+  });
+};
+
 export const mapPrintifyProduct = (record: any): PrintifyProduct => ({
   id: record.id,
   shopId: record.shopId,
@@ -35,12 +61,23 @@ export const mapPrintifyProduct = (record: any): PrintifyProduct => ({
   slug: record.slug,
   description: record.description,
   images: normalizeImages(record.images),
-  options: Array.isArray(record.options)
-    ? record.options.map((opt: any) => ({
-        name: opt?.name || 'Option',
-        values: Array.isArray(opt?.values) ? opt.values : []
-      }))
-    : [],
+  options: limitOptionValuesToVariants(
+    Array.isArray(record.options)
+      ? record.options.map((opt: any) => ({
+          name: opt?.name || 'Option',
+          values: Array.isArray(opt?.values) ? opt.values : []
+        }))
+      : [],
+    (record.variants || []).map((variant: any) => ({
+      id: variant.id,
+      variantId: variant.variantId,
+      title: variant.title,
+      options: variant.options || {},
+      priceCents: variant.priceCents,
+      isEnabled: variant.isEnabled,
+      shippingInfo: variant.shippingInfo
+    }))
+  ),
   variants: (record.variants || []).map((variant: any) => ({
     id: variant.id,
     variantId: variant.variantId,
