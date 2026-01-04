@@ -308,7 +308,7 @@ export default function CartPage() {
                 </div>
                 <div className="flex items-center justify-between py-2 text-sm text-black/60">
                   <span>Shipping</span>
-                  <span>Calculated after Printify submission</span>
+                  <span>Calculated at fulfillment</span>
                 </div>
                 <button
                   onClick={handleCheckout}

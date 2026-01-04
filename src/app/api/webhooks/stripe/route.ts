@@ -3,50 +3,6 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
-import { requirePrintifyConfig, submitPrintifyOrder } from '@/lib/printify';
-
-async function submitOrderToPrintify(order: any) {
-  try {
-    const { shopId, token } = requirePrintifyConfig();
-    const payload = {
-      external_id: order.id,
-      line_items: order.items.map((item: any) => ({
-        product_id: item.printifyProductId,
-        variant_id: Number(item.variantId) || item.variantId,
-        quantity: item.qty
-      })),
-      address_to: {
-        first_name: order.shippingName || order.customerName || order.customerEmail,
-        last_name: '',
-        email: order.customerEmail,
-        phone: order.customerPhone,
-        country: order.shippingCountry,
-        region: order.shippingState,
-        address1: order.shippingAddress1,
-        address2: order.shippingAddress2,
-        city: order.shippingCity,
-        zip: order.shippingPostal
-      }
-    };
-
-    const response = await submitPrintifyOrder(shopId, payload, token);
-    const printifyOrderId = response?.id || response?.order_id || response?.orderId || null;
-
-    await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        printifyOrderId,
-        fulfillmentStatus: 'SUBMITTED'
-      }
-    });
-  } catch (error) {
-    console.error('Failed to submit order to Printify', error);
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { fulfillmentStatus: 'DRAFT' }
-    });
-  }
-}
 
 async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
   const orderId = paymentIntent.metadata?.orderId;
@@ -64,15 +20,10 @@ async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
   }
 
   if (order.paymentStatus !== 'PAID') {
-    order = await prisma.order.update({
+    await prisma.order.update({
       where: { id: order.id },
-      data: { paymentStatus: 'PAID' },
-      include: { items: true }
+      data: { paymentStatus: 'PAID', fulfillmentStatus: 'PROCESSING' }
     });
-  }
-
-  if (!order.printifyOrderId) {
-    await submitOrderToPrintify(order);
   }
 }
 

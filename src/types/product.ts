@@ -1,12 +1,12 @@
-export type PrintifyOption = {
+export type ProductOption = {
   name: string;
   values: string[];
   valueIdMap?: Record<string, string>;
 };
 
-export type PrintifyVariant = {
+export type ProductVariant = {
   id: string;
-  variantId: string;
+  sku?: string | null;
   title: string;
   options: Record<string, string>;
   priceCents: number;
@@ -14,26 +14,20 @@ export type PrintifyVariant = {
   shippingInfo?: Record<string, unknown> | null;
 };
 
-export type PrintifyImage = {
+export type ProductImage = {
   url: string;
   variantIds?: string[];
   isDefault?: boolean;
 };
 
-export type PrintifyProduct = {
+export type Product = {
   id: string;
-  shopId: string;
-  printifyProductId: string;
   title: string;
   slug: string;
   description: string;
-  images: PrintifyImage[];
-  options: PrintifyOption[];
-  variants: PrintifyVariant[];
+  images: ProductImage[];
+  options: ProductOption[];
+  variants: ProductVariant[];
+  createdAt: Date;
   updatedAt: Date;
-};
-
-export type PrintifyWebhookPayload = {
-  type: string;
-  data: Record<string, any>;
 };

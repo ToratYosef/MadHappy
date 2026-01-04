@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
-import type { PrintifyProduct } from '@/types/printify';
+import type { Product } from '@/types/product';
 
 interface ProductCardProps {
-  product: PrintifyProduct;
+  product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <p className="text-sm uppercase tracking-[0.08em] text-black/50">Print on demand</p>
+            <p className="text-sm uppercase tracking-[0.08em] text-black/50">In-house product</p>
             <h3 className="font-semibold">{product.title}</h3>
             <p className="text-sm text-black/60">{formatCurrency(price, 'USD')}</p>
           </div>

@@ -3,14 +3,14 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
-import { filterImagesByVariant, getFeaturedImage } from '@/lib/printify-images';
-import type { PrintifyImage, PrintifyProduct, PrintifyVariant } from '@/types/printify';
-import { orderProductOptions } from '@/lib/printify-options';
+import { filterImagesByVariant, getFeaturedImage } from '@/lib/product-images';
+import type { Product, ProductImage, ProductVariant } from '@/types/product';
+import { orderProductOptions } from '@/lib/product-options';
 import AddToCart from './add-to-cart';
 import { getInitialSelections, isColorOption, resolveVariant } from './selection-helpers';
 
 interface Props {
-  product: PrintifyProduct;
+  product: Product;
 }
 
 export default function ProductDetail({ product }: Props) {
@@ -21,7 +21,7 @@ export default function ProductDetail({ product }: Props) {
   );
 
   const [selections, setSelections] = useState<Record<string, string>>(initialSelections);
-  const [activeVariant, setActiveVariant] = useState<PrintifyVariant | null>(() =>
+  const [activeVariant, setActiveVariant] = useState<ProductVariant | null>(() =>
     resolveVariant(orderedOptions, product.variants, initialSelections)
   );
 
@@ -31,20 +31,20 @@ export default function ProductDetail({ product }: Props) {
   }, [initialSelections, orderedOptions, product.variants]);
 
   const variantImages = useMemo(
-    () => filterImagesByVariant(product.images, activeVariant?.variantId),
-    [product.images, activeVariant?.variantId]
+    () => filterImagesByVariant(product.images, activeVariant?.id),
+    [product.images, activeVariant?.id]
   );
 
   const fallbackImage =
     product.images.find((img) => img.isDefault) ?? getFeaturedImage(product.images) ?? null;
-  const [featuredImage, setFeaturedImage] = useState<PrintifyImage | null>(
-    getFeaturedImage(product.images, activeVariant?.variantId) ?? fallbackImage ?? null
+  const [featuredImage, setFeaturedImage] = useState<ProductImage | null>(
+    getFeaturedImage(product.images, activeVariant?.id) ?? fallbackImage ?? null
   );
 
   useEffect(() => {
-    const nextFeatured = getFeaturedImage(product.images, activeVariant?.variantId) ?? fallbackImage ?? null;
+    const nextFeatured = getFeaturedImage(product.images, activeVariant?.id) ?? fallbackImage ?? null;
     setFeaturedImage(nextFeatured);
-  }, [product.images, activeVariant?.variantId, fallbackImage]);
+  }, [product.images, activeVariant?.id, fallbackImage]);
 
   const price = activeVariant?.priceCents ?? product.variants[0]?.priceCents ?? 0;
 

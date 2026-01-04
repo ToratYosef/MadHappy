@@ -219,23 +219,19 @@ const PrismaLike = {
       return { count: orders.length };
     }
   },
-  printifyProductCache: {
+  product: {
     findUnique: async ({ where, include }: any = {}) => {
-      if (where?.id) return PrismaLike.printifyProductCache.findFirst({ where: { id: where.id }, include });
-      if (where?.printifyProductId)
-        return PrismaLike.printifyProductCache.findFirst({
-          where: { printifyProductId: where.printifyProductId },
-          include
-        });
+      if (where?.id) return PrismaLike.product.findFirst({ where: { id: where.id }, include });
+      if (where?.slug) return PrismaLike.product.findFirst({ where: { slug: where.slug }, include });
       return null;
     },
     findMany: async ({ where, include, orderBy, take }: any = {}) => {
-      let products = (await collectionData<any>('printifyProducts')).filter((p) => applyWhere(p, where));
+      let products = (await collectionData<any>('products')).filter((p) => applyWhere(p, where));
       products = orderBy ? sortRecords(products, orderBy) : products;
       if (take) products = products.slice(0, take);
 
       if (include?.variants) {
-        const variants = await collectionData<any>('printifyVariantCache');
+        const variants = await collectionData<any>('productVariants');
         return products.map((product) => ({
           ...product,
           variants: sortRecords(
@@ -250,33 +246,33 @@ const PrismaLike = {
       return products;
     },
     findFirst: async ({ where, include }: any = {}) => {
-      const products = await PrismaLike.printifyProductCache.findMany({ where, include });
+      const products = await PrismaLike.product.findMany({ where, include });
       return products[0] || null;
     },
-    upsert: async ({ where, create, update }: any) => {
-      const id = where?.id || where?.printifyProductId || randomUUID();
-      await upsertDoc('printifyProducts', id, { ...create, ...update, id });
-      return PrismaLike.printifyProductCache.findFirst({ where: { id }, include: { variants: true } });
+    create: async ({ data, include }: any) => {
+      const id = data.id || randomUUID();
+      await upsertDoc('products', id, { ...data, id });
+      return PrismaLike.product.findFirst({ where: { id }, include });
     },
     update: async ({ where, data }: any) => {
       const id = where?.id;
       if (!id) throw new Error('Product id required');
-      await upsertDoc('printifyProducts', id, data);
-      return await PrismaLike.printifyProductCache.findFirst({ where: { id }, include: { variants: true } });
+      await upsertDoc('products', id, data);
+      return await PrismaLike.product.findFirst({ where: { id }, include: { variants: true } });
     },
     delete: async ({ where }: any) => {
       const id = where?.id;
       if (!id) return;
-      await removeDoc('printifyProducts', id);
-      const variants = await PrismaLike.printifyVariantCache.findMany({ where: { productId: id } });
-      await Promise.all(variants.map((variant: any) => removeDoc('printifyVariantCache', variant.id)));
+      await removeDoc('products', id);
+      const variants = await PrismaLike.productVariant.findMany({ where: { productId: id } });
+      await Promise.all(variants.map((variant: any) => removeDoc('productVariants', variant.id)));
     }
   },
-  printifyVariantCache: {
+  productVariant: {
     findMany: async ({ where, include }: any = {}) => {
-      const variants = (await collectionData<any>('printifyVariantCache')).filter((v) => applyWhere(v, where));
+      const variants = (await collectionData<any>('productVariants')).filter((v) => applyWhere(v, where));
       if (include?.product) {
-        const products = await collectionData<any>('printifyProducts');
+        const products = await collectionData<any>('products');
         return variants.map((variant) => ({
           ...variant,
           product: products.find((p) => p.id === variant.productId)
@@ -285,8 +281,8 @@ const PrismaLike = {
       return variants;
     },
     deleteMany: async ({ where }: any = {}) => {
-      const variants = (await collectionData<any>('printifyVariantCache')).filter((v) => applyWhere(v, where));
-      await Promise.all(variants.map((variant) => removeDoc('printifyVariantCache', variant.id)));
+      const variants = (await collectionData<any>('productVariants')).filter((v) => applyWhere(v, where));
+      await Promise.all(variants.map((variant) => removeDoc('productVariants', variant.id)));
       return { count: variants.length };
     },
     createMany: async ({ data }: any) => {
@@ -294,12 +290,12 @@ const PrismaLike = {
       await Promise.all(
         data.map((variant: any) => {
           const id = variant.id || randomUUID();
-          return upsertDoc('printifyVariantCache', id, { ...variant, createdAt: now });
+          return upsertDoc('productVariants', id, { ...variant, createdAt: now });
         })
       );
       return { count: data.length };
     },
-    count: async ({ where }: any = {}) => (await PrismaLike.printifyVariantCache.findMany({ where })).length
+    count: async ({ where }: any = {}) => (await PrismaLike.productVariant.findMany({ where })).length
   },
   banner: {
     create: async ({ data }: any) => {

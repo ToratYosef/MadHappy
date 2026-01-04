@@ -60,8 +60,8 @@ export async function POST(req: Request) {
     }
 
     const variantIds = items.map((i) => i.variantId);
-    const variants = await prisma.printifyVariantCache.findMany({
-      where: { variantId: { in: variantIds }, isEnabled: true },
+    const variants = await prisma.productVariant.findMany({
+      where: { id: { in: variantIds }, isEnabled: true },
       include: { product: true }
     });
 
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
     let subtotalCents = 0;
 
     const orderItems: {
-      printifyProductId: string;
+      productId: string;
       variantId: string;
       qty: number;
       priceCents: number;
@@ -83,8 +83,8 @@ export async function POST(req: Request) {
     }[] = [];
 
     for (const cartItem of items) {
-      const variant = variants.find((v) => v.variantId === cartItem.variantId);
-      if (!variant || variant.product.printifyProductId !== cartItem.productId) {
+      const variant = variants.find((v) => v.id === cartItem.variantId);
+      if (!variant || variant.product.id !== cartItem.productId) {
         return NextResponse.json({ error: 'Invalid cart item' }, { status: 400 });
       }
 
@@ -92,8 +92,8 @@ export async function POST(req: Request) {
       subtotalCents += priceCents * cartItem.qty;
 
       orderItems.push({
-        printifyProductId: variant.product.printifyProductId,
-        variantId: variant.variantId,
+        productId: variant.product.id,
+        variantId: variant.id,
         qty: cartItem.qty,
         priceCents,
         title: variant.product.title,
