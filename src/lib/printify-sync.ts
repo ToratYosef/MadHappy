@@ -115,7 +115,7 @@ export async function syncPrintifyCatalog(shopId: string, token: string): Promis
     await prisma.printifyVariantCache.deleteMany({ where: { productId: record.id } });
 
     const variants = Array.isArray(detail?.variants) ? detail.variants : [];
-    const enabledVariants = variants.filter((variant: any) => variant?.is_enabled ?? true);
+    const enabledVariants = variants.filter((variant: any) => variant?.is_enabled === true);
     if (enabledVariants.length) {
       const data = enabledVariants.map((variant: any) => ({
         productId: record.id,
@@ -123,7 +123,7 @@ export async function syncPrintifyCatalog(shopId: string, token: string): Promis
         title: variant?.title || variant?.name || 'Variant',
         options: buildVariantOptionMap(normalizedOptions, variant?.options || []),
         priceCents: Number(variant?.price ?? 0),
-        isEnabled: Boolean(variant?.is_enabled ?? true),
+        isEnabled: variant?.is_enabled === true,
         shippingInfo: variant?.shipping_profile || variant?.shipping
       }));
 

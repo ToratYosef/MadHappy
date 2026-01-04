@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 import { PrintifySyncButton } from '@/components/admin/printify-sync-button';
+import { ProductActions } from '@/components/admin/product-actions';
 
 export default async function ProductsPage() {
   const products = await prisma.printifyProductCache.findMany({
@@ -26,6 +27,7 @@ export default async function ProductsPage() {
               <th className="px-4 py-3">Price</th>
               <th className="px-4 py-3">Variants</th>
               <th className="px-4 py-3">Updated</th>
+              <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +45,11 @@ export default async function ProductsPage() {
                   <td className="px-4 py-3 text-black/70">{product.variants.length}</td>
                   <td className="px-4 py-3 text-black/70">
                     {new Date(product.updatedAt).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-end">
+                      <ProductActions productId={product.id} />
+                    </div>
                   </td>
                 </tr>
               );
