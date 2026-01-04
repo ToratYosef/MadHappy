@@ -33,6 +33,7 @@ const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]
 
   return options.map((opt: any) => {
     const name = opt?.name || 'Option';
+    const valueIdMap = opt?.valueIdMap || opt?.value_id_map || undefined;
     const valuesFromVariants = normalizedVariants.flatMap((variant) => {
       const entries = Object.entries(variant.options || {});
       const match = entries.find(
@@ -48,7 +49,8 @@ const limitOptionValuesToVariants = (options: any[], variants: PrintifyVariant[]
 
     return {
       name,
-      values: uniqueValues.length ? uniqueValues : baseValues
+      values: uniqueValues.length ? uniqueValues : baseValues,
+      valueIdMap: valueIdMap && typeof valueIdMap === 'object' ? valueIdMap : undefined
     };
   });
 };
@@ -65,7 +67,13 @@ export const mapPrintifyProduct = (record: any): PrintifyProduct => ({
     Array.isArray(record.options)
       ? record.options.map((opt: any) => ({
           name: opt?.name || 'Option',
-          values: Array.isArray(opt?.values) ? opt.values : []
+          values: Array.isArray(opt?.values) ? opt.values : [],
+          valueIdMap:
+            opt?.valueIdMap && typeof opt.valueIdMap === 'object'
+              ? opt.valueIdMap
+              : opt?.value_id_map && typeof opt.value_id_map === 'object'
+                ? opt.value_id_map
+                : undefined
         }))
       : [],
     (record.variants || []).map((variant: any) => ({
