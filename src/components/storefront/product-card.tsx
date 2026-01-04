@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const image = product.images?.[0];
+  const image = product.images?.[0]?.url;
   const price = product.variants[0]?.priceCents ?? 0;
 
   return (

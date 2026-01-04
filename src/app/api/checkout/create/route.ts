@@ -3,6 +3,26 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
+const getPrimaryProductImageUrl = (images: any): string | null => {
+  if (!Array.isArray(images)) return null;
+  const first = images[0];
+  if (!first) return null;
+  if (typeof first === 'string') return first;
+  if (typeof first === 'object' && 'url' in first && typeof (first as any).url === 'string') {
+    return (first as any).url;
+  }
+  return null;
+};
+
+const normalizeVariantOptions = (options: any): Record<string, string> => {
+  if (!options || typeof options !== 'object' || Array.isArray(options)) return {};
+  return Object.fromEntries(
+    Object.entries(options as Record<string, unknown>)
+      .map(([key, value]) => [key, value == null ? '' : String(value)])
+      .filter(([, value]) => value !== '')
+  );
+};
+
 type CartItem = { productId: string; variantId: string; qty: number };
 type CheckoutPayload = {
   items: CartItem[];
@@ -78,8 +98,8 @@ export async function POST(req: Request) {
         priceCents,
         title: variant.product.title,
         variantTitle: variant.title,
-        imageUrl: Array.isArray(variant.product.images) ? variant.product.images[0] : null,
-        options: variant.options || {}
+        imageUrl: getPrimaryProductImageUrl(variant.product.images),
+        options: normalizeVariantOptions(variant.options)
       });
     }
 
