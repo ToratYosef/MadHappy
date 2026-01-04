@@ -74,6 +74,7 @@ export const buildVariantLookup = (options: PrintifyOption[], variants: Printify
       options,
       Object.fromEntries(options.map((opt) => [opt.name, getVariantOptionValue(variant, opt)]))
     );
+    const key = selectionKey(options, selectionsForVariant);
     acc[key] = variant;
     return acc;
   }, {});
