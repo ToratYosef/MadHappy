@@ -4,6 +4,13 @@ import { db as firestore } from './firebase';
 
 type WhereFilter = Record<string, any>;
 
+const localStore: Record<string, Map<string, any>> = {};
+
+const ensureLocal = (name: string) => {
+  if (!localStore[name]) localStore[name] = new Map();
+  return localStore[name];
+};
+
 const toDate = (value: any): Date | null => {
   if (!value) return null;
   if (value instanceof Date) return value;
@@ -71,34 +78,81 @@ const normalizeRecord = (raw: any) => {
   return copy;
 };
 
+const readLocalCollection = <T>(name: string) =>
+  Array.from(ensureLocal(name).entries()).map(([id, data]) => ({ id, ...normalizeRecord(data) })) as T[];
+
 const collectionData = async <T>(name: string) => {
-  const snapshot = await getDocs(collection(firestore, name));
-  return snapshot.docs.map((d) => ({ id: d.id, ...normalizeRecord(d.data()) })) as T[];
+  try {
+    const snapshot = await getDocs(collection(firestore, name));
+    snapshot.docs.forEach((d) => ensureLocal(name).set(d.id, d.data()));
+    return snapshot.docs.map((d) => ({ id: d.id, ...normalizeRecord(d.data()) })) as T[];
+  } catch (error) {
+    console.warn('[db] Falling back to local cache for collection', name, error);
+    return readLocalCollection<T>(name);
+  }
 };
 
 const singleDoc = async <T>(name: string, id: string) => {
-  const snapshot = await getDoc(doc(firestore, name, id));
-  if (!snapshot.exists()) return null;
-  return { id: snapshot.id, ...normalizeRecord(snapshot.data()) } as T;
+  try {
+    const snapshot = await getDoc(doc(firestore, name, id));
+    if (!snapshot.exists()) return ensureLocal(name).get(id) ? ({ id, ...normalizeRecord(ensureLocal(name).get(id)) } as T) : null;
+    ensureLocal(name).set(id, snapshot.data());
+    return { id: snapshot.id, ...normalizeRecord(snapshot.data()) } as T;
+  } catch (error) {
+    console.warn('[db] Falling back to local cache for doc', name, id, error);
+    const cached = ensureLocal(name).get(id);
+    return cached ? ({ id, ...normalizeRecord(cached) } as T) : null;
+  }
 };
 
 const upsertDoc = async (name: string, id: string, data: Record<string, any>) => {
   const now = new Date();
   const ref = doc(firestore, name, id);
-  const existing = await getDoc(ref);
-  const existingData = existing.exists() ? existing.data() : {};
-  await setDoc(
-    ref,
-    {
-      ...data,
-      createdAt: data.createdAt ?? existingData?.createdAt ?? now,
-      updatedAt: now
-    },
-    { merge: true }
-  );
+  let existingData: Record<string, any> = {};
+
+  try {
+    const existing = await getDoc(ref);
+    existingData = existing.exists() ? existing.data() : {};
+    await setDoc(
+      ref,
+      {
+        ...data,
+        createdAt: data.createdAt ?? existingData?.createdAt ?? now,
+        updatedAt: now
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.warn('[db] Firestore unavailable, using local store', name, id, error);
+  }
+
+  ensureLocal(name).set(id, {
+    ...existingData,
+    ...data,
+    createdAt: data.createdAt ?? existingData?.createdAt ?? now,
+    updatedAt: now
+  });
 };
 
-const removeDoc = async (name: string, id: string) => deleteDoc(doc(firestore, name, id));
+const applyUpdate = async (name: string, id: string, data: Record<string, any>) => {
+  const now = new Date();
+  try {
+    await updateDoc(doc(firestore, name, id), { ...data, updatedAt: now });
+  } catch (error) {
+    console.warn('[db] Firestore unavailable for update, using local store', name, id, error);
+  }
+  const existing = ensureLocal(name).get(id) || {};
+  ensureLocal(name).set(id, { ...existing, ...data, updatedAt: now });
+};
+
+const removeDoc = async (name: string, id: string) => {
+  try {
+    await deleteDoc(doc(firestore, name, id));
+  } catch (error) {
+    console.warn('[db] Firestore unavailable for delete, using local store', name, id, error);
+  }
+  ensureLocal(name).delete(id);
+};
 
 const PrismaLike = {
   order: {
@@ -153,14 +207,14 @@ const PrismaLike = {
     update: async ({ where, data, include }: any) => {
       const id = where?.id;
       if (!id) throw new Error('Order id required');
-      await updateDoc(doc(firestore, 'orders', id), { ...data, updatedAt: new Date() });
+      await applyUpdate('orders', id, data);
       const order = await singleDoc<any>('orders', id);
       return include?.items ? order : { ...order, items: order?.items ?? [] };
     },
     updateMany: async ({ where, data }: any) => {
       const orders = (await collectionData<any>('orders')).filter((o) => applyWhere(o, where));
       await Promise.all(
-        orders.map((order) => updateDoc(doc(firestore, 'orders', order.id), { ...data, updatedAt: new Date() }))
+        orders.map((order) => applyUpdate('orders', order.id, data))
       );
       return { count: orders.length };
     }
@@ -255,7 +309,7 @@ const PrismaLike = {
     },
     delete: async ({ where }: any) => removeDoc('banners', where?.id),
     update: async ({ where, data }: any) => {
-      await updateDoc(doc(firestore, 'banners', where?.id), { ...data, updatedAt: new Date() });
+      await applyUpdate('banners', where?.id, data);
       return singleDoc<any>('banners', where?.id);
     },
     findMany: async ({ orderBy: orderRule }: any = {}) => {
@@ -272,7 +326,7 @@ const PrismaLike = {
     },
     delete: async ({ where }: any) => removeDoc('promoCodes', where?.id),
     update: async ({ where, data }: any) => {
-      await updateDoc(doc(firestore, 'promoCodes', where?.id), { ...data, updatedAt: new Date() });
+      await applyUpdate('promoCodes', where?.id, data);
       return singleDoc<any>('promoCodes', where?.id);
     },
     findMany: async ({ orderBy: orderRule }: any = {}) => {
