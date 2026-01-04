@@ -1,7 +1,7 @@
 import { prisma } from './db';
 import { getPrintifyProduct, listPrintifyProducts } from './printify';
 import { slugify } from './utils';
-import type { PrintifyOption } from '@/types/printify';
+import type { PrintifyImage, PrintifyOption } from '@/types/printify';
 
 type SyncSummary = {
   productsProcessed: number;
@@ -10,15 +10,27 @@ type SyncSummary = {
   variantsUpserted: number;
 };
 
-function normalizeImages(images: any[]): string[] {
+function normalizeImages(images: any[]): PrintifyImage[] {
   if (!Array.isArray(images)) return [];
   return images
     .map((img) => {
       if (!img) return null;
-      if (typeof img === 'string') return img;
-      return img.src || img.url || img.preview || null;
+      const url =
+        (typeof img === 'string' ? img : img.src || img.url || img.preview || img.preview_url) || null;
+      if (!url) return null;
+
+      const rawVariantIds = (img as any).variant_ids || (img as any).variantIds || (img as any).variants;
+      const variantIds = Array.isArray(rawVariantIds)
+        ? rawVariantIds.map((id: any) => String(id)).filter(Boolean)
+        : undefined;
+
+      return {
+        url,
+        variantIds,
+        isDefault: Boolean((img as any).is_default ?? (img as any).isDefault ?? false)
+      };
     })
-    .filter(Boolean) as string[];
+    .filter(Boolean);
 }
 
 function normalizeOptions(options: any[]): PrintifyOption[] {

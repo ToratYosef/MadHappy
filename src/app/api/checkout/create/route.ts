@@ -78,7 +78,7 @@ export async function POST(req: Request) {
         priceCents,
         title: variant.product.title,
         variantTitle: variant.title,
-        imageUrl: Array.isArray(variant.product.images) ? variant.product.images[0] : null,
+        imageUrl: Array.isArray(variant.product.images) ? variant.product.images[0]?.url ?? null : null,
         options: variant.options || {}
       });
     }

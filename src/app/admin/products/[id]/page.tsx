@@ -82,11 +82,24 @@ export default async function PrintifyProductDetail({ params }: Props) {
           <h3 className="text-sm font-semibold text-black/70">Images</h3>
           {images.length === 0 && <p className="text-sm text-black/60">No cached images.</p>}
           <div className="grid gap-3 sm:grid-cols-2">
-            {images.map((img) => (
-              <div key={img} className="relative aspect-square overflow-hidden rounded-lg border border-black/5">
-                <Image src={img} alt={product.title} fill className="object-cover" />
-              </div>
-            ))}
+            {images.map((img: any) => {
+              const url = typeof img === 'string' ? img : img.url;
+              const variants = Array.isArray((img as any).variantIds) ? (img as any).variantIds : [];
+              if (!url) return null;
+              return (
+                <div
+                  key={`${url}-${variants.join('-')}`}
+                  className="relative aspect-square overflow-hidden rounded-lg border border-black/5"
+                >
+                  <Image src={url} alt={product.title} fill className="object-cover" />
+                  {variants.length > 0 && (
+                    <div className="absolute bottom-1 left-1 rounded bg-white/80 px-2 py-1 text-[10px] text-black/70">
+                      Variants: {variants.join(', ')}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
