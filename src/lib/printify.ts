@@ -31,12 +31,19 @@ type PrintifyOrderRequest = {
   };
 };
 
+export class PrintifyConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PrintifyConfigError';
+  }
+}
+
 export function requirePrintifyConfig() {
   const token = process.env.PRINTIFY_TOKEN;
   const shopId = process.env.PRINTIFY_SHOP_ID;
 
   if (!token || !shopId) {
-    throw new Error('PRINTIFY_TOKEN and PRINTIFY_SHOP_ID must be configured');
+    throw new PrintifyConfigError('PRINTIFY_TOKEN and PRINTIFY_SHOP_ID must be configured');
   }
 
   return { token, shopId };
@@ -54,7 +61,9 @@ async function printifyRequest<T>(path: string, options: RequestInit, token: str
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`Printify request failed (${response.status}): ${text}`);
+    const error = new Error(`Printify request failed (${response.status}): ${text}`);
+    (error as any).status = response.status;
+    throw error;
   }
 
   return (await response.json()) as T;
@@ -63,7 +72,8 @@ async function printifyRequest<T>(path: string, options: RequestInit, token: str
 export async function listPrintifyProducts(shopId: string, token: string) {
   const products: any[] = [];
   let page = 1;
-  const limit = 100;
+  // Printify caps this endpoint at 50; higher values return 400 with code 8150.
+  const limit = 50;
 
   while (true) {
     const data = await printifyRequest<PrintifyListResponse<any>>(
