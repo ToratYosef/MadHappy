@@ -56,25 +56,8 @@ export const getInitialSelections = (options: PrintifyOption[], variants: Printi
   if (variantForDefaults) {
     return Object.fromEntries(
       options.map((opt) => {
-<<<<<<< HEAD
-        const rawValue = getVariantOptionValue(variantForDefaults, opt) || opt.values?.[0] || '';
-=======
-<<<<<<< HEAD
-        const normalizedOptions = Object.fromEntries(
-          Object.entries(firstVariant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
-        );
-        const rawValue =
-          (firstVariant.options?.[opt.name] as string | undefined) ??
-          normalizedOptions[opt.name.toLowerCase()] ??
-          opt.values?.[0] ??
-          '';
->>>>>>> 55ffe22 (Auto-commit on Sunday, Jan 04 @ 02:01)
-        return [opt.name, normalizeOptionValue(opt, rawValue)];
-=======
-        const raw = (firstVariant.options?.[opt.name] as string | undefined) ??
-          firstVariant.options?.[opt.name.toLowerCase()];
-        const label = raw && opt.valueIdMap ? opt.valueIdMap[String(raw)] : undefined;
-        return [opt.name, label ?? (raw ? String(raw) : opt.values?.[0] ?? '')];
+        const value = getVariantOptionValue(variantForDefaults, opt);
+        return [opt.name, value || opt.values?.[0] ?? ''];
       })
     );
   }
@@ -87,33 +70,8 @@ const selectionKey = (options: PrintifyOption[], selections: Record<string, stri
 
 export const buildVariantLookup = (options: PrintifyOption[], variants: PrintifyVariant[]) =>
   variants.reduce<Record<string, PrintifyVariant>>((acc, variant) => {
-<<<<<<< HEAD
-    const key = selectionKey(
-      options,
-<<<<<<< HEAD
-      Object.fromEntries(options.map((opt) => [opt.name, getVariantOptionValue(variant, opt)]))
-=======
-      Object.fromEntries(
-        options.map((opt) => {
-          const normalizedOptions = Object.fromEntries(
-            Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
-          );
-          const rawValue = variant.options?.[opt.name] || normalizedOptions[opt.name.toLowerCase()] || '';
-          return [opt.name, normalizeOptionValue(opt, rawValue)];
-        })
-      )
-=======
     const selectionsForVariant = Object.fromEntries(
-      options.map((opt) => {
-        const normalizedOptions = Object.fromEntries(
-          Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), String(v)])
-        );
-        const raw = String(variant.options?.[opt.name] ?? normalizedOptions[opt.name.toLowerCase()] ?? '');
-        const label = raw && opt.valueIdMap ? opt.valueIdMap[String(raw)] ?? raw : raw;
-        return [opt.name, label];
-      })
->>>>>>> ae7fdb2 (Temp pre-rebase commit)
->>>>>>> 55ffe22 (Auto-commit on Sunday, Jan 04 @ 02:01)
+      options.map((opt) => [opt.name, getVariantOptionValue(variant, opt)])
     );
     const key = selectionKey(options, selectionsForVariant);
     acc[key] = variant;
