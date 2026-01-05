@@ -24,12 +24,12 @@ npm install
 Copy `.env.example` to `.env` and fill in values:
 
 ```
-DATABASE_URL="postgresql://..."
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret"
+DATABASE_URL=
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-ADMIN_EMAILS=you@domain.com
+ADMIN_EMAILS=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -37,6 +37,8 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 ADMIN_EMAIL=
 ADMIN_PASSWORD=
 ```
+
+> ℹ️ Generate unique values for sensitive entries (e.g. `NEXTAUTH_SECRET`, Stripe keys) and keep them out of version control—store them in your local `.env` file or your deployment platform's secret manager.
 
 3. **Prisma & database**
 
