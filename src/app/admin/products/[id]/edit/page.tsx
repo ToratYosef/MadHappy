@@ -29,7 +29,7 @@ export default async function EditProductPage({ params }: Props) {
           description: product.description,
           slug: product.slug,
           options: product.options as any,
-          variants: product.variants
+          variants: product.variants as any
         }}
       />
     </div>

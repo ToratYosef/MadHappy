@@ -24,6 +24,7 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }: Pro
   const scale = 2.4;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft') goToPrevious();
