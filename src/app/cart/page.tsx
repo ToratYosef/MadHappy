@@ -11,9 +11,28 @@ import Footer from '@/components/storefront/footer';
 import { useCartStore } from '@/lib/cart-store';
 import { formatCurrency } from '@/lib/utils';
 
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null;
+type StripePromise = ReturnType<typeof loadStripe>;
+
+const fetchStripePromise = async (): Promise<StripePromise | null> => {
+  try {
+    const response = await fetch('/api/public/stripe-key');
+
+    if (!response.ok) {
+      throw new Error('Unable to load Stripe publishable key.');
+    }
+
+    const data = (await response.json()) as { publishableKey?: string };
+
+    if (!data.publishableKey) {
+      throw new Error('Stripe publishable key is missing.');
+    }
+
+    return loadStripe(data.publishableKey);
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
 
 type CheckoutFormState = {
   name: string;
@@ -121,6 +140,7 @@ export default function CartPage() {
   const [promoFreeShipping, setPromoFreeShipping] = useState(false);
   const [promoMessage, setPromoMessage] = useState('');
   const [taxCents, setTaxCents] = useState(0);
+  const [stripePromise, setStripePromise] = useState<StripePromise | null>(null);
 
   // Load user's saved shipping info on mount
   useEffect(() => {
@@ -170,6 +190,12 @@ export default function CartPage() {
       setOrderId(null);
     }
   }, [items.length]);
+
+  useEffect(() => {
+    if (!stripePromise) {
+      fetchStripePromise().then(setStripePromise);
+    }
+  }, [stripePromise]);
 
   const subtotal = useMemo(
     () => items.reduce((acc, item) => acc + item.priceCents * item.qty, 0),
