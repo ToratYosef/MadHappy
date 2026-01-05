@@ -26,7 +26,6 @@
     "@tanstack/react-table": "^8.20.5",
     "axios": "^1.7.8",
     "clsx": "^2.1.1",
-    "firebase": "^12.7.0",
     "framer-motion": "^11.11.7",
     "lucide-react": "^0.473.0",
     "next": "^14.2.15",
