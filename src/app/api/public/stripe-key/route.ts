@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const STRIPE_PUBLISHABLE_KEY_ENV = 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY';
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   // Access via a computed key to avoid bundling the actual value at build time
