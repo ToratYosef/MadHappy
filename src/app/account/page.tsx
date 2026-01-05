@@ -24,6 +24,15 @@ export default async function AccountPage() {
     take: 3 // Show last 3 orders
   });
 
+  // Get user's saved shipping info
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { shippingInfo: true }
+  });
+
+  const shippingInfo = (user?.shippingInfo as any) || {};
+  const hasShippingInfo = shippingInfo && Object.keys(shippingInfo).length > 0;
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -49,6 +58,41 @@ export default async function AccountPage() {
               </div>
             </div>
           </div>
+
+          {/* Saved Shipping Information */}
+          {hasShippingInfo && (
+            <div className="rounded-xl border border-black/5 bg-white p-6 shadow-soft space-y-4">
+              <h2 className="text-xl font-semibold">Saved Shipping Information</h2>
+              <div className="grid gap-6 md:grid-cols-2">
+                {shippingInfo.name && (
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.1em] text-black/50">Name</p>
+                    <p className="text-lg text-black/90">{shippingInfo.name}</p>
+                  </div>
+                )}
+                {shippingInfo.phone && (
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.1em] text-black/50">Phone</p>
+                    <p className="text-lg text-black/90">{shippingInfo.phone}</p>
+                  </div>
+                )}
+                {shippingInfo.address1 && (
+                  <div className="md:col-span-2">
+                    <p className="text-xs uppercase tracking-[0.1em] text-black/50">Address</p>
+                    <p className="text-lg text-black/90">
+                      {shippingInfo.address1}
+                      {shippingInfo.address2 && <><br />{shippingInfo.address2}</>}
+                      {shippingInfo.city && <><br />{shippingInfo.city}{shippingInfo.state && `, ${shippingInfo.state}`} {shippingInfo.postal}</>}
+                      {shippingInfo.country && <><br />{shippingInfo.country}</>}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-black/50 mt-4">
+                This information will be automatically filled when you checkout. You can update it during your next order.
+              </p>
+            </div>
+          )}
 
           {/* My Orders Section */}
           {orders.length > 0 && (
@@ -78,8 +122,14 @@ export default async function AccountPage() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold text-lg">{formatCurrency(order.totalCents)}</p>
-                        <p className={`text-xs font-semibold mt-1 ${
+                        <div className="space-y-1">
+                          <p className="text-xs text-black/50">Subtotal: {formatCurrency(order.subtotalCents)}</p>
+                          {order.taxCents > 0 && (
+                            <p className="text-xs text-black/50">Tax: {formatCurrency(order.taxCents)}</p>
+                          )}
+                          <p className="font-semibold text-lg mt-2">{formatCurrency(order.totalCents)}</p>
+                        </div>
+                        <p className={`text-xs font-semibold mt-2 ${
                           order.paymentStatus === 'PAID' ? 'text-green' : 
                           order.paymentStatus === 'FAILED' ? 'text-red-600' : 'text-black/70'
                         }`}>

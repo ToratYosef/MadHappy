@@ -4,11 +4,18 @@ import { useEffect, useState } from 'react';
 import Navbar from '@/components/storefront/navbar';
 import Footer from '@/components/storefront/footer';
 import Link from 'next/link';
+import { useCartStore } from '@/lib/cart-store';
 
 export default function SuccessPage({ searchParams }: { searchParams: { orderId?: string } }) {
   const orderId = searchParams.orderId;
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const clearCart = useCartStore((s) => s.clear);
+
+  useEffect(() => {
+    // Clear the cart when user reaches success page
+    clearCart();
+  }, [clearCart]);
 
   useEffect(() => {
     if (!orderId) {

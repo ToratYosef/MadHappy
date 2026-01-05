@@ -9,19 +9,23 @@ import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { AuthModal } from './auth-modal';
+import { useAuth } from '@/lib/auth-context';
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/shop', label: 'Shop' }
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  onAuthModalOpen?: () => void;
+}
+
+export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
   const pathname = usePathname();
   const count = useCartStore((s) => s.items.reduce((acc, item) => acc + item.qty, 0));
   const openDrawer = useCartDrawer((s) => s.open);
   const { data: session } = useSession();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { openAuthModal } = useAuth();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(true);
@@ -152,7 +156,7 @@ export default function Navbar() {
                   <div className="space-y-2 p-3">
                     <button
                       onClick={() => {
-                        setIsAuthModalOpen(true);
+                        openAuthModal();
                         setIsUserDropdownOpen(false);
                       }}
                       className="button-primary w-full text-sm"
@@ -161,7 +165,7 @@ export default function Navbar() {
                     </button>
                     <button
                       onClick={() => {
-                        setIsAuthModalOpen(true);
+                        openAuthModal();
                         setIsUserDropdownOpen(false);
                       }}
                       className="button-secondary w-full text-sm"
@@ -175,8 +179,6 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
-
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 }

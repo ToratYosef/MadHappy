@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
+import { submitOrderToPrintify } from '@/lib/printify-order';
 
 async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
   const orderId = paymentIntent.metadata?.orderId;
@@ -24,6 +25,15 @@ async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
       where: { id: order.id },
       data: { paymentStatus: 'PAID', fulfillmentStatus: 'PROCESSING' }
     });
+
+    // Submit to Printify after payment is confirmed
+    try {
+      await submitOrderToPrintify(order.id);
+      console.log('✅ Order submitted to Printify:', order.id);
+    } catch (error) {
+      console.error('❌ Failed to submit order to Printify:', error);
+      // Don't throw - order is paid, manual submission can happen via admin panel
+    }
   }
 }
 

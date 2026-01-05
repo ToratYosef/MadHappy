@@ -36,9 +36,10 @@ export async function POST(req: Request) {
   try {
     const shippingInfo = await req.json();
 
-    await prisma.user.update({
+    await prisma.user.upsert({
       where: { email: session.user.email },
-      data: { shippingInfo }
+      update: { shippingInfo },
+      create: { email: session.user.email, shippingInfo }
     });
 
     return NextResponse.json({

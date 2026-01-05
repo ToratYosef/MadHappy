@@ -76,10 +76,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 overflow-y-auto">
       <div
         ref={dialogRef}
-        className="relative w-full max-w-md rounded-xl border border-black/5 bg-white p-8 shadow-xl"
+        className="relative w-full max-w-md rounded-xl border border-black/5 bg-white p-8 shadow-xl my-8"
       >
         <button
           onClick={onClose}

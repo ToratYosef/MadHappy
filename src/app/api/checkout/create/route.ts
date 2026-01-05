@@ -37,6 +37,9 @@ type CheckoutPayload = {
     postal?: string;
     country?: string;
   };
+  taxCents?: number;
+  discountCents?: number;
+  promoCode?: string;
 };
 
 export async function POST(req: Request) {
@@ -109,7 +112,9 @@ export async function POST(req: Request) {
     }
 
     const shippingCents = 0;
-    const totalCents = subtotalCents + shippingCents;
+    const taxCents = body.taxCents || 0;
+    const discountCents = body.discountCents || 0;
+    const totalCents = subtotalCents - discountCents + taxCents + shippingCents;
     const orderId = randomUUID();
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -148,6 +153,9 @@ export async function POST(req: Request) {
             paymentStatus: 'PENDING',
             fulfillmentStatus: 'DRAFT',
             subtotalCents,
+            taxCents,
+            discountCents,
+            promoCode: body.promoCode || null,
             shippingCents,
             totalCents,
             items: {

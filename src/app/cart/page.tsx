@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from 'react';
 import Image from 'next/image';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { useSession } from 'next-auth/react';
 import Navbar from '@/components/storefront/navbar';
 import StickyPromoBannerClient from '@/components/storefront/sticky-promo-banner-client';
 import Footer from '@/components/storefront/footer';
@@ -107,6 +108,7 @@ function PaymentStep({
 
 export default function CartPage() {
   const { items, updateQty, removeItem, clear } = useCartStore();
+  const { data: session } = useSession();
   const [form, setForm] = useState<CheckoutFormState>(defaultForm);
   const [loading, startTransition] = useTransition();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -119,6 +121,48 @@ export default function CartPage() {
   const [promoFreeShipping, setPromoFreeShipping] = useState(false);
   const [promoMessage, setPromoMessage] = useState('');
   const [taxCents, setTaxCents] = useState(0);
+
+  // Load user's saved shipping info on mount
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetch('/api/user/shipping-info')
+        .then(res => res.json())
+        .then(data => {
+          if (data.shippingInfo && Object.keys(data.shippingInfo).length > 0) {
+            setForm(prev => ({
+              ...prev,
+              name: data.shippingInfo.name || prev.name || session.user.name || '',
+              email: session.user.email || prev.email,
+              phone: data.shippingInfo.phone || prev.phone,
+              address1: data.shippingInfo.address1 || prev.address1,
+              address2: data.shippingInfo.address2 || prev.address2,
+              city: data.shippingInfo.city || prev.city,
+              state: data.shippingInfo.state || prev.state,
+              postal: data.shippingInfo.postal || prev.postal,
+              country: data.shippingInfo.country || prev.country
+            }));
+          } else if (session.user.name || session.user.email) {
+            // Pre-fill name and email even if no shipping info
+            setForm(prev => ({
+              ...prev,
+              name: session.user.name || prev.name,
+              email: session.user.email || prev.email
+            }));
+          }
+        })
+        .catch(err => {
+          console.error('Failed to load shipping info:', err);
+          // Still pre-fill name and email
+          if (session.user.name || session.user.email) {
+            setForm(prev => ({
+              ...prev,
+              name: session.user.name || prev.name,
+              email: session.user.email || prev.email
+            }));
+          }
+        });
+    }
+  }, [session]);
 
   useEffect(() => {
     if (!items.length) {
@@ -255,7 +299,10 @@ export default function CartPage() {
               state: form.state,
               postal: form.postal,
               country: form.country
-            }
+            },
+            taxCents,
+            discountCents: promoDiscountAmount,
+            promoCode: promoCode || undefined
           })
         });
         const data = await res.json();
@@ -264,6 +311,24 @@ export default function CartPage() {
         }
         setClientSecret(data.clientSecret);
         setOrderId(data.orderId);
+        
+        // Save shipping info to user account if logged in
+        if (session?.user?.email) {
+          fetch('/api/user/shipping-info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: form.name,
+              phone: form.phone,
+              address1: form.address1,
+              address2: form.address2,
+              city: form.city,
+              state: form.state,
+              postal: form.postal,
+              country: form.country
+            })
+          }).catch(err => console.error('Failed to save shipping info:', err));
+        }
       } catch (err: any) {
         setError(err.message || 'An error occurred. Please try again.');
       }
