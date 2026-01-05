@@ -1,5 +1,7 @@
 import { type NextAuthOptions, getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
+import { prisma } from './db';
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -9,23 +11,22 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        const adminEmail = process.env.ADMIN_EMAIL || '';
-        const adminPassword = process.env.ADMIN_PASSWORD || '';
-
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        if (credentials.email === adminEmail && credentials.password === adminPassword) {
-          return {
-            id: '1',
-            email: credentials.email,
-            name: 'Admin User',
-            role: 'ADMIN'
-          };
-        }
+        const adminRecord = await prisma.adminUser.findUnique({
+          where: { email: credentials.email }
+        });
 
-        return null;
+        if (!adminRecord) return null;
+
+        return {
+          id: adminRecord.id,
+          email: adminRecord.email,
+          name: adminRecord.email,
+          role: adminRecord.role
+        };
       }
     })
   ],

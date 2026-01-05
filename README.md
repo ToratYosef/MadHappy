@@ -5,7 +5,7 @@ A minimal, premium e-commerce experience for **low key high** built with **Next.
 ## Features
 - Storefront pages: `/`, `/shop`, `/product/[slug]`, `/cart`, `/success`, `/cancel`
 - Admin dashboard: `/admin`, `/admin/orders`, `/admin/orders/[id]`, `/admin/products`, `/admin/products/new`, `/admin/products/[id]`, `/admin/settings`, `/admin/login`
-- Authentication via NextAuth (Google provider) with Prisma adapter and admin allowlist (`ADMIN_EMAILS`) + `AdminUser` table
+- Authentication via NextAuth (Google provider) with Prisma adapter and admin allowlist backed by the `AdminUser` table
 - Zustand cart with localStorage persistence
 - Stripe Checkout + webhook for order creation, inventory decrement, and idempotency
 - Prisma models for products, variants, images, orders, admin users, site settings, and NextAuth tables
@@ -21,22 +21,7 @@ npm install
 
 2. **Environment variables**
 
-Copy `.env.example` to `.env` and fill in values:
-
-```
-DATABASE_URL=
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-ADMIN_EMAILS=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-ADMIN_EMAIL=
-ADMIN_PASSWORD=
-```
+Create a local `.env` file (or set variables in your hosting provider) with the values required by your database, authentication provider, Stripe, and Printify integrations. Keep all sensitive values out of version control and manage them through your deployment platform's secret manager.
 
 > ℹ️ Generate unique values for sensitive entries (e.g. `NEXTAUTH_SECRET`, Stripe keys) and keep them out of version control—store them in your local `.env` file or your deployment platform's secret manager.
 
@@ -49,7 +34,7 @@ npx prisma migrate dev --name init
 npm run prisma:generate
 ```
 
-Seed with sample products and admin users (from `ADMIN_EMAILS`):
+Seed with sample products and admin users (includes a demo `admin@example.com` account you can replace in the database):
 
 ```bash
 npm run prisma:seed
@@ -88,7 +73,8 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
 - Checkout uses Stripe Payment Element with a custom UI and creates pending orders; fulfillment is managed in-house.
 
 ## Notes
-- Admin routes are protected by middleware and NextAuth; only emails in `ADMIN_EMAILS` or `AdminUser` records can sign in.
+- Admin routes are protected by middleware and NextAuth; only emails in the `AdminUser` table can sign in.
+- Credentials-based admin sign-in validates against the `AdminUser` table email only (password is not stored or checked); update or remove demo admins directly in the database.
 - Checkout session verifies items against live DB data before creating Stripe sessions.
 - Webhook handles `checkout.session.completed` to create orders and decrement inventory inside a transaction.
 - Tailwind theme colors: off-white background, near-black text, taupe, deep green, muted gold accents.
