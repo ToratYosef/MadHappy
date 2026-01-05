@@ -68,6 +68,19 @@ Use the Stripe CLI to forward events:
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
+## Printify integration
+- Add `PRINTIFY_API_TOKEN` (private API token) and `PRINTIFY_SHOP_ID` (numeric shop id) to your environment.
+- Server-side proxy routes are available for Printify product operations:
+  - `GET /api/printify/products` (supports `limit`, `page`, optional `shopId`)
+  - `POST /api/printify/products` to create a product
+  - `GET | PUT | DELETE /api/printify/products/[productId]`
+  - `GET /api/printify/products/[productId]/gpsr`
+  - `POST /api/printify/products/[productId]/publish`
+  - `POST /api/printify/products/[productId]/publishing-succeeded`
+  - `POST /api/printify/products/[productId]/publishing-failed`
+  - `POST /api/printify/products/[productId]/unpublish`
+- Admin > Products includes a **Sync from Printify** button that mirrors Printify catalog data (colors, sizes, images linked to variants) into the local product tables. The sync loop respects the Printify pagination limit (50 items/page) and caps outbound API calls at 50 per run.
+
 ## Products
 - Products are stored locally in the `Product` and `ProductVariant` tables. You can seed or manage them directly via the admin UI.
 - Checkout uses Stripe Payment Element with a custom UI and creates pending orders; fulfillment is managed in-house.
