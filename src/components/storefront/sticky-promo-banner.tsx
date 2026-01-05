@@ -40,7 +40,8 @@ export default function StickyPromoBanner({ banner }: StickyPromoBannerProps) {
 
     const updateCountdown = () => {
       const now = new Date().getTime();
-      const expires = new Date(banner.promoCode.expiresAt!).getTime();
+      const promoCode = banner.promoCode!;
+      const expires = new Date(promoCode.expiresAt!).getTime();
       const difference = expires - now;
 
       if (difference <= 0) {
