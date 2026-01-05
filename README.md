@@ -34,7 +34,7 @@ npx prisma migrate dev --name init
 npm run prisma:generate
 ```
 
-Seed with sample products and admin users (includes a demo `admin@example.com` account you can replace in the database):
+Seed with sample products and admin users (includes a demo `demo-admin@lowkeyhigh.test` account you can replace in the database):
 
 ```bash
 npm run prisma:seed

@@ -3,7 +3,7 @@ import { PrismaClient, AdminRole } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmails = ['admin@example.com'];
+  const adminEmails = ['demo-admin@lowkeyhigh.test'];
 
   await prisma.siteSettings.upsert({
     where: { id: 'default' },
