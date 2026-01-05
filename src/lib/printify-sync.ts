@@ -11,7 +11,6 @@ type SyncResult = {
   errors: Array<{ id?: string; message: string }>;
 };
 
-const MAX_REQUESTS = 50;
 const PAGE_LIMIT = 50;
 
 type OptionValueLookup = Record<
@@ -121,7 +120,7 @@ const extractProducts = (response: any): any[] => {
   return [];
 };
 
-const hasMorePages = (page: number, pageSize: number, received: number) => received === pageSize && page < MAX_REQUESTS;
+const hasMorePages = (received: number, pageSize: number) => received === pageSize;
 
 export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult> => {
   let page = 1;
@@ -130,7 +129,7 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
   let updated = 0;
   const errors: SyncResult['errors'] = [];
 
-  while (requestsUsed < MAX_REQUESTS) {
+  while (true) {
     const listResponse = await listPrintifyProducts({ shopId, limit: PAGE_LIMIT, page });
     requestsUsed += 1;
 
@@ -138,7 +137,6 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
     if (!products.length) break;
 
     for (const product of products) {
-      if (requestsUsed >= MAX_REQUESTS) break;
       let detailed = product as PrintifyProduct;
 
       // Ensure variants/options/images are present; fetch detail if not.
@@ -204,7 +202,7 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
       }
     }
 
-    if (!hasMorePages(page, PAGE_LIMIT, products.length)) break;
+    if (!hasMorePages(products.length, PAGE_LIMIT)) break;
     page += 1;
   }
 

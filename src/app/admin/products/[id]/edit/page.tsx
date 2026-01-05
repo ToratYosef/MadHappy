@@ -8,7 +8,8 @@ interface Props {
 
 export default async function EditProductPage({ params }: Props) {
   const product = await prisma.product.findFirst({
-    where: { id: params.id }
+    where: { id: params.id },
+    include: { variants: true }
   });
 
   if (!product) return notFound();
@@ -21,7 +22,16 @@ export default async function EditProductPage({ params }: Props) {
         <p className="text-sm text-black/60">Slug: {product.slug}</p>
       </div>
 
-      <ProductEditForm product={{ id: product.id, title: product.title, description: product.description, slug: product.slug }} />
+      <ProductEditForm
+        product={{
+          id: product.id,
+          title: product.title,
+          description: product.description,
+          slug: product.slug,
+          options: product.options as any,
+          variants: product.variants
+        }}
+      />
     </div>
   );
 }
