@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 import { ProductActions } from '@/components/admin/product-actions';
+import { PrintifySyncButton } from '@/components/admin/printify-sync-button';
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
@@ -16,12 +17,15 @@ export default async function ProductsPage() {
           <h1 className="text-2xl font-semibold">Product Catalog</h1>
           <p className="text-sm text-black/60">Manage in-house products, pricing, and enablement here.</p>
         </div>
-        <Link
-          href="/admin/products/new"
-          className="rounded-lg border border-black/10 px-4 py-2 text-sm font-medium text-green hover:border-green/50"
-        >
-          New product
-        </Link>
+        <div className="flex items-center gap-3">
+          <PrintifySyncButton />
+          <Link
+            href="/admin/products/new"
+            className="rounded-lg border border-black/10 px-4 py-2 text-sm font-medium text-green hover:border-green/50"
+          >
+            New product
+          </Link>
+        </div>
       </div>
       <div className="overflow-x-auto rounded-xl border border-black/5 bg-white shadow-soft">
         <table className="min-w-full text-sm">
