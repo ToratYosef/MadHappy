@@ -70,7 +70,7 @@ export default async function HomePage() {
                 ))}
               </div>
               <p className="mb-4 text-black/80">
-                "Best hoodie I've ever owned. The quality is incredible and it fits perfectly. Worth every penny."
+                &quot;Best hoodie I&apos;ve ever owned. The quality is incredible and it fits perfectly. Worth every penny.&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-green/20" />
@@ -87,7 +87,7 @@ export default async function HomePage() {
                 ))}
               </div>
               <p className="mb-4 text-black/80">
-                "Subtle design, premium feel. These are now my go-to pieces for everyday wear."
+                &quot;Subtle design, premium feel. These are now my go-to pieces for everyday wear.&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-green/20" />
@@ -104,7 +104,7 @@ export default async function HomePage() {
                 ))}
               </div>
               <p className="mb-4 text-black/80">
-                "Fast shipping, great quality, and the customer service is top-notch. Highly recommend!"
+                &quot;Fast shipping, great quality, and the customer service is top-notch. Highly recommend!&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-green/20" />

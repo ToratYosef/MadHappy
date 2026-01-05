@@ -47,7 +47,7 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }: Pro
       window.removeEventListener('resize', handleResize);
       document.body.style.overflow = '';
     };
-  }, [currentIndex]);
+  }, []);
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);

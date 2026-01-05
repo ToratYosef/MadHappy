@@ -187,7 +187,7 @@ export default async function PromoCodesPage() {
         </label>
 
         <div className="text-xs text-black/60 bg-blue-50 border border-blue-200 rounded p-3">
-          <strong>Note:</strong> For TIERED promo codes, you'll need to add tiers after creation using the database or a future admin interface.
+          <strong>Note:</strong> For TIERED promo codes, you&apos;ll need to add tiers after creation using the database or a future admin interface.
         </div>
 
         <button type="submit" className="button-primary">Create Promo Code</button>
