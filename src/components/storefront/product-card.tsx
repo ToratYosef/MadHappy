@@ -6,68 +6,10 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Check } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { formatCurrency, cn } from '@/lib/utils';
-import type { Product, ProductVariant } from '@/types/product';
+import type { Product } from '@/types/product';
 import { filterImagesByVariant } from '@/lib/product-images';
 import { useCartStore } from '@/lib/cart-store';
-
-// Map color names to actual CSS colors for swatches
-// This is a fallback map for common color names, but any color the admin enters will be used
-const COLOR_MAP: Record<string, string> = {
-  'White': '#FFFFFF',
-  'Ice Grey': '#D3D3D3',
-  'Sage': '#9CAF88',
-  'Kelly Green': '#4CBB17',
-  'Heather Irish Green': '#5FAD56',
-  'Tropical Blue': '#00B4D8',
-  'Jade Dome': '#00A86B',
-  'Sky': '#87CEEB',
-  'Carolina Blue': '#56A0D3',
-  'Stone Blue': '#5B7C99',
-  'Heather Indigo': '#4F69C6',
-  'Antique Sapphire': '#2E5090',
-  'Heather Radiant Orchid': '#B565A7',
-  'Light Pink': '#FFB6C1',
-  'Heather Cardinal': '#9B2D30',
-  'Cardinal Red': '#C41E3A',
-  'Sport Grey': '#9B9B9B',
-  'Military Green': '#4B5320',
-  'Irish Green': '#009A49',
-  'Light Blue': '#ADD8E6',
-  'Indigo Blue': '#4B0082',
-  'Royal': '#0038A8',
-  'Orchid': '#DA70D6',
-  'Azalea': '#F19CBB',
-  'Antique Cherry Red': '#982649',
-  'Black': '#000000',
-  'Navy': '#000080',
-  'Red': '#FF0000',
-  'Green': '#008000',
-  'Blue': '#0000FF',
-  'Yellow': '#FFFF00',
-  'Orange': '#FFA500',
-  'Purple': '#800080',
-  'Pink': '#FFC0CB',
-  'Brown': '#A52A2A',
-  'Grey': '#808080',
-  'Gray': '#808080',
-  'Beige': '#F5F5DC'
-};
-
-const getColorHex = (colorName: string): string => {
-  // Check if it's in our map
-  if (COLOR_MAP[colorName]) return COLOR_MAP[colorName];
-  
-  // Check case-insensitive
-  const lowerName = colorName.toLowerCase();
-  const match = Object.keys(COLOR_MAP).find(k => k.toLowerCase() === lowerName);
-  if (match) return COLOR_MAP[match];
-  
-  // If it looks like a hex color, use it directly
-  if (/^#[0-9A-F]{6}$/i.test(colorName)) return colorName;
-  
-  // Try to use the color name directly (CSS will handle common names like 'red', 'blue', etc.)
-  return colorName.toLowerCase().replace(/\s+/g, '');
-};
+import { resolveSwatchColor } from '@/lib/color-swatches';
 
 interface ProductCardProps {
   product: Product;
@@ -223,7 +165,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   "h-6 w-6 rounded-full border-2 transition hover:scale-110",
                   selectedColor === value ? "border-black/60 ring-2 ring-black/20 ring-offset-1" : "border-black/10"
                 )}
-                style={{ backgroundColor: getColorHex(value) }}
+                style={{ backgroundColor: resolveSwatchColor(value) }}
                 title={value}
                 aria-label={`Color ${value}`}
               />
