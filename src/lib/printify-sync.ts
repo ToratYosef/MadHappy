@@ -21,6 +21,9 @@ type OptionValueLookup = Record<
   }
 >;
 
+const isColorOption = (name?: string) => (name ? /color/i.test(name) : false);
+const normalizeColor = (value?: string) => (value ? String(value).trim().toLowerCase() : '');
+
 const normalizeOptionName = (name?: string) => {
   if (!name) return 'Option';
   if (/color/i.test(name)) return 'Color';
@@ -137,28 +140,56 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
     if (!products.length) break;
 
     for (const product of products) {
-      let detailed = product as PrintifyProduct;
+      let detailed: PrintifyProduct;
 
-      // Ensure variants/options/images are present; fetch detail if not.
-      const needsDetail =
-        !Array.isArray((product as PrintifyProduct).variants) ||
-        !(product as PrintifyProduct).variants?.length ||
-        !(product as PrintifyProduct).options ||
-        !(product as PrintifyProduct).images;
-
-      if (needsDetail) {
-        try {
-          detailed = await getPrintifyProduct({ shopId, productId: product.id });
-          requestsUsed += 1;
-        } catch (error) {
-          errors.push({ id: product?.id, message: parsePrintifyError(error).message });
-          continue;
-        }
+      // Always pull the latest product detail so we refresh images/variants/options.
+      try {
+        detailed = await getPrintifyProduct({ shopId, productId: product.id });
+        requestsUsed += 1;
+      } catch (error) {
+        errors.push({ id: product?.id, message: parsePrintifyError(error).message });
+        continue;
       }
 
       try {
-        const mapped = mapPrintifyProduct(detailed);
-        const existing = await prisma.product.findUnique({ where: { id: mapped.id }, include: { variants: true } });
+        let mapped = mapPrintifyProduct(detailed);
+        const existing = await prisma.product.findUnique({
+          where: { id: mapped.id },
+          include: { variants: true }
+        });
+
+        const existingOptions = (existing?.options as ProductOption[] | undefined) || [];
+        const existingColorOption = existingOptions.find((opt) => isColorOption(opt.name));
+        const allowedColors = new Set(
+          (existingColorOption?.values || []).map((val) => normalizeColor(String(val))).filter(Boolean)
+        );
+
+        if (existingColorOption?.values?.length) {
+          mapped = {
+            ...mapped,
+            options: mapped.options.map((opt) =>
+              isColorOption(opt.name)
+                ? { ...opt, values: existingColorOption.values }
+                : opt
+            )
+          };
+        }
+
+        const existingVariantMap = new Map(
+          (existing?.variants || []).map((variant) => [String(variant.id), variant])
+        );
+
+        const mappedVariants = mapped.variants.map((variant) => {
+          const existingVariant = existingVariantMap.get(variant.id);
+          const colorValue = Object.entries(variant.options || {}).find(([key]) => isColorOption(key))?.[1];
+          const colorAllowed = !allowedColors.size || allowedColors.has(normalizeColor(colorValue as string));
+          const preservedEnabled = existingVariant?.isEnabled ?? variant.isEnabled;
+
+          return {
+            ...variant,
+            isEnabled: colorAllowed ? preservedEnabled : false
+          };
+        });
 
         if (existing) {
           await prisma.product.update({
@@ -174,14 +205,14 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
           });
           await prisma.productVariant.deleteMany({ where: { productId: mapped.id } });
           await prisma.productVariant.createMany({
-            data: mapped.variants.map((variant) => ({
+            data: mappedVariants.map((variant) => ({
               ...variant,
               productId: mapped.id
             }))
           });
           updated += 1;
         } else {
-          const { variants, ...productData } = mapped;
+          const { variants, ...productData } = { ...mapped, variants: mappedVariants };
           await prisma.product.create({
             data: {
               ...productData,
@@ -190,7 +221,7 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
             }
           });
           await prisma.productVariant.createMany({
-            data: variants.map((variant) => ({
+            data: mappedVariants.map((variant) => ({
               ...variant,
               productId: mapped.id
             }))
