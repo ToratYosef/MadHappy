@@ -79,6 +79,7 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
   - `POST /api/printify/products/[productId]/publishing-succeeded`
   - `POST /api/printify/products/[productId]/publishing-failed`
   - `POST /api/printify/products/[productId]/unpublish`
+- Admin > Products includes a **Sync from Printify** button that mirrors Printify catalog data (colors, sizes, images linked to variants) into the local product tables. The sync loop respects the Printify pagination limit (50 items/page) and caps outbound API calls at 50 per run.
 
 ## Products
 - Products are stored locally in the `Product` and `ProductVariant` tables. You can seed or manage them directly via the admin UI.
