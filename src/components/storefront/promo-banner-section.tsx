@@ -19,6 +19,8 @@ export default async function PromoBannerSection() {
               key={banner.id}
               banner={{
                 ...banner,
+                text: banner.text || undefined,
+                link: banner.link || undefined,
                 promoCode: banner.promoCode ? {
                   ...banner.promoCode,
                   id: banner.promoCode.id,
