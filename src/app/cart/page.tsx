@@ -153,11 +153,11 @@ export default function CartPage() {
         .catch(err => {
           console.error('Failed to load shipping info:', err);
           // Still pre-fill name and email
-          if (session.user.name || session.user.email) {
+          if (session?.user?.name || session?.user?.email) {
             setForm(prev => ({
               ...prev,
-              name: session.user.name || prev.name,
-              email: session.user.email || prev.email
+              name: session?.user?.name || prev.name,
+              email: session?.user?.email || prev.email
             }));
           }
         });
