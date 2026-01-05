@@ -1,6 +1,6 @@
 import type { ProductOption, ProductVariant } from '@/types/product';
 
-const ALLOWED_COLOR_NAMES = [
+export const ALLOWED_COLOR_NAMES = [
   'White',
   'Sport Grey',
   'Military Green',
@@ -65,6 +65,13 @@ export const getInitialSelections = (options: ProductOption[], variants: Product
           ] ??
           opt.values?.[0] ??
           '';
+
+        if (isColorOption(opt.name)) {
+          const normalizedRaw = normalizeColor(String(rawValue));
+          const allowedMatch = ALLOWED_COLOR_NAMES.find((color) => normalizeColor(color) === normalizedRaw);
+          return [opt.name, allowedMatch ?? ALLOWED_COLOR_NAMES[0]];
+        }
+
         return [opt.name, normalizeOptionValue(opt, rawValue)];
       })
     );
@@ -114,12 +121,7 @@ export const getAvailableValues = (
   // regardless of current size/option selections. This keeps the swatch grid stable
   // and hides colors that don't exist at all.
   if (isColorOption(optionName)) {
-    const allowed = new Set(ALLOWED_COLOR_NAMES.map(normalizeColor));
-    const values = variants
-      .map((variant) => getVariantOptionValue(variant, targetOption))
-      .filter(Boolean)
-      .filter((value) => allowed.has(normalizeColor(value)));
-    return sortByOptionOrder(values, targetOption);
+    return [...ALLOWED_COLOR_NAMES];
   }
 
   const filteredVariants = variants.filter((variant) =>

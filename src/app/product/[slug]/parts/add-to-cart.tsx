@@ -7,6 +7,7 @@ import { formatCurrency } from '@/lib/utils';
 import { getFeaturedImage } from '@/lib/product-images';
 import type { ProductImage, ProductOption, ProductVariant } from '@/types/product';
 import {
+    ALLOWED_COLOR_NAMES,
   buildSelectionKey,
   buildVariantLookup,
   getAvailableValues,
@@ -111,7 +112,7 @@ export default function AddToCart({
   const variantLookup = buildVariantLookup(product.options, enabledVariants);
 
   const selectionKey = buildSelectionKey(product.options, selections);
-  const variant = variantLookup[selectionKey] || enabledVariants[0] || product.variants[0];
+  const variant = variantLookup[selectionKey] || null;
 
   const availability = useMemo(() => {
     const map: Record<string, string[]> = {};
@@ -191,7 +192,7 @@ export default function AddToCart({
 
   const renderColorSwatches = (opt: ProductOption) => (
     <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
-      {(opt.values || []).map((value) => {
+      {ALLOWED_COLOR_NAMES.map((value) => {
         const isSelected = selections[opt.name] === value;
         const isAvailable = (availability[opt.name] || []).includes(value);
         return (
@@ -274,8 +275,14 @@ export default function AddToCart({
           className="w-20 rounded-lg border border-black/10 bg-white px-3 py-2 text-sm"
         />
       </div>
-      <button onClick={handleAdd} className="button-primary w-full">
-        Add to cart · {formatCurrency((variant?.priceCents ?? 0) * qty, 'USD')}
+      <button
+        onClick={handleAdd}
+        className="button-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+        disabled={!variant}
+      >
+        {variant
+          ? `Add to cart · ${formatCurrency((variant?.priceCents ?? 0) * qty, 'USD')}`
+          : 'Unavailable for this combo'}
       </button>
     </div>
   );
