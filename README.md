@@ -23,6 +23,8 @@ npm install
 
 Create a local `.env` file (or set variables in your hosting provider) with the values required by your database, authentication provider, Stripe, and Printify integrations. Keep all sensitive values out of version control and manage them through your deployment platform's secret manager.
 
+> ℹ️ Generate unique values for sensitive entries (e.g. `NEXTAUTH_SECRET`, Stripe keys) and keep them out of version control—store them in your local `.env` file or your deployment platform's secret manager.
+
 3. **Prisma & database**
 
 Run migrations and generate the client:
