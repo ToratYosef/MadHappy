@@ -7,7 +7,6 @@ import { formatCurrency } from '@/lib/utils';
 import { getFeaturedImage } from '@/lib/product-images';
 import type { ProductImage, ProductOption, ProductVariant } from '@/types/product';
 import {
-    ALLOWED_COLOR_NAMES,
   buildSelectionKey,
   buildVariantLookup,
   getAvailableValues,
@@ -190,31 +189,47 @@ export default function AddToCart({
   const colorOptions = product.options.filter((opt) => isColorOption(opt.name));
   const otherOptions = product.options.filter((opt) => !isColorOption(opt.name));
 
-  const renderColorSwatches = (opt: ProductOption) => (
-    <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
-      {ALLOWED_COLOR_NAMES.map((value) => {
-        const isSelected = selections[opt.name] === value;
-        const isAvailable = (availability[opt.name] || []).includes(value);
-        return (
-          <button
-            key={value}
-            onClick={() => isAvailable && handleSelection(opt.name, value)}
-            className={`group flex h-11 w-11 items-center justify-center rounded-full border-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green/40 ${
-              isSelected ? 'border-green ring-2 ring-green/40' : 'border-black/10'
-            } ${!isAvailable ? 'opacity-40 grayscale' : 'hover:border-green/70'}`}
-            style={{
-              backgroundColor: resolveSwatchColor(value)
-            }}
-            title={value}
-            aria-label={value}
-            disabled={!isAvailable}
-          >
-            <span className="sr-only">{value}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
+  // Get all unique colors actually present in this product's variants
+  const productColors = useMemo(() => {
+    if (colorOptions.length === 0) return [];
+    const colorOpt = colorOptions[0];
+    const colors = product.variants
+      .filter((v) => v.isEnabled) // Only get colors from enabled variants
+      .map((v) => v.options?.[colorOpt.name])
+      .filter(Boolean) as string[];
+    return Array.from(new Set(colors));
+  }, [product.variants, colorOptions]);
+
+  const renderColorSwatches = (opt: ProductOption) => {
+    // Only show colors that are available for the current selection
+    const availableColors = (availability[opt.name] || []).filter(color => 
+      productColors.includes(color)
+    );
+    
+    return (
+      <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+        {availableColors.map((value) => {
+          const isSelected = selections[opt.name] === value;
+          return (
+            <button
+              key={value}
+              onClick={() => handleSelection(opt.name, value)}
+              className={`group flex h-11 w-11 items-center justify-center rounded-full border-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green/40 ${
+                isSelected ? 'border-green ring-2 ring-green/40' : 'border-black/10'
+              } hover:border-green/70`}
+              style={{
+                backgroundColor: resolveSwatchColor(value)
+              }}
+              title={value}
+              aria-label={value}
+            >
+              <span className="sr-only">{value}</span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
 
   const renderOptionPills = (opt: ProductOption) => (
     <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">

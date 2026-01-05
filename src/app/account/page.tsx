@@ -1,9 +1,13 @@
 import { getAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Navbar from '@/components/storefront/navbar';
+import StickyPromoBannerSection from '@/components/storefront/sticky-promo-banner-section';
 import Footer from '@/components/storefront/footer';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { prisma } from '@/lib/db';
+import { formatCurrency } from '@/lib/utils';
+import Image from 'next/image';
 
 export default async function AccountPage() {
   const session = await getAuthSession();
@@ -12,11 +16,20 @@ export default async function AccountPage() {
     redirect('/');
   }
 
+  // Get recent orders for this user
+  const orders = await prisma.order.findMany({
+    where: { customerEmail: session.user.email },
+    include: { items: true },
+    orderBy: { createdAt: 'desc' },
+    take: 3 // Show last 3 orders
+  });
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
+      <StickyPromoBannerSection />
       <section className="container-max flex-1 py-10">
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-6">
           <div>
             <h1 className="text-3xl font-semibold">My Account</h1>
             <p className="text-black/70">Manage your account information and preferences.</p>
@@ -36,6 +49,106 @@ export default async function AccountPage() {
               </div>
             </div>
           </div>
+
+          {/* My Orders Section */}
+          {orders.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold">My Orders</h2>
+                <Link href="/track-order" className="text-green hover:underline text-sm">
+                  View All →
+                </Link>
+              </div>
+              
+              <div className="space-y-4">
+                {orders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="rounded-xl border border-black/5 bg-white p-5 shadow-soft hover:shadow-lg transition"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.1em] text-black/50">Order {order.orderNumber || order.id.slice(0, 8)}</p>
+                        <p className="text-sm text-black/60 mt-1">
+                          {new Date(order.createdAt).toLocaleDateString('en-US', { 
+                            month: 'long', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                          })}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-lg">{formatCurrency(order.totalCents)}</p>
+                        <p className={`text-xs font-semibold mt-1 ${
+                          order.paymentStatus === 'PAID' ? 'text-green' : 
+                          order.paymentStatus === 'FAILED' ? 'text-red-600' : 'text-black/70'
+                        }`}>
+                          {order.paymentStatus}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Order Items Preview */}
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {order.items.slice(0, 4).map((item) => (
+                        <div key={item.id} className="flex-shrink-0">
+                          {item.imageUrl ? (
+                            <div className="relative h-16 w-16 rounded-lg border border-black/5 overflow-hidden">
+                              <Image 
+                                src={item.imageUrl} 
+                                alt={item.title || 'Product'} 
+                                fill 
+                                className="object-cover" 
+                                sizes="64px"
+                              />
+                            </div>
+                          ) : (
+                            <div className="h-16 w-16 rounded-lg border border-black/5 bg-black/5 flex items-center justify-center">
+                              <span className="text-xs text-black/40">No image</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      {order.items.length > 4 && (
+                        <div className="flex-shrink-0 h-16 w-16 rounded-lg border border-black/5 bg-black/5 flex items-center justify-center">
+                          <span className="text-xs font-semibold text-black/60">+{order.items.length - 4}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Status and Action */}
+                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-black/5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-black/50">Status:</span>
+                        <span className={`text-xs font-semibold ${
+                          order.fulfillmentStatus === 'DELIVERED' || order.fulfillmentStatus === 'SHIPPED'
+                            ? 'text-green' 
+                            : 'text-black/70'
+                        }`}>
+                          {order.fulfillmentStatus}
+                        </span>
+                      </div>
+                      <Link 
+                        href="/track-order" 
+                        className="text-sm text-green hover:underline font-medium"
+                      >
+                        View Details →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {orders.length >= 3 && (
+                <Link 
+                  href="/track-order" 
+                  className="block text-center py-3 rounded-lg border border-black/10 hover:bg-black/5 transition text-sm font-medium"
+                >
+                  View All Orders
+                </Link>
+              )}
+            </div>
+          )}
 
           {/* Quick Actions */}
           <div className="grid gap-4 md:grid-cols-2">

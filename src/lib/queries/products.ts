@@ -56,6 +56,7 @@ export const mapProduct = (record: any): Product => {
     images: normalizeImages(record.images),
     options: normalizeOptions(record.options),
     variants,
+    soldCount: record.soldCount,
     createdAt: record.createdAt || new Date(),
     updatedAt: record.updatedAt || new Date()
   };
@@ -101,6 +102,14 @@ export const getProductBySlug = async (slug: string) => {
   });
 
   if (!product) return null;
-  const mapped = mapProduct(product);
+
+  const sold = await prisma.orderItem.aggregate({
+    where: { productId: product.id },
+    _sum: { qty: true }
+  });
+  const baseSold = 1933;
+  const totalSold = baseSold + (sold._sum.qty ?? 0);
+
+  const mapped = mapProduct({ ...product, soldCount: totalSold });
   return { ...mapped, variants: mapped.variants.filter((v) => v.isEnabled) };
 };

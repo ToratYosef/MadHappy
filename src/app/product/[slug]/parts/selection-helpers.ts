@@ -2,19 +2,24 @@ import type { ProductOption, ProductVariant } from '@/types/product';
 
 export const ALLOWED_COLOR_NAMES = [
   'White',
-  'Sport Grey',
-  'Military Green',
-  'Irish Green',
-  'Light Blue',
+  'Ice Grey',
+  'Sage',
+  'Kelly Green',
+  'Heather Irish Green',
+  'Tropical Blue',
+  'Jade Dome',
+  'Sky',
   'Carolina Blue',
-  'Indigo Blue',
+  'Stone Blue',
+  'Heather Indigo',
   'Antique Sapphire',
-  'Royal',
-  'Orchid',
+  'Heather Radiant Orchid',
   'Light Pink',
-  'Azalea',
-  'Antique Cherry Red'
+  'Heather Cardinal',
+  'Cardinal Red'
 ];
+
+const DEFAULT_SIZE_NAMES = ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
 
 const normalizeColor = (value: string) => value.trim().toLowerCase();
 
@@ -38,12 +43,50 @@ const getVariantOptionValue = (variant: ProductVariant, option: ProductOption) =
     Object.entries(variant.options || {}).map(([k, v]) => [k.toLowerCase(), v])
   );
   const rawValue = variant.options?.[option.name] || normalizedOptions[option.name.toLowerCase()] || '';
+
+  // If color/size values were swapped when saved, try to re-classify by value.
+  if (isColorOption(option.name)) {
+    const allowedColors = new Set(ALLOWED_COLOR_NAMES.map(normalizeColor));
+    const normalizedRaw = normalizeColor(String(rawValue));
+    if (!allowedColors.has(normalizedRaw)) {
+      const recovered = Object.values(variant.options || {}).find((val) => allowedColors.has(normalizeColor(String(val))));
+      if (recovered) return normalizeOptionValue(option, recovered);
+    }
+  }
+
+  if (/size/i.test(option.name)) {
+    const allowedSizes = new Set((option.values?.length ? option.values : DEFAULT_SIZE_NAMES).map((v) => v.toLowerCase()));
+    const normalizedRaw = String(rawValue).trim().toLowerCase();
+    if (!allowedSizes.has(normalizedRaw)) {
+      const recovered = Object.values(variant.options || {}).find((val) =>
+        allowedSizes.has(String(val).trim().toLowerCase())
+      );
+      if (recovered) return normalizeOptionValue(option, recovered);
+    }
+  }
+
   return normalizeOptionValue(option, rawValue);
 };
 
 const findPreferredVariant = (options: ProductOption[], variants: ProductVariant[]) => {
   const enabled = variants.filter((v) => v.isEnabled);
   if (!enabled.length) return null;
+
+  const colorOpt = options.find((opt) => isColorOption(opt.name));
+  const sizeOpt = options.find((opt) => /size/i.test(opt.name));
+
+  // Prefer White / L when available so storefront defaults to that combo.
+  const preferred = enabled.find((variant) => {
+    const colorOk = colorOpt
+      ? normalizeColor(String(getVariantOptionValue(variant, colorOpt))) === 'white'
+      : true;
+    const sizeOk = sizeOpt
+      ? String(getVariantOptionValue(variant, sizeOpt)).trim().toLowerCase() === 'l'
+      : true;
+    return colorOk && sizeOk;
+  });
+  if (preferred) return preferred;
+
   const sorted = options.length
     ? enabled.sort((a, b) => (a.title || '').localeCompare(b.title || ''))
     : enabled;
@@ -69,7 +112,29 @@ export const getInitialSelections = (options: ProductOption[], variants: Product
         if (isColorOption(opt.name)) {
           const normalizedRaw = normalizeColor(String(rawValue));
           const allowedMatch = ALLOWED_COLOR_NAMES.find((color) => normalizeColor(color) === normalizedRaw);
-          return [opt.name, allowedMatch ?? ALLOWED_COLOR_NAMES[0]];
+
+          const availableAllowed = new Set(
+            variants
+              .map((v) => getVariantOptionValue(v, opt))
+              .map((v) => normalizeColor(String(v)))
+              .filter((v) => ALLOWED_COLOR_NAMES.map(normalizeColor).includes(v))
+          );
+          const firstAvailableAllowed = ALLOWED_COLOR_NAMES.find((color) => availableAllowed.has(normalizeColor(color)));
+
+          return [opt.name, allowedMatch ?? firstAvailableAllowed ?? ALLOWED_COLOR_NAMES[0]];
+        }
+
+        if (/size/i.test(opt.name)) {
+          const sizeValues = opt.values?.length ? opt.values : DEFAULT_SIZE_NAMES;
+          const availableSizes = new Set(
+            variants
+              .map((v) => getVariantOptionValue(v, opt))
+              .map((v) => String(v).trim())
+              .filter(Boolean)
+          );
+          const preferredSize = sizeValues.find((s) => s.toLowerCase() === 'l') || sizeValues[0] || '';
+          const firstAvailable = sizeValues.find((s) => availableSizes.has(s)) ?? preferredSize;
+          return [opt.name, firstAvailable];
         }
 
         return [opt.name, normalizeOptionValue(opt, rawValue)];
@@ -117,21 +182,26 @@ export const getAvailableValues = (
   const targetOption = options.find((opt) => opt.name === optionName);
   if (!targetOption) return [];
 
-  // For color-like options, show every color that exists on any enabled variant,
-  // regardless of current size/option selections. This keeps the swatch grid stable
-  // and hides colors that don't exist at all.
+  // For color options, show ALL colors from enabled variants regardless of other selections
+  // This ensures each product shows its unique color list
   if (isColorOption(optionName)) {
-    return [...ALLOWED_COLOR_NAMES];
+    const colors = variants
+      .filter((v) => v.isEnabled)
+      .map((variant) => getVariantOptionValue(variant, targetOption))
+      .filter(Boolean);
+    return sortByOptionOrder(Array.from(new Set(colors)), targetOption);
   }
 
-  const filteredVariants = variants.filter((variant) =>
-    options.every((opt) => {
+  // For other options (like size), filter based on current selections
+  const filteredVariants = variants.filter((variant) => {
+    if (!variant.isEnabled) return false;
+    return options.every((opt) => {
       if (opt.name === targetOption.name) return true;
       const selected = selections[opt.name];
       if (!selected) return true;
       return getVariantOptionValue(variant, opt) === normalizeOptionValue(opt, selected);
-    })
-  );
+    });
+  });
 
   const values = filteredVariants.map((variant) => getVariantOptionValue(variant, targetOption)).filter(Boolean);
   return sortByOptionOrder(values, targetOption);

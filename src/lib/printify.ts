@@ -146,3 +146,77 @@ export const unpublishPrintifyProduct = async (
   );
   return response.data;
 };
+
+// Order management functions
+export const submitPrintifyOrder = async (
+  params: ShopScopedOptions & {
+    payload: {
+      external_id: string;
+      label?: string;
+      line_items: Array<{
+        product_id?: string;
+        variant_id: number;
+        quantity: number;
+        sku?: string;
+        external_id?: string;
+      }>;
+      shipping_method: number;
+      send_shipping_notification?: boolean;
+      address_to: {
+        first_name: string;
+        last_name: string;
+        email: string;
+        phone?: string;
+        country: string;
+        region?: string;
+        address1: string;
+        address2?: string;
+        city: string;
+        zip: string;
+      };
+    };
+  }
+) => {
+  const client = getClient();
+  const shopId = resolveShopId(params.shopId);
+  const response = await client.post(`/shops/${shopId}/orders.json`, params.payload);
+  return response.data;
+};
+
+export const sendPrintifyOrderToProduction = async (
+  params: ShopScopedOptions & { orderId: string }
+) => {
+  const client = getClient();
+  const shopId = resolveShopId(params.shopId);
+  const response = await client.post(`/shops/${shopId}/orders/${params.orderId}/send_to_production.json`);
+  return response.data;
+};
+
+export const cancelPrintifyOrder = async (
+  params: ShopScopedOptions & { orderId: string }
+) => {
+  const client = getClient();
+  const shopId = resolveShopId(params.shopId);
+  const response = await client.post(`/shops/${shopId}/orders/${params.orderId}/cancel.json`);
+  return response.data;
+};
+
+export const getPrintifyOrder = async (
+  params: ShopScopedOptions & { orderId: string }
+) => {
+  const client = getClient();
+  const shopId = resolveShopId(params.shopId);
+  const response = await client.get(`/shops/${shopId}/orders/${params.orderId}.json`);
+  return response.data;
+};
+
+export const listPrintifyOrders = async (
+  params: ShopScopedOptions & { limit?: number; page?: number; status?: string }
+) => {
+  const client = getClient();
+  const shopId = resolveShopId(params.shopId);
+  const response = await client.get(`/shops/${shopId}/orders.json`, {
+    params: { limit: params.limit, page: params.page, status: params.status }
+  });
+  return response.data;
+};

@@ -28,6 +28,7 @@ export type Product = {
   images: ProductImage[];
   options: ProductOption[];
   variants: ProductVariant[];
+  soldCount?: number;
   createdAt: Date;
   updatedAt: Date;
 };

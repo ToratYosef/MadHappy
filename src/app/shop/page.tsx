@@ -1,5 +1,6 @@
 import Footer from '@/components/storefront/footer';
 import Navbar from '@/components/storefront/navbar';
+import StickyPromoBannerSection from '@/components/storefront/sticky-promo-banner-section';
 import { ProductCard } from '@/components/storefront/product-card';
 import { getProducts } from '@/lib/queries/products';
 
@@ -25,6 +26,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
+      <StickyPromoBannerSection />
       <section className="container-max py-12">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>

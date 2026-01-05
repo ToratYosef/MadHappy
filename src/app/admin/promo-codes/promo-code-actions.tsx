@@ -1,6 +1,6 @@
 'use client';
 
-import { Trash2 } from 'lucide-react';
+import { Trash2, ImagePlus } from 'lucide-react';
 import { useTransition } from 'react';
 
 interface PromoCodeActionsProps {
@@ -8,12 +8,15 @@ interface PromoCodeActionsProps {
   isActive: boolean;
   onToggle: (formData: FormData) => void;
   onDelete: (formData: FormData) => void;
+  onCreateBanner?: (formData: FormData) => void;
   showDeleteOnly?: boolean;
+  promo?: any;
 }
 
-export default function PromoCodeActions({ promoId, isActive, onToggle, onDelete, showDeleteOnly }: PromoCodeActionsProps) {
+export default function PromoCodeActions({ promoId, isActive, onToggle, onDelete, onCreateBanner, showDeleteOnly, promo }: PromoCodeActionsProps) {
   const [togglePending, startToggleTransition] = useTransition();
   const [deletePending, startDeleteTransition] = useTransition();
+  const [bannerPending, startBannerTransition] = useTransition();
 
   const handleToggle = async () => {
     const formData = new FormData();
@@ -29,15 +32,39 @@ export default function PromoCodeActions({ promoId, isActive, onToggle, onDelete
     startDeleteTransition(() => onDelete(formData));
   };
 
+  const handleCreateBanner = async () => {
+    if (!promo || !onCreateBanner) return;
+    if (promo.banners && promo.banners.length > 0) {
+      alert('This promo code already has a banner');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('promoId', promoId);
+    startBannerTransition(() => onCreateBanner(formData));
+  };
+
   if (showDeleteOnly) {
     return (
-      <button
-        onClick={handleDelete}
-        disabled={deletePending}
-        className="text-red-500 hover:text-red-700 p-1 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <Trash2 className="h-4 w-4" />
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={handleDelete}
+          disabled={deletePending}
+          className="text-red-500 hover:text-red-700 p-1 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Delete promo code"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+        {promo && (!promo.banners || promo.banners.length === 0) && (
+          <button
+            onClick={handleCreateBanner}
+            disabled={bannerPending}
+            className="text-green hover:text-green/80 p-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Create banner from promo code"
+          >
+            <ImagePlus className="h-4 w-4" />
+          </button>
+        )}
+      </div>
     );
   }
 

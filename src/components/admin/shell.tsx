@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { Gauge, Package, Settings, ShoppingCart, LogOut, Ticket, Image, Users } from 'lucide-react';
+import { Gauge, Package, Settings, ShoppingCart, LogOut, Ticket, Image as ImageIcon, Users } from 'lucide-react';
 import { getAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { SignOutButton } from './sign-out-button';
@@ -9,7 +10,7 @@ const nav = [
   { href: '/admin', label: 'Dashboard', icon: Gauge },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/banners', label: 'Banners', icon: Image },
+  { href: '/admin/banners', label: 'Banners', icon: ImageIcon },
   { href: '/admin/promo-codes', label: 'Promo Codes', icon: Ticket },
   { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/settings', label: 'Settings', icon: Settings }
@@ -23,7 +24,9 @@ export default async function AdminShell({ children }: { children: React.ReactNo
     <div className="grid min-h-screen grid-cols-[240px_1fr] bg-background">
       <aside className="hidden border-r border-black/5 bg-white/70 lg:block">
         <div className="flex h-full flex-col">
-          <div className="border-b border-black/5 px-6 py-4 text-lg font-semibold">low key high</div>
+          <div className="border-b border-black/5 px-6 py-5 flex items-center justify-center">
+            <Image src="/logo.png" alt="Low Key High" width={150} height={50} className="h-14 w-auto" priority />
+          </div>
           <nav className="flex-1 space-y-1 p-3 text-sm">
             {nav.map((item) => (
               <Link

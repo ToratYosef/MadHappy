@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ShoppingBag, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
+import { useCartDrawer } from '@/lib/cart-drawer-store';
 import { useSession, signOut } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthModal } from './auth-modal';
 
 const navLinks = [
@@ -17,15 +19,59 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const count = useCartStore((s) => s.items.reduce((acc, item) => acc + item.qty, 0));
+  const openDrawer = useCartDrawer((s) => s.open);
   const { data: session } = useSession();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [canScroll, setCanScroll] = useState(true);
+
+  useEffect(() => {
+    let ticking = false;
+    
+    const update = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - window.innerHeight > 48;
+      setCanScroll(scrollable);
+      setIsScrolled(scrollable && window.scrollY > 50);
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const doc = document.documentElement;
+          const scrollable = doc.scrollHeight - window.innerHeight > 48;
+          setCanScroll(scrollable);
+          setIsScrolled(scrollable && window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-background/70 backdrop-blur">
-      <div className="container-max flex items-center justify-between py-4">
-        <Link href="/" className="text-lg font-semibold tracking-tight">
-          low key high
+    <header className="sticky top-0 z-40 border-b border-black/5 bg-background/70 backdrop-blur transition-all duration-300">
+      <div className={cn("container-max flex items-center justify-between transition-all duration-300", isScrolled ? "py-2" : "py-4")}
+        style={{ minHeight: '72px' }}
+      >
+        <Link href="/" className="relative flex items-center">
+          <Image 
+            src="/logo.png" 
+            alt="Low Key High" 
+            width={220} 
+            height={80} 
+            className={cn("w-auto transition-all duration-300", isScrolled ? "h-12" : "h-20")}
+            priority 
+          />
         </Link>
         <nav className="flex items-center gap-4 text-sm font-medium">
           {navLinks.map((link) => (
@@ -40,8 +86,8 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/cart"
+          <button
+            onClick={openDrawer}
             className="relative inline-flex items-center gap-2 rounded-full border border-black/5 px-3 py-2 text-sm transition hover:-translate-y-0.5 hover:shadow-soft"
           >
             <ShoppingBag className="h-4 w-4" />
@@ -51,7 +97,7 @@ export default function Navbar() {
                 {count}
               </span>
             )}
-          </Link>
+          </button>
 
           {/* User Button */}
           <div className="relative">

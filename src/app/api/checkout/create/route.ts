@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
+import { generateOrderNumber } from '@/lib/order-number';
 
 const getPrimaryProductImageUrl = (images: any): string | null => {
   if (!Array.isArray(images)) return null;
@@ -117,37 +118,62 @@ export async function POST(req: Request) {
       automatic_payment_methods: { enabled: true },
       receipt_email: body.customer.email,
       metadata: {
-        orderId,
-        items: JSON.stringify(items)
+        orderId
       }
     });
 
-    await prisma.order.create({
-      data: {
-        id: orderId,
-        stripePaymentIntentId: paymentIntent.id,
-        customerName: body.customer?.name || null,
-        customerEmail: body.customer.email,
-        customerPhone: body.customer?.phone || null,
-        shippingName: body.shipping?.name || body.customer?.name || null,
-        shippingAddress1: body.shipping?.address1 || null,
-        shippingAddress2: body.shipping?.address2 || null,
-        shippingCity: body.shipping?.city || null,
-        shippingState: body.shipping?.state || null,
-        shippingPostal: body.shipping?.postal || null,
-        shippingCountry: body.shipping?.country || null,
-        paymentStatus: 'PENDING',
-        fulfillmentStatus: 'DRAFT',
-        subtotalCents,
-        shippingCents,
-        totalCents,
-        items: {
-          createMany: {
-            data: orderItems
+    // Try to create order with generated order number, retry if duplicate
+    let orderNumber: string | null = null;
+    let retries = 0;
+    const maxRetries = 5;
+
+    while (retries < maxRetries && !orderNumber) {
+      try {
+        const generated = await generateOrderNumber();
+        await prisma.order.create({
+          data: {
+            id: orderId,
+            orderNumber: generated,
+            stripePaymentIntentId: paymentIntent.id,
+            customerName: body.customer?.name || null,
+            customerEmail: body.customer.email,
+            customerPhone: body.customer?.phone || null,
+            shippingName: body.shipping?.name || body.customer?.name || null,
+            shippingAddress1: body.shipping?.address1 || null,
+            shippingAddress2: body.shipping?.address2 || null,
+            shippingCity: body.shipping?.city || null,
+            shippingState: body.shipping?.state || null,
+            shippingPostal: body.shipping?.postal || null,
+            shippingCountry: body.shipping?.country || null,
+            paymentStatus: 'PENDING',
+            fulfillmentStatus: 'DRAFT',
+            subtotalCents,
+            shippingCents,
+            totalCents,
+            items: {
+              createMany: {
+                data: orderItems
+              }
+            }
           }
+        });
+        orderNumber = generated;
+      } catch (error: any) {
+        if (error.code === 'P2002' && error.meta?.target?.includes('orderNumber')) {
+          // Duplicate orderNumber, retry
+          retries++;
+          if (retries >= maxRetries) {
+            throw new Error('Failed to generate unique order number after retries');
+          }
+        } else {
+          throw error;
         }
       }
-    });
+    }
+
+    if (!orderNumber) {
+      throw new Error('Failed to generate order number');
+    }
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,

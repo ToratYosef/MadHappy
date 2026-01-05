@@ -27,14 +27,14 @@ export function ProductEditForm({ product }: { product: Product }) {
 
   const initialColors = useMemo(() => {
     const colorOption = product.options?.find((opt) => isColorOption(opt.name));
-    if (colorOption?.values?.length) return colorOption.values.filter((v) => ALLOWED_COLOR_NAMES.includes(v));
+    if (colorOption?.values?.length) return colorOption.values;
 
     const colorsFromVariants = product.variants
       .map((v) =>
         Object.entries(v.options || {}).find(([key]) => isColorOption(key))?.[1] || ''
       )
       .filter(Boolean) as string[];
-    return Array.from(new Set(colorsFromVariants)).filter((v) => ALLOWED_COLOR_NAMES.includes(v));
+    return Array.from(new Set(colorsFromVariants));
   }, [product.options, product.variants]);
 
   const initialSizes = useMemo(() => {
@@ -48,7 +48,7 @@ export function ProductEditForm({ product }: { product: Product }) {
     return normalized.length ? normalized : SIZE_OPTIONS;
   }, [product.options, product.variants]);
 
-  const [selectedColors, setSelectedColors] = useState<string[]>(initialColors.length ? initialColors : ALLOWED_COLOR_NAMES);
+  const [colorsText, setColorsText] = useState<string>(initialColors.join('\n'));
   const [selectedSizes, setSelectedSizes] = useState<string[]>(initialSizes);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,8 +56,9 @@ export function ProductEditForm({ product }: { product: Product }) {
     setSaving(true);
     setError(null);
     try {
-      if (!selectedColors.length) {
-        throw new Error('Select at least one color');
+      const colors = colorsText.split('\n').map(c => c.trim()).filter(Boolean);
+      if (!colors.length) {
+        throw new Error('Enter at least one color');
       }
       if (!selectedSizes.length) {
         throw new Error('Select at least one size');
@@ -65,7 +66,7 @@ export function ProductEditForm({ product }: { product: Product }) {
       const res = await fetch(`/api/admin/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, slug, colors: selectedColors, sizes: selectedSizes })
+        body: JSON.stringify({ title, description, slug, colors, sizes: selectedSizes })
       });
 
       if (!res.ok) {
@@ -128,22 +129,18 @@ export function ProductEditForm({ product }: { product: Product }) {
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-semibold text-black/70">Available colors</label>
-          <span className="text-xs text-black/50">Manual override</span>
+          <label className="text-sm font-semibold text-black/70" htmlFor="colors">Available colors</label>
+          <span className="text-xs text-black/50">One per line</span>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-          {ALLOWED_COLOR_NAMES.map((color) => (
-            <label key={color} className="flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm">
-              <input
-                type="checkbox"
-                checked={selectedColors.includes(color)}
-                onChange={() => toggleSelection(color, selectedColors, setSelectedColors)}
-                className="h-4 w-4"
-              />
-              <span>{color}</span>
-            </label>
-          ))}
-        </div>
+        <textarea
+          id="colors"
+          value={colorsText}
+          onChange={(e) => setColorsText(e.target.value)}
+          className="mt-2 w-full rounded-lg border border-black/10 px-3 py-2 font-mono text-sm"
+          rows={8}
+          placeholder="White\nIce Grey\nSage\nKelly Green\nHeather Irish Green\nTropical Blue\nJade Dome\nSky\nCarolina Blue\nStone Blue\nHeather Indigo\nAntique Sapphire\nHeather Radiant Orchid\nLight Pink\nHeather Cardinal\nCardinal Red"
+        />
+        <p className="text-xs text-black/50">Enter each color on a new line. These colors are specific to this product.</p>
       </div>
 
       <div className="space-y-3">

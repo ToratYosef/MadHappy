@@ -55,24 +55,38 @@ export async function PATCH(req: Request, { params }: Params) {
         existing.variants.map((variant) => {
           const entries = Object.entries((variant.options as Record<string, string>) || {});
 
+          // Classify values as color/size using both keys and the allowed sets; swap if misaligned.
+          const valueMatchesColor = entries.find(([, value]) => allowedColors.has(normalize(value)))?.[1];
+          const valueMatchesSize = entries.find(([, value]) => allowedSizes.has(normalize(value)))?.[1];
+
           const colorEntry =
+            valueMatchesColor ??
             entries.find(([key]) => /color/i.test(key))?.[1] ??
-            entries.find(([, value]) => allowedColors.has(normalize(value)))?.[1] ??
+            entries.find(([key]) => /colour/i.test(key))?.[1] ??
             '';
 
           const sizeEntry =
+            valueMatchesSize ??
             entries.find(([key]) => /size/i.test(key))?.[1] ??
-            entries.find(([, value]) => allowedSizes.has(normalize(value)))?.[1] ??
             '';
 
           const enabledColor = allowedColors.size ? allowedColors.has(normalize(colorEntry)) : true;
           const enabledSize = allowedSizes.size ? allowedSizes.has(normalize(sizeEntry)) : true;
           const shouldEnable = enabledColor && enabledSize;
 
-          if (variant.isEnabled === shouldEnable) return Promise.resolve();
+          const nextOptions: Record<string, string> = { ...(variant.options as Record<string, string>) };
+          if (colorValues && colorEntry) nextOptions.Color = colorEntry;
+          if (sizeValues && sizeEntry) nextOptions.Size = sizeEntry;
+
+          if (variant.isEnabled === shouldEnable &&
+              (!colorValues || nextOptions.Color === (variant.options as any).Color) &&
+              (!sizeValues || nextOptions.Size === (variant.options as any).Size)) {
+            return Promise.resolve();
+          }
+
           return prisma.productVariant.update({
             where: { id: variant.id },
-            data: { isEnabled: shouldEnable }
+            data: { isEnabled: shouldEnable, options: nextOptions }
           });
         })
       );

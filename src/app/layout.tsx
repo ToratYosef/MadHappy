@@ -2,7 +2,6 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
-import PageTransition from '@/components/ui/page-transition';
 import CartDrawer from '@/components/cart-drawer';
 import { Providers } from '@/components/providers';
 
@@ -18,9 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={font.variable}>
       <body className={cn('bg-background text-foreground antialiased min-h-screen', font.className)}>
         <Providers>
-          <PageTransition>
-            <main className="min-h-screen flex flex-col">{children}</main>
-          </PageTransition>
+          <main className="min-h-screen flex flex-col">{children}</main>
           <CartDrawer />
         </Providers>
       </body>

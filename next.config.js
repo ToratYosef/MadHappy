@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
@@ -10,7 +10,12 @@ const nextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
-      allowedOrigins: ['localhost:3000', 'literate-fiesta-7vxp45965p7rfx6jx-3000.app.github.dev']
+      allowedOrigins: [
+        'localhost:3000',
+        'localhost:3001',
+        'literate-fiesta-7vxp45965p7rfx6jx-3000.app.github.dev',
+        'literate-fiesta-7vxp45965p7rfx6jx-3001.app.github.dev'
+      ]
     }
   }
 };

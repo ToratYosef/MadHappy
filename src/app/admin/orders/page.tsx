@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getOrders } from '@/lib/queries/orders';
 import { formatCurrency } from '@/lib/utils';
+import { DeleteOrderButton } from './delete-order-button';
 
 interface Props {
   searchParams: { page?: string; search?: string };
@@ -28,6 +29,7 @@ export default async function OrdersPage({ searchParams }: Props) {
               <th className="px-4 py-3">Total</th>
               <th className="px-4 py-3">Payment</th>
               <th className="px-4 py-3">Fulfillment</th>
+              <th className="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
@@ -35,13 +37,16 @@ export default async function OrdersPage({ searchParams }: Props) {
               <tr key={order.id} className="border-t border-black/5">
                 <td className="px-4 py-3">
                   <Link href={`/admin/orders/${order.id}`} className="font-semibold text-green hover:underline">
-                    {order.id}
+                    {order.orderNumber || order.id}
                   </Link>
                 </td>
                 <td className="px-4 py-3 text-black/70">{order.customerEmail}</td>
                 <td className="px-4 py-3">{formatCurrency(order.totalCents)}</td>
                 <td className="px-4 py-3 text-black/70">{order.paymentStatus}</td>
                 <td className="px-4 py-3 text-black/70">{order.fulfillmentStatus}</td>
+                <td className="px-4 py-3">
+                  <DeleteOrderButton orderId={order.id} />
+                </td>
               </tr>
             ))}
           </tbody>

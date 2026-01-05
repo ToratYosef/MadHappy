@@ -6,7 +6,6 @@ import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 export default function CartDrawer() {
   const isOpen = useCartDrawer((s) => s.isOpen);
@@ -14,15 +13,11 @@ export default function CartDrawer() {
   const items = useCartStore((s) => s.items);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateQty = useCartStore((s) => s.updateQty);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  if (!isOpen) return null;
 
-  if (!isOpen || !mounted) return null;
-
-  const total = items.reduce((sum, item) => sum + item.priceCents * item.qty, 0);
+  const subtotal = items.reduce((sum, item) => sum + item.priceCents * item.qty, 0);
+  const total = subtotal;
 
   return (
     <>
@@ -121,9 +116,15 @@ export default function CartDrawer() {
             </div>
 
             <div className="border-t border-black/5 space-y-4 p-6">
-              <div className="flex items-center justify-between text-lg font-semibold">
-                <span>Total</span>
-                <span>{formatCurrency(total, 'USD')}</span>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span>Subtotal</span>
+                  <span>{formatCurrency(subtotal, 'USD')}</span>
+                </div>
+                <div className="flex items-center justify-between text-lg font-semibold">
+                  <span>Total</span>
+                  <span>{formatCurrency(total, 'USD')}</span>
+                </div>
               </div>
 
               <Link
@@ -131,7 +132,7 @@ export default function CartDrawer() {
                 onClick={close}
                 className="button-primary w-full block text-center"
               >
-                View full cart
+                Proceed to Checkout
               </Link>
 
               <button

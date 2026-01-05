@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Navbar from '@/components/storefront/navbar';
+import StickyPromoBannerClient from '@/components/storefront/sticky-promo-banner-client';
 import Footer from '@/components/storefront/footer';
 import { useCartStore } from '@/lib/cart-store';
 import { formatCurrency } from '@/lib/utils';
@@ -111,6 +112,13 @@ export default function CartPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({});
+  const [promoCode, setPromoCode] = useState('');
+  const [promoType, setPromoType] = useState<string>('');
+  const [promoDiscountAmount, setPromoDiscountAmount] = useState(0);
+  const [promoFreeShipping, setPromoFreeShipping] = useState(false);
+  const [promoMessage, setPromoMessage] = useState('');
+  const [taxCents, setTaxCents] = useState(0);
 
   useEffect(() => {
     if (!items.length) {
@@ -124,13 +132,114 @@ export default function CartPage() {
     [items]
   );
 
+  // Calculate tax when zip code or state changes
+  useEffect(() => {
+    if ((form.postal || form.state) && subtotal > 0) {
+      fetch('/api/calculate-tax', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          subtotalCents: subtotal - promoDiscountAmount, 
+          zipCode: form.postal,
+          state: form.state 
+        })
+      })
+        .then(res => res.json())
+        .then(data => setTaxCents(data.taxCents || 0))
+        .catch(() => setTaxCents(0));
+    } else {
+      setTaxCents(0);
+    }
+  }, [form.postal, form.state, subtotal, promoDiscountAmount]);
+
+  const shippingCents = promoFreeShipping ? 0 : 0; // Set actual shipping cost here
+  const totalCents = subtotal - promoDiscountAmount + taxCents + shippingCents;
+
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) {
+      setPromoMessage('Please enter a promo code');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/promo-codes/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promoCode.toUpperCase(), subtotalCents: subtotal })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setPromoType(data.type);
+        setPromoDiscountAmount(data.discountAmount || 0);
+        setPromoFreeShipping(data.freeShipping || false);
+        
+        let message = `Promo code applied!`;
+        if (data.type === 'PERCENTAGE') {
+          message += ` ${data.discount}% off`;
+        } else if (data.type === 'FLAT_AMOUNT') {
+          message += ` $${(data.discountAmount / 100).toFixed(2)} off`;
+        } else if (data.type === 'FREE_SHIPPING') {
+          message += ` Free shipping`;
+        } else if (data.type === 'TIERED') {
+          message += ` $${(data.discountAmount / 100).toFixed(2)} off`;
+        }
+        setPromoMessage(message);
+      } else {
+        setPromoDiscountAmount(0);
+        setPromoFreeShipping(false);
+        setPromoMessage(data.error || 'Invalid promo code');
+      }
+    } catch (error) {
+      setPromoMessage('Error validating promo code');
+      setPromoDiscountAmount(0);
+      setPromoFreeShipping(false);
+    }
+  };
+
   const handleCheckout = async () => {
     setError(null);
+    setFieldErrors({});
+    
     startTransition(async () => {
-      if (!form.email || !form.address1 || !form.city || !form.state || !form.postal || !form.country) {
-        setError('Please fill in contact and shipping details.');
+      const errors: Record<string, boolean> = {};
+      
+      // Validate all required fields
+      if (!form.name) errors.name = true;
+      if (!form.email) errors.email = true;
+      if (!form.phone) errors.phone = true;
+      if (!form.address1) errors.address1 = true;
+      if (!form.city) errors.city = true;
+      if (!form.state) errors.state = true;
+      if (!form.postal) errors.postal = true;
+      if (!form.country) errors.country = true;
+      
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        setError('Please fill in all required fields: name, email, phone, address, city, state, zip code, and country.');
+        
+        // Scroll to first error field
+        const firstErrorField = Object.keys(errors)[0];
+        const element = document.querySelector(`input[name="${firstErrorField}"]`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
+      
+      // Validate tax has been calculated
+      if (taxCents === 0) {
+        setFieldErrors({ postal: true, state: true });
+        setError('Please enter a valid zip code and state so we can calculate tax for your order.');
+        
+        // Scroll to postal field
+        const postalElement = document.querySelector('input[name="postal"]');
+        if (postalElement) {
+          postalElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      
       try {
         const res = await fetch('/api/checkout/create', {
           method: 'POST',
@@ -164,6 +273,7 @@ export default function CartPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
+      <StickyPromoBannerClient />
       <section className="container-max flex-1 py-10">
         <h1 className="mb-6 text-3xl font-semibold">Your cart</h1>
         {error && (
@@ -217,45 +327,51 @@ export default function CartPage() {
                 <div className="space-y-3">
                   <div className="grid gap-3 md:grid-cols-2">
                     <label className="text-sm text-black/70">
-                      Name
+                      Name <span className="text-red-500">*</span>
                       <input
+                        name="name"
                         value={form.name}
-                        onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, name: e.target.value })); setFieldErrors(prev => ({ ...prev, name: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.name ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
                         required
                       />
                     </label>
                     <label className="text-sm text-black/70">
-                      Email
+                      Email <span className="text-red-500">*</span>
                       <input
+                        name="email"
                         type="email"
                         value={form.email}
-                        onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, email: e.target.value })); setFieldErrors(prev => ({ ...prev, email: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.email ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
                         required
                       />
                     </label>
                   </div>
                   <label className="text-sm text-black/70">
-                    Phone
+                    Phone <span className="text-red-500">*</span>
                     <input
+                      name="phone"
                       value={form.phone}
-                      onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
-                      className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
-                    />
-                  </label>
-                  <label className="text-sm text-black/70">
-                    Address line 1
-                    <input
-                      value={form.address1}
-                      onChange={(e) => setForm((prev) => ({ ...prev, address1: e.target.value }))}
-                      className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                      onChange={(e) => { setForm((prev) => ({ ...prev, phone: e.target.value })); setFieldErrors(prev => ({ ...prev, phone: false })); }}
+                      className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.phone ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
                       required
                     />
                   </label>
                   <label className="text-sm text-black/70">
-                    Address line 2
+                    Address line 1 <span className="text-red-500">*</span>
                     <input
+                      name="address1"
+                      value={form.address1}
+                      onChange={(e) => { setForm((prev) => ({ ...prev, address1: e.target.value })); setFieldErrors(prev => ({ ...prev, address1: false })); }}
+                      className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.address1 ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
+                      required
+                    />
+                  </label>
+                  <label className="text-sm text-black/70">
+                    Address line 2 (optional)
+                    <input
+                      name="address2"
                       value={form.address2}
                       onChange={(e) => setForm((prev) => ({ ...prev, address2: e.target.value }))}
                       className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
@@ -263,53 +379,111 @@ export default function CartPage() {
                   </label>
                   <div className="grid gap-3 md:grid-cols-2">
                     <label className="text-sm text-black/70">
-                      City
+                      City <span className="text-red-500">*</span>
                       <input
+                        name="city"
                         value={form.city}
-                        onChange={(e) => setForm((prev) => ({ ...prev, city: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, city: e.target.value })); setFieldErrors(prev => ({ ...prev, city: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.city ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
                         required
                       />
                     </label>
                     <label className="text-sm text-black/70">
-                      State / Region
+                      State / Region <span className="text-red-500">*</span>
                       <input
+                        name="state"
                         value={form.state}
-                        onChange={(e) => setForm((prev) => ({ ...prev, state: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, state: e.target.value })); setFieldErrors(prev => ({ ...prev, state: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.state ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
+                        placeholder="e.g., CA, California, NY, New York"
                         required
                       />
                     </label>
                   </div>
                   <div className="grid gap-3 md:grid-cols-2">
                     <label className="text-sm text-black/70">
-                      Postal code
+                      Zip Code <span className="text-red-500">*</span>
                       <input
+                        name="postal"
                         value={form.postal}
-                        onChange={(e) => setForm((prev) => ({ ...prev, postal: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, postal: e.target.value })); setFieldErrors(prev => ({ ...prev, postal: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.postal ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
+                        placeholder="Required for tax calculation"
                         required
                       />
                     </label>
                     <label className="text-sm text-black/70">
-                      Country
+                      Country <span className="text-red-500">*</span>
                       <input
+                        name="country"
                         value={form.country}
-                        onChange={(e) => setForm((prev) => ({ ...prev, country: e.target.value }))}
-                        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2"
+                        onChange={(e) => { setForm((prev) => ({ ...prev, country: e.target.value })); setFieldErrors(prev => ({ ...prev, country: false })); }}
+                        className={`mt-1 w-full rounded-lg border px-3 py-2 ${fieldErrors.country ? 'border-red-500 border-2 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-black/10'}`}
                         required
                       />
                     </label>
                   </div>
                 </div>
+                
+                <div className="space-y-2 border-t border-black/5 pt-4">
+                  <label className="text-sm text-black/70">
+                    Promo Code (optional)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                      onKeyDown={(e) => e.key === 'Enter' && handleApplyPromo()}
+                      placeholder="Enter code"
+                      className="flex-1 rounded-lg border border-black/10 px-3 py-2 text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyPromo}
+                      className="rounded-lg bg-black/5 px-4 py-2 text-sm font-medium transition hover:bg-black/10"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {promoMessage && (
+                    <p className={`text-xs ${promoDiscountAmount > 0 ? 'text-green' : 'text-red-600'}`}>
+                      {promoMessage}
+                    </p>
+                  )}
+                </div>
+
                 <div className="flex items-center justify-between py-2 text-sm">
                   <span>Subtotal</span>
                   <span>{formatCurrency(subtotal)}</span>
                 </div>
-                <div className="flex items-center justify-between py-2 text-sm text-black/60">
-                  <span>Shipping</span>
-                  <span>Calculated at fulfillment</span>
+                {promoDiscountAmount > 0 && (
+                  <div className="flex items-center justify-between py-2 text-sm text-green">
+                    <span>Discount</span>
+                    <span>-{formatCurrency(promoDiscountAmount)}</span>
+                  </div>
+                )}
+                {promoFreeShipping && (
+                  <div className="flex items-center justify-between py-2 text-sm text-green">
+                    <span>Shipping</span>
+                    <span>FREE</span>
+                  </div>
+                )}
+                
+                {/* Tax just before Total - always show */}
+                <div className="flex items-center justify-between py-2 text-sm">
+                  <span>Tax {form.state && `(${form.state})`}</span>
+                  <span>{taxCents > 0 ? formatCurrency(taxCents) : '--'}</span>
                 </div>
+                
+                {/* Total at Bottom */}
+                <div className="border-t border-black/10 pt-4 mt-4">
+                  <div className="flex items-center justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span>{formatCurrency(totalCents)}</span>
+                  </div>
+                </div>
+
                 <button
                   onClick={handleCheckout}
                   disabled={loading || items.length === 0 || !stripePromise}
