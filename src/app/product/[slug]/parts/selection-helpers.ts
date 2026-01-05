@@ -1,5 +1,23 @@
 import type { ProductOption, ProductVariant } from '@/types/product';
 
+const ALLOWED_COLOR_NAMES = [
+  'White',
+  'Sport Grey',
+  'Military Green',
+  'Irish Green',
+  'Light Blue',
+  'Carolina Blue',
+  'Indigo Blue',
+  'Antique Sapphire',
+  'Royal',
+  'Orchid',
+  'Light Pink',
+  'Azalea',
+  'Antique Cherry Red'
+];
+
+const normalizeColor = (value: string) => value.trim().toLowerCase();
+
 const normalizeOptionValue = (opt: ProductOption, value: unknown) => {
   if (value === null || value === undefined) return '';
   const stringValue = String(value);
@@ -91,6 +109,18 @@ export const getAvailableValues = (
 ) => {
   const targetOption = options.find((opt) => opt.name === optionName);
   if (!targetOption) return [];
+
+  // For color-like options, show every color that exists on any enabled variant,
+  // regardless of current size/option selections. This keeps the swatch grid stable
+  // and hides colors that don't exist at all.
+  if (isColorOption(optionName)) {
+    const allowed = new Set(ALLOWED_COLOR_NAMES.map(normalizeColor));
+    const values = variants
+      .map((variant) => getVariantOptionValue(variant, targetOption))
+      .filter(Boolean)
+      .filter((value) => allowed.has(normalizeColor(value)));
+    return sortByOptionOrder(values, targetOption);
+  }
 
   const filteredVariants = variants.filter((variant) =>
     options.every((opt) => {

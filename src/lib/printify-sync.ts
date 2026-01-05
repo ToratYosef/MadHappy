@@ -183,17 +183,16 @@ export const syncPrintifyProducts = async (shopId?: string): Promise<SyncResult>
           });
           updated += 1;
         } else {
+          const { variants, ...productData } = mapped;
           await prisma.product.create({
             data: {
-              ...mapped,
+              ...productData,
               createdAt: new Date(),
               updatedAt: new Date()
-            },
-            include: { variants: true }
+            }
           });
-          await prisma.productVariant.deleteMany({ where: { productId: mapped.id } });
           await prisma.productVariant.createMany({
-            data: mapped.variants.map((variant) => ({
+            data: variants.map((variant) => ({
               ...variant,
               productId: mapped.id
             }))

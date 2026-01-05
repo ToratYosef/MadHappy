@@ -7,17 +7,9 @@ const createPrismaClient = () => {
     throw new Error('DATABASE_URL is not set. Please configure your database connection string.');
   }
 
-  const client = new PrismaClient({
+  return new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error']
   });
-
-  if (!(client as any).product) {
-    throw new Error(
-      'Prisma Client is not generated with the schema models. Run `npx prisma generate` to regenerate the client.'
-    );
-  }
-
-  return client;
 };
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();

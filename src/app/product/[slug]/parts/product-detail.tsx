@@ -112,8 +112,6 @@ export default function ProductDetail({ product }: Props) {
             </p>
           </div>
 
-          <p className="text-black/70 leading-relaxed">{product.description}</p>
-
           <AddToCart
             product={product}
             initialSelections={initialSelections}
@@ -121,6 +119,8 @@ export default function ProductDetail({ product }: Props) {
             onVariantChange={setActiveVariant}
             selectedImageUrl={featuredImage?.url}
           />
+
+          <p className="text-black/70 leading-relaxed">{product.description}</p>
         </div>
       </div>
     </div>
