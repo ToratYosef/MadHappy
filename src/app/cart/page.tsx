@@ -131,8 +131,8 @@ export default function CartPage() {
           if (data.shippingInfo && Object.keys(data.shippingInfo).length > 0) {
             setForm(prev => ({
               ...prev,
-              name: data.shippingInfo.name || prev.name || session.user.name || '',
-              email: session.user.email || prev.email,
+              name: data.shippingInfo.name || prev.name || session?.user?.name || '',
+              email: session?.user?.email || prev.email,
               phone: data.shippingInfo.phone || prev.phone,
               address1: data.shippingInfo.address1 || prev.address1,
               address2: data.shippingInfo.address2 || prev.address2,
@@ -141,12 +141,12 @@ export default function CartPage() {
               postal: data.shippingInfo.postal || prev.postal,
               country: data.shippingInfo.country || prev.country
             }));
-          } else if (session.user.name || session.user.email) {
+          } else if (session?.user?.name || session?.user?.email) {
             // Pre-fill name and email even if no shipping info
             setForm(prev => ({
               ...prev,
-              name: session.user.name || prev.name,
-              email: session.user.email || prev.email
+              name: session?.user?.name || prev.name,
+              email: session?.user?.email || prev.email
             }));
           }
         })
