@@ -16,6 +16,11 @@ interface ProductCardProps {
   product: Product;
 }
 
+const fallbackImages = [
+  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80&sat=-12',
+  'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80&sat=-10'
+];
+
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const router = useRouter();
@@ -89,9 +94,9 @@ export function ProductCard({ product }: ProductCardProps) {
     [product.images, colorVariant]
   );
 
-  const baseImage = variantImages[0]?.url ?? product.images?.[0]?.url;
-  const hoverImage = variantImages[1]?.url ?? product.images?.[1]?.url ?? baseImage;
-  const price = selectedVariant?.priceCents ?? product.variants[0]?.priceCents ?? 0;
+  const baseImage = variantImages[0]?.url ?? product.images?.[0]?.url ?? fallbackImages[0];
+  const hoverImage = variantImages[1]?.url ?? product.images?.[1]?.url ?? fallbackImages[1] ?? baseImage;
+  const price = selectedVariant?.priceCents ?? firstEnabledVariant?.priceCents ?? product.variants[0]?.priceCents ?? 0;
 
   const selectColor = (value: string) => {
     setSelectedColor(value);
@@ -163,7 +168,6 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="px-4 py-3 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-sm uppercase tracking-[0.08em] text-black/50">In-house product</p>
             <h3 className="font-semibold leading-tight">{product.title}</h3>
             <p className="text-sm text-black/60">{formatCurrency(price, 'USD')}</p>
           </div>

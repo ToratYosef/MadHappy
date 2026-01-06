@@ -8,8 +8,32 @@ import { Providers } from '@/components/providers';
 const font = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-primary', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'low key high | Minimal premium essentials',
-  description: 'Understated luxury essentials for everyday elevation.'
+  metadataBase: new URL('https://lowkeyhigh.com'),
+  title: 'LowKeyHigh | Minimal premium essentials',
+  description: 'Understated luxury essentials for everyday elevation.',
+  applicationName: 'LowKeyHigh',
+  openGraph: {
+    title: 'LowKeyHigh | Minimal premium essentials',
+    description: 'Understated luxury essentials for everyday elevation.',
+    url: 'https://lowkeyhigh.com',
+    siteName: 'LowKeyHigh',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'LowKeyHigh minimal essentials'
+      }
+    ],
+    locale: 'en_US',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'LowKeyHigh | Minimal premium essentials',
+    description: 'Understated luxury essentials for everyday elevation.',
+    images: ['/logo.png']
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <Image src="/logo.png" alt="Low Key High" width={140} height={45} className="h-10 w-auto" />
+            <Image src="/logo.png" alt="LowKeyHigh" width={140} height={45} className="h-10 w-auto" />
             <p className="text-sm text-black/60 leading-relaxed">
               Understated luxury essentials for everyday elevation. Quality pieces that speak softly but carry confidence.
             </p>
@@ -62,7 +62,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-4 border-t border-black/5 pt-8 text-xs text-black/50 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} low key high. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} LowKeyHigh. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/help" className="hover:text-black/70 transition">Privacy Policy</Link>
             <Link href="/help" className="hover:text-black/70 transition">Terms of Service</Link>
