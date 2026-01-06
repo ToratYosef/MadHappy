@@ -12,79 +12,12 @@ import Image from 'next/image';
 export default async function HomePage() {
   const [settings, featured] = await Promise.all([getSiteSettings(), getFeaturedProducts()]);
 
-  const vibeSpreads = [
-    {
-      title: 'Studio monochrome set',
-      copy: 'Brushed fleece hoodie and sweatpant pairing with tonal drawcords and matte hardware.',
-      tag: 'New drop',
-      image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80&sat=-12'
-    },
-    {
-      title: 'Earth-tone outer layers',
-      copy: 'Lightweight shell with hidden pockets and water-resistant finish for everyday runs.',
-      tag: 'Bestseller',
-      image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80&sat=-8'
-    },
-    {
-      title: 'Relaxed knit staples',
-      copy: 'Airy knits with subtle slub texture. Built for transitional weather and long flights.',
-      tag: 'Limited',
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80&sat=-10'
-    }
-  ];
-
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <StickyPromoBannerSection />
       <Hero settings={{ heroHeadline: settings?.heroHeadline, heroSubheadline: settings?.heroSubheadline }} />
 
-      <AnimatedSection className="container-max py-12 md:py-20">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <p className="text-sm uppercase tracking-[0.2em] text-green">Lookbook</p>
-            <h2 className="text-4xl font-bold tracking-tight md:text-5xl">Designed to move with you</h2>
-            <p className="max-w-2xl text-lg text-black/60">
-              Built for city sprints, coffee runs, and golden-hour hangs. Mix, match, and layer the pieces that feel like you.
-            </p>
-          </div>
-          <div className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white px-4 py-2 text-sm text-black/70 shadow-soft">
-            <span className="h-2 w-2 rounded-full bg-green"></span>
-            Curated in Los Angeles
-          </div>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {vibeSpreads.map((spread) => (
-            <div
-              key={spread.title}
-              className="group overflow-hidden rounded-2xl border border-black/5 bg-white/80 shadow-soft backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <Image
-                  src={spread.image}
-                  alt={spread.title}
-                  fill
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-                <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-black/70 backdrop-blur">
-                  {spread.tag}
-                </div>
-              </div>
-              <div className="space-y-2 px-5 py-4">
-                <h3 className="text-xl font-semibold">{spread.title}</h3>
-                <p className="text-sm text-black/60">{spread.copy}</p>
-                <div className="pt-1 text-sm font-semibold text-green transition group-hover:translate-x-1">
-                  Shop the look →
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </AnimatedSection>
-      
       {/* Features Section */}
       <AnimatedSection className="border-y border-black/5 bg-slate-50/50 py-16">
         <div className="container-max">
