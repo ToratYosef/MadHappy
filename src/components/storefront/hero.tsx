@@ -18,14 +18,14 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-green"></span>
             </span>
-            Fresh layers in stock
+            Travel capsule just landed
           </div>
           <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-            {settings.heroHeadline || 'Understated layers built for movement'}
+            {settings.heroHeadline || 'Travel-ready layers built for takeoff'}
           </h1>
           <p className="max-w-2xl text-xl text-black/70 leading-relaxed">
             {settings.heroSubheadline ||
-              'Premium hoodies, everyday tees, and quietly confident silhouettes designed to move with you.'}
+              'Elevated essentials engineered for red-eyes, layovers, and everything between departure and arrival.'}
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Link href="/shop" className="button-primary text-lg px-8 py-4">
