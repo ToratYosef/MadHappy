@@ -2,6 +2,8 @@ import { getRecentOrders } from '@/lib/queries/orders';
 import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 async function getMetrics() {
   const [todayRevenue, weekRevenue, unfulfilled, disabledVariants] = await Promise.all([
     prisma.order.aggregate({

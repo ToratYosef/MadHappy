@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: { id: string };
 }

@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+
 async function updateSettings(formData: FormData) {
   'use server';
   await prisma.siteSettings.upsert({

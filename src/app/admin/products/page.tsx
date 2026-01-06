@@ -4,6 +4,8 @@ import { formatCurrency } from '@/lib/utils';
 import { ProductActions } from '@/components/admin/product-actions';
 import { PrintifySyncButton } from '@/components/admin/printify-sync-button';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
     include: { variants: true },

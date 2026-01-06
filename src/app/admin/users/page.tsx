@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
 import { Eye } from 'lucide-react';
 
 export default async function UsersPage() {

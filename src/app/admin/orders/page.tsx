@@ -3,6 +3,8 @@ import { getOrders } from '@/lib/queries/orders';
 import { formatCurrency } from '@/lib/utils';
 import { DeleteOrderButton } from './delete-order-button';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   searchParams: { page?: string; search?: string };
 }

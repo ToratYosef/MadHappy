@@ -9,6 +9,8 @@ import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AccountPage() {
   const session = await getAuthSession();
 

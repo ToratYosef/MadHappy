@@ -3,6 +3,8 @@ import { prisma } from '@/lib/db';
 import { formatCurrency } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: { id: string };
 }

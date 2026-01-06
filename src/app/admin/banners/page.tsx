@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+
+export const dynamic = 'force-dynamic';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import BannerActions from './banner-actions';
