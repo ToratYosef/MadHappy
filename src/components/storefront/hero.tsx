@@ -160,11 +160,9 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
                 </div>
               </div>
               <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
-                <Image
+                <img
                   src="/assets/boy.png"
                   alt="Lounge set"
-                  width={600}
-                  height={700}
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/28 via-transparent to-transparent" />
