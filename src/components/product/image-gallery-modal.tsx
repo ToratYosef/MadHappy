@@ -148,7 +148,15 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }: Pro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      onClick={(e) => {
+        // Close if clicking the backdrop (not the content)
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       {/* Close button */}
       <button
         onClick={onClose}

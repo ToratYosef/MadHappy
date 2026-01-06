@@ -181,11 +181,15 @@ export default function ProductDetail({ product }: Props) {
           </button>
           {variantImages.length > 0 && (
             <div className="grid grid-cols-4 gap-3 md:grid-cols-5">
-              {variantImages.map((img) => (
+              {variantImages.map((img, index) => (
                 <button
                   key={`${img.url}-${(img.variantIds || []).join('-')}`}
                   type="button"
-                  onClick={() => setFeaturedImage(img)}
+                  onClick={() => {
+                    setFeaturedImage(img);
+                    setGalleryStartIndex(index);
+                    setIsGalleryOpen(true);
+                  }}
                   className={`relative aspect-square overflow-hidden rounded-xl border transition ${
                     featuredImage?.url === img.url ? 'border-green ring-2 ring-green/30' : 'border-black/10'
                   }`}

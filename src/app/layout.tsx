@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: 'LowKeyHigh',
     images: [
       {
-        url: '/logo.png',
+        url: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&h=630&q=80',
         width: 1200,
         height: 630,
         alt: 'LowKeyHigh minimal essentials'
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'LowKeyHigh | Minimal premium essentials',
     description: 'Understated luxury essentials for everyday elevation.',
-    images: ['/logo.png']
+    images: ['https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&h=630&q=80']
   }
 };
 

@@ -3,19 +3,36 @@ import Image from 'next/image';
 import AnimatedSection from '@/components/ui/animated-section';
 
 const heroImages = [
-  'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=900&q=80&sat=-10',
-  'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80&sat=-10',
-  'https://images.unsplash.com/photo-1509635022432-0226a97f5aa7?auto=format&fit=crop&w=900&q=80&sat=-10'
+  'https://images.pexels.com/photos/1192609/pexels-photo-1192609.jpeg?auto=compress&cs=tinysrgb&w=900&h=900&fit=crop',
+  'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=600&h=700&fit=crop',
+  'https://images.pexels.com/photos/1321943/pexels-photo-1321943.jpeg?auto=compress&cs=tinysrgb&w=600&h=700&fit=crop'
 ];
 
 export function Hero({ settings }: { settings: { heroHeadline?: string | null; heroSubheadline?: string | null } }) {
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-[#f6efe2] via-white to-[#e9f3ed]">
-      <AnimatedSection className="container-max relative grid gap-12 py-16 md:grid-cols-[1.05fr_1fr] md:items-center md:py-24">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-20 left-10 h-64 w-64 rounded-full bg-green/10 blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-gold/15 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/3 h-72 w-72 rounded-full bg-green/5 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+      <AnimatedSection className="container-max relative grid gap-12 py-4 md:grid-cols-[1.05fr_1fr] md:items-center md:py-8">
         <div className="space-y-6">
+          {/* Logo */}
+          <div className="flex justify-center -mb-12 md:-mb-16">
+            <Image
+              src="/logo.png"
+              alt="LowKeyHigh"
+              width={600}
+              height={210}
+              className="w-auto h-48 md:h-64"
+              priority
+            />
+          </div>
           <div className="inline-flex items-center gap-3 rounded-full bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-green shadow-soft ring-1 ring-black/5">
             <span className="h-px w-8 bg-green" />
-            MadHappy / Optimism Made Tangible
+            Optimism Made Tangible
           </div>
           <h1 className="text-balance text-5xl font-black leading-tight tracking-tight text-foreground md:text-6xl">
             {settings.heroHeadline || 'City-ready calm with unapologetic optimism'}
@@ -53,7 +70,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
             <div className="relative col-span-2 overflow-hidden rounded-3xl bg-gradient-to-br from-green/25 via-slate-50 to-taupe/35 shadow-2xl ring-1 ring-black/5">
               <Image
                 src={heroImages[0]}
-                alt="Madhappy street look"
+                alt="Street look"
                 width={900}
                 height={900}
                 className="h-full w-full object-cover"
@@ -67,7 +84,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
             <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
               <Image
                 src={heroImages[1]}
-                alt="Madhappy lounge set"
+                alt="Lounge set"
                 width={600}
                 height={700}
                 className="h-full w-full object-cover"
@@ -77,7 +94,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
             <div className="relative -mt-10 overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-black/5">
               <Image
                 src={heroImages[2]}
-                alt="Madhappy detail shot"
+                alt="Detail shot"
                 width={600}
                 height={700}
                 className="h-full w-full object-cover"
