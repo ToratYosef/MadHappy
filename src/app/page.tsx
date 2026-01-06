@@ -115,7 +115,7 @@ export default async function HomePage() {
           <div className="relative aspect-[9/16] overflow-hidden rounded-2xl max-w-sm mx-auto md:mx-0 md:max-w-md group">
             <div className="absolute inset-0 bg-gradient-to-t from-green/20 to-transparent z-10 group-hover:from-green/30 transition-all" />
             <Image
-              src="/assets/couple.png"
+              src="/assets/couples.png"
               alt="Travel capsule collection"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
