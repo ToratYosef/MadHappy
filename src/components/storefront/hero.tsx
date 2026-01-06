@@ -161,7 +161,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
               </div>
               <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
                 <Image
-                  src="/boy.png"
+                  src="/assets/boy.png"
                   alt="Lounge set"
                   width={600}
                   height={700}
