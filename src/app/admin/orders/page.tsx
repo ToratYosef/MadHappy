@@ -16,43 +16,45 @@ export default async function OrdersPage({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
           <h1 className="text-2xl font-semibold">Orders</h1>
           <p className="text-sm text-black/60">Track fulfillment and payments.</p>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-black/5 bg-white shadow-soft">
-        <table className="min-w-full text-sm">
-          <thead className="text-left text-black/60">
-            <tr>
-              <th className="px-4 py-3">Order</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Total</th>
-              <th className="px-4 py-3">Payment</th>
-              <th className="px-4 py-3">Fulfillment</th>
-              <th className="px-4 py-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id} className="border-t border-black/5">
-                <td className="px-4 py-3">
-                  <Link href={`/admin/orders/${order.id}`} className="font-semibold text-green hover:underline">
-                    {order.orderNumber || order.id}
-                  </Link>
-                </td>
-                <td className="px-4 py-3 text-black/70">{order.customerEmail}</td>
-                <td className="px-4 py-3">{formatCurrency(order.totalCents)}</td>
-                <td className="px-4 py-3 text-black/70">{order.paymentStatus}</td>
-                <td className="px-4 py-3 text-black/70">{order.fulfillmentStatus}</td>
-                <td className="px-4 py-3">
-                  <DeleteOrderButton orderId={order.id} />
-                </td>
+      <div className="overflow-hidden rounded-xl border border-black/5 bg-white shadow-soft">
+        <div className="overflow-x-auto">
+          <table className="min-w-[720px] w-full text-sm">
+            <thead className="text-left text-black/60">
+              <tr>
+                <th className="px-4 py-3">Order</th>
+                <th className="px-4 py-3">Email</th>
+                <th className="px-4 py-3">Total</th>
+                <th className="px-4 py-3">Payment</th>
+                <th className="px-4 py-3">Fulfillment</th>
+                <th className="px-4 py-3"></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id} className="border-t border-black/5">
+                  <td className="px-4 py-3">
+                    <Link href={`/admin/orders/${order.id}`} className="font-semibold text-green hover:underline">
+                      {order.orderNumber || order.id}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 text-black/70">{order.customerEmail}</td>
+                  <td className="px-4 py-3">{formatCurrency(order.totalCents)}</td>
+                  <td className="px-4 py-3 text-black/70">{order.paymentStatus}</td>
+                  <td className="px-4 py-3 text-black/70">{order.fulfillmentStatus}</td>
+                  <td className="px-4 py-3">
+                    <DeleteOrderButton orderId={order.id} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
