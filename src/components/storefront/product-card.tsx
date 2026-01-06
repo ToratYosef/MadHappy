@@ -4,12 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Check } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { formatCurrency, cn } from '@/lib/utils';
 import type { Product } from '@/types/product';
 import { filterImagesByVariant } from '@/lib/product-images';
 import { useCartStore } from '@/lib/cart-store';
 import { resolveSwatchColor } from '@/lib/color-swatches';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +18,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
+  const router = useRouter();
 
   const colorOption = useMemo(
     () => product.options.find((o) => o.name.toLowerCase().includes('color')),
@@ -117,12 +119,27 @@ export function ProductCard({ product }: ProductCardProps) {
     setTimeout(() => setAddSuccess(false), 2000);
   };
 
+  const navigateToProduct = () => {
+    router.push(`/product/${product.slug}`);
+  };
+
+  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      navigateToProduct();
+    }
+  };
+
   return (
     <motion.div
       whileHover={{ translateY: -6 }}
-      className="group overflow-hidden rounded-xl border border-black/5 bg-white shadow-soft"
+      className="group overflow-hidden rounded-xl border border-black/5 bg-white shadow-soft cursor-pointer"
+      role="link"
+      tabIndex={0}
+      onClick={navigateToProduct}
+      onKeyDown={handleCardKeyDown}
     >
-      <Link href={`/product/${product.slug}`} className="block">
+      <Link href={`/product/${product.slug}`} className="block" onClick={(e) => e.stopPropagation()}>
         {baseImage && (
           <div 
             className="relative aspect-[4/5] overflow-hidden"
@@ -160,7 +177,11 @@ export function ProductCard({ product }: ProductCardProps) {
             {colorValues.map((value) => (
               <button
                 key={value}
-                onClick={() => selectColor(value)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  selectColor(value);
+                }}
+                onKeyDown={(event) => event.stopPropagation()}
                 className={cn(
                   "h-6 w-6 rounded-full border-2 transition hover:scale-110",
                   selectedColor === value ? "border-black/60 ring-2 ring-black/20 ring-offset-1" : "border-black/10"
@@ -180,6 +201,8 @@ export function ProductCard({ product }: ProductCardProps) {
               className="rounded-lg border border-black/10 px-3 py-2 text-sm"
               value={selectedSize}
               onChange={(e) => selectSize(e.target.value)}
+              onClick={(event) => event.stopPropagation()}
+              onKeyDown={(event) => event.stopPropagation()}
             >
               <option value="">Select size</option>
               {sizesForSelectedColor.map((size) => (
@@ -192,8 +215,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between gap-3 rounded-lg border border-black/5 bg-slate-50/80 px-3 py-2 opacity-0 transition group-hover:opacity-100">
           <span className="text-sm font-semibold">Quick add</span>
           <button
-            onClick={handleQuickAdd}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleQuickAdd();
+            }}
             disabled={!selectedVariant || (sizeOption && !selectedSize)}
+            onKeyDown={(event) => event.stopPropagation()}
             className={cn(
               "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold shadow-soft transition-all duration-300 overflow-hidden",
               addSuccess
