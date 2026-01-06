@@ -9,7 +9,7 @@ async function main() {
     where: { id: 'default' },
     update: {},
     create: {
-      brandName: 'low key high',
+      brandName: 'LowKeyHigh',
       colors: {
         background: '#f8f5ef',
         foreground: '#0f0f0f',

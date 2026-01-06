@@ -8,14 +8,14 @@ async function updateSettings(formData: FormData) {
   await prisma.siteSettings.upsert({
     where: { id: 'default' },
     update: {
-      brandName: (formData.get('brandName') as string) || 'low key high',
+      brandName: (formData.get('brandName') as string) || 'LowKeyHigh',
       heroHeadline: (formData.get('heroHeadline') as string) || '',
       heroSubheadline: (formData.get('heroSubheadline') as string) || '',
       colors: JSON.parse((formData.get('colors') as string) || '{}')
     },
     create: {
       id: 'default',
-      brandName: 'low key high',
+      brandName: 'LowKeyHigh',
       heroHeadline: 'Understated layers built for movement.',
       heroSubheadline: 'Thoughtful fabrics, minimal forms, premium feel.',
       colors: {},

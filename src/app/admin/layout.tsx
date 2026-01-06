@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import AdminShell from '@/components/admin/shell';
 
 export const metadata: Metadata = {
-  title: 'Admin | low key high'
+  title: 'Admin | LowKeyHigh'
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

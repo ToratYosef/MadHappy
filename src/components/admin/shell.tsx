@@ -25,7 +25,7 @@ export default async function AdminShell({ children }: { children: React.ReactNo
       <aside className="hidden border-r border-black/5 bg-white/70 lg:block">
         <div className="flex h-full flex-col">
           <div className="border-b border-black/5 px-6 py-5 flex items-center justify-center">
-            <Image src="/logo.png" alt="Low Key High" width={150} height={50} className="h-14 w-auto" priority />
+            <Image src="/logo.png" alt="LowKeyHigh" width={150} height={50} className="h-14 w-auto" priority />
           </div>
           <nav className="flex-1 space-y-1 p-3 text-sm">
             {nav.map((item) => (
@@ -53,7 +53,7 @@ export default async function AdminShell({ children }: { children: React.ReactNo
       </aside>
       <div className="flex flex-col">
         <header className="flex items-center justify-between border-b border-black/5 bg-white/70 px-4 py-3 shadow-sm lg:hidden">
-          <div className="text-base font-semibold">low key high admin</div>
+          <div className="text-base font-semibold">LowKeyHigh admin</div>
           <SignOutButton>
             <span className="text-sm text-black/70">Sign out</span>
           </SignOutButton>

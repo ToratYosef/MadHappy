@@ -1,6 +1,6 @@
-# low key high — Premium Minimal E‑commerce
+# LowKeyHigh — Premium Minimal E‑commerce
 
-A minimal, premium e-commerce experience for **low key high** built with **Next.js 14 App Router**, **TypeScript**, **Tailwind CSS**, **Prisma**, **Neon Postgres**, **NextAuth**, and **Stripe Checkout**. Includes a protected admin dashboard for catalog and order management.
+A minimal, premium e-commerce experience for **LowKeyHigh** built with **Next.js 14 App Router**, **TypeScript**, **Tailwind CSS**, **Prisma**, **Neon Postgres**, **NextAuth**, and **Stripe Checkout**. Includes a protected admin dashboard for catalog and order management.
 
 ## Features
 - Storefront pages: `/`, `/shop`, `/product/[slug]`, `/cart`, `/success`, `/cancel`
