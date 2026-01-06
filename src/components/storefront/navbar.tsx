@@ -13,7 +13,12 @@ import { useAuth } from '@/lib/auth-context';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/shop', label: 'Shop' }
+  { href: '/shop', label: 'Shop' },
+  { href: '/lookbook', label: 'Lookbook' },
+  { href: '/journal', label: 'Journal' },
+  { href: '/about', label: 'About' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' }
 ];
 
 interface NavbarProps {
