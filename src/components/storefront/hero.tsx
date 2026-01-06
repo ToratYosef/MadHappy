@@ -26,13 +26,14 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
         
         <div className="relative z-10 container-max px-4 py-8 space-y-4 flex flex-col items-center text-center">
           {/* Logo */}
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-shrink-0">
             <Image
               src="/logo.png"
               alt="LowKeyHigh"
               width={600}
               height={210}
-              className="w-auto h-28"
+              style={{ width: 'auto', height: 'auto' }}
+              className="h-48 md:h-64"
               priority
             />
           </div>
@@ -94,8 +95,8 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
         {/* Animated background blobs */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-20 left-10 h-64 w-64 rounded-full bg-green/10 blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-gold/15 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/3 h-72 w-72 rounded-full bg-green/5 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute bottom-20 right-10 h-80 w-80 rounded-full bg-gold/15 blur-3xl animate-pulse" />
+          <div className="absolute top-1/2 left-1/3 h-72 w-72 rounded-full bg-green/5 blur-3xl animate-pulse" />
         </div>
         <AnimatedSection className="container-max relative grid gap-12 py-4 grid-cols-[1.05fr_1fr] items-center py-8">
           <div className="space-y-6">
@@ -160,7 +161,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
               </div>
               <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
                 <Image
-                  src={heroImages[1]}
+                  src="/boy.png"
                   alt="Lounge set"
                   width={600}
                   height={700}

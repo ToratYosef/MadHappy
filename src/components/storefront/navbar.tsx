@@ -111,19 +111,19 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
               {link.label}
             </Link>
           ))}
-          <button
+          <Link
             id="cart-button"
-            onClick={openDrawer}
+            href="/cart"
             className="relative inline-flex items-center gap-2 rounded-full border border-black/5 px-3 py-2 text-sm transition hover:-translate-y-0.5 hover:shadow-soft"
           >
             <ShoppingBag className="h-4 w-4" />
-            <span>Cart</span>
+            <span className="hidden sm:inline">Cart</span>
             {count > 0 && (
               <span className="absolute -right-2 -top-2 inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-green px-2 text-xs font-semibold text-white shadow-soft">
                 {count}
               </span>
             )}
-          </button>
+          </Link>
 
           {/* User Button */}
           <div className="relative" ref={dropdownRef}>

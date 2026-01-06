@@ -7,29 +7,12 @@ export function FeaturedGrid({ products }: { products: Product[] }) {
   const limitedProducts = products.slice(0, 3);
   const hasProducts = limitedProducts.length > 0;
   return (
-<<<<<<< HEAD
-    <AnimatedSection className="container-max py-10 md:py-16" id="featured">
+    <AnimatedSection className="container-max py-12 md:py-16" id="featured">
       <div className="mb-8 space-y-2 text-center">
         <h2 className="text-3xl font-bold tracking-tight md:text-5xl">Featured essentials</h2>
         <p className="text-base md:text-lg text-black/60 mx-auto max-w-2xl">
           Elevated comfort meets minimalist design. Each piece crafted for lasting quality.
         </p>
-=======
-    <AnimatedSection className="container-max py-12 md:py-16" id="featured">
-      <div className="mb-6 md:mb-8 space-y-2 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight md:text-5xl">Featured essentials</h2>
-        <p className="text-base md:text-lg text-black/60 mx-auto max-w-2xl">Elevated comfort meets minimalist design. Each piece crafted for lasting quality.</p>
-      </div>
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
-        {limitedProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-      <div className="mt-8 md:mt-10 text-center">
-        <Link href="/shop" className="button-primary text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
-          View all products
-        </Link>
->>>>>>> 6083d6f (Temp pre-rebase commit)
       </div>
       {hasProducts ? (
         <>
