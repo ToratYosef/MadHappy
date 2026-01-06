@@ -51,7 +51,7 @@ export default async function AdminDashboard() {
           <h2 className="text-lg font-semibold">Recent orders</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
+          <table className="min-w-[640px] w-full text-sm">
             <thead className="text-left text-black/60">
               <tr>
                 <th className="py-2">Order #</th>

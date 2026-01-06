@@ -14,12 +14,12 @@ export default async function ProductsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
           <h1 className="text-2xl font-semibold">Product Catalog</h1>
           <p className="text-sm text-black/60">Manage in-house products, pricing, and enablement here.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <PrintifySyncButton />
           <Link
             href="/admin/products/new"
@@ -29,43 +29,45 @@ export default async function ProductsPage() {
           </Link>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-black/5 bg-white shadow-soft">
-        <table className="min-w-full text-sm">
-          <thead className="text-left text-black/60">
-            <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Price</th>
-              <th className="px-4 py-3">Variants</th>
-              <th className="px-4 py-3">Updated</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => {
-              const price = product.variants[0]?.priceCents ?? 0;
-              return (
-                <tr key={product.id} className="border-t border-black/5">
-                  <td className="px-4 py-3">
-                    <Link href={`/admin/products/${product.id}`} className="font-semibold text-green hover:underline">
-                      {product.title}
-                    </Link>
-                    <p className="text-xs text-black/50">{product.slug}</p>
-                  </td>
-                  <td className="px-4 py-3">{formatCurrency(price)}</td>
-                  <td className="px-4 py-3 text-black/70">{product.variants.length}</td>
-                  <td className="px-4 py-3 text-black/70">
-                    {new Date(product.updatedAt).toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-end">
-                      <ProductActions productId={product.id} />
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="overflow-hidden rounded-xl border border-black/5 bg-white shadow-soft">
+        <div className="overflow-x-auto">
+          <table className="min-w-[720px] w-full text-sm">
+            <thead className="text-left text-black/60">
+              <tr>
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Price</th>
+                <th className="px-4 py-3">Variants</th>
+                <th className="px-4 py-3">Updated</th>
+                <th className="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => {
+                const price = product.variants[0]?.priceCents ?? 0;
+                return (
+                  <tr key={product.id} className="border-t border-black/5">
+                    <td className="px-4 py-3">
+                      <Link href={`/admin/products/${product.id}`} className="font-semibold text-green hover:underline">
+                        {product.title}
+                      </Link>
+                      <p className="text-xs text-black/50">{product.slug}</p>
+                    </td>
+                    <td className="px-4 py-3">{formatCurrency(price)}</td>
+                    <td className="px-4 py-3 text-black/70">{product.variants.length}</td>
+                    <td className="px-4 py-3 text-black/70">
+                      {new Date(product.updatedAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end">
+                        <ProductActions productId={product.id} />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
