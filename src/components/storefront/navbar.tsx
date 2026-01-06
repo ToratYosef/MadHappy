@@ -68,11 +68,11 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
         style={{ minHeight: '72px' }}
       >
         <Link href="/" className="relative flex items-center">
-          <Image 
-            src="/logo.png" 
-            alt="Low Key High" 
-            width={220} 
-            height={80} 
+          <Image
+            src="/logo.png"
+            alt="LowKeyHigh"
+            width={220}
+            height={80}
             className={cn("w-auto transition-all duration-300", isScrolled ? "h-12" : "h-20")}
             priority 
           />
