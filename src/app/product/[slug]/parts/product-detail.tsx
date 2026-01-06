@@ -236,6 +236,39 @@ export default function ProductDetail({ product }: Props) {
             selectedImageUrl={featuredImage?.url}
           />
 
+          <div className="grid gap-4 rounded-xl border border-black/5 bg-slate-50/60 p-4 md:grid-cols-2">
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.18em] text-black/50">Fabric & fit</p>
+              <p className="text-sm text-black/80">
+                Midweight brushed fleece with soft handfeel, pre-shrunk for consistency. Relaxed fit with room through the shoulders; size up for an oversized look.
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.18em] text-black/50">Why this piece exists</p>
+              <p className="text-sm text-black/80">
+                Designed for airport-to-studio days: secure phone pocket, reinforced seams, and matte hardware so you look composed while moving fast.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-3 rounded-xl border border-black/5 bg-white/80 p-4 md:grid-cols-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50">Size guide</p>
+              <p className="text-sm text-black/80">Check your measurements before you buy.</p>
+              <a href="/faq" className="text-green text-sm font-semibold hover:underline">View sizing FAQ →</a>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50">Shipping</p>
+              <p className="text-sm text-black/80">Standard 5-7 business days; expedited available at checkout. Tracking activates once the label prints.</p>
+              <a href="/shipping-returns" className="text-green text-sm font-semibold hover:underline">Shipping details →</a>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/50">Returns</p>
+              <p className="text-sm text-black/80">30-day returns on unworn items with tags. Prepaid label provided in the US.</p>
+              <a href="/shipping-returns" className="text-green text-sm font-semibold hover:underline">Return policy →</a>
+            </div>
+          </div>
+
           <div className="space-y-2">
             <h3 className="text-sm font-semibold text-black">Description</h3>
             <div className="prose prose-sm max-w-none text-black/70 prose-p:mb-3 prose-p:leading-relaxed">

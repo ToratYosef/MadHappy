@@ -26,6 +26,27 @@ export default async function HomePage() {
       <StickyPromoBannerSection />
       <Hero settings={{ heroHeadline: settings?.heroHeadline, heroSubheadline: settings?.heroSubheadline }} />
 
+      <AnimatedSection className="border-y border-black/5 bg-white/80 py-4">
+        <div className="container-max flex flex-wrap items-center justify-center gap-6 text-xs font-semibold uppercase tracking-[0.24em] text-black/60">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-green" />
+            2000+ verified buyers
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-green" />
+            4.9/5 average rating
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-green" />
+            48-hour dispatch
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-green" />
+            Easy returns
+          </span>
+        </div>
+      </AnimatedSection>
+
       {/* Features Section */}
       <AnimatedSection className="hidden md:block border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-12 md:py-16 relative overflow-hidden">
         {/* Floating decorative elements */}

@@ -26,6 +26,8 @@ export default function Footer() {
               <li><Link href="/#featured" className="hover:text-green transition">Featured</Link></li>
               <li><Link href="/shop" className="hover:text-green transition">New Arrivals</Link></li>
               <li><Link href="/shop" className="hover:text-green transition">Best Sellers</Link></li>
+              <li><Link href="/lookbook" className="hover:text-green transition">Lookbook</Link></li>
+              <li><Link href="/journal" className="hover:text-green transition">Journal</Link></li>
             </ul>
           </div>
 
@@ -35,9 +37,9 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-black/70">
               <li><Link href="/help" className="hover:text-green transition">Help Center</Link></li>
               <li><Link href="/track-order" className="hover:text-green transition">Track Order</Link></li>
-              <li><Link href="/help" className="hover:text-green transition">Shipping Info</Link></li>
-              <li><Link href="/help" className="hover:text-green transition">Returns</Link></li>
-              <li><Link href="/help" className="hover:text-green transition">Size Guide</Link></li>
+              <li><Link href="/shipping-returns" className="hover:text-green transition">Shipping & Returns</Link></li>
+              <li><Link href="/faq" className="hover:text-green transition">FAQ</Link></li>
+              <li><Link href="/contact" className="hover:text-green transition">Contact</Link></li>
             </ul>
           </div>
 
@@ -68,7 +70,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-4 border-t border-black/5 pt-8 text-xs text-black/50 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} LowKeyHigh. All rights reserved.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6">
+            <Link href="/about" className="hover:text-black/70 transition">About</Link>
+            <Link href="/contact" className="hover:text-black/70 transition">Contact</Link>
+            <Link href="/shipping-returns" className="hover:text-black/70 transition">Shipping & Returns</Link>
+            <Link href="/faq" className="hover:text-black/70 transition">FAQ</Link>
             <Link href="/help" className="hover:text-black/70 transition">Privacy Policy</Link>
             <Link href="/help" className="hover:text-black/70 transition">Terms of Service</Link>
             <Link href="/help" className="hover:text-black/70 transition">Accessibility</Link>
