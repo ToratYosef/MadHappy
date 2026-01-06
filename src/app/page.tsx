@@ -3,6 +3,7 @@ import Navbar from '@/components/storefront/navbar';
 import { FeaturedGrid } from '@/components/storefront/featured-grid';
 import { Hero } from '@/components/storefront/hero';
 import StickyPromoBannerSection from '@/components/storefront/sticky-promo-banner-section';
+import { ReviewsCarousel } from '@/components/storefront/reviews-carousel';
 import { getFeaturedProducts } from '@/lib/queries/products';
 import { getSiteSettings } from '@/lib/queries/settings';
 import AnimatedSection from '@/components/ui/animated-section';
@@ -26,16 +27,16 @@ export default async function HomePage() {
       <Hero settings={{ heroHeadline: settings?.heroHeadline, heroSubheadline: settings?.heroSubheadline }} />
 
       {/* Features Section */}
-      <AnimatedSection className="border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-16 relative overflow-hidden">
+      <AnimatedSection className="hidden md:block border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-12 md:py-16 relative overflow-hidden">
         {/* Floating decorative elements */}
         <div className="absolute top-10 right-10 h-32 w-32 rounded-full bg-green/5 blur-2xl animate-pulse" />
         <div className="absolute bottom-10 left-10 h-40 w-40 rounded-full bg-gold/10 blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
         <div className="container-max relative z-10">
-          <div className="mb-8 flex flex-col items-center gap-2 text-center">
+          <div className="mb-6 md:mb-8 flex flex-col items-center gap-2 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-green">Why the community stays</p>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Optimism, woven into every drop</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight md:text-4xl">Optimism, woven into every drop</h2>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
             <div className="group space-y-3 text-center transform transition-all hover:-translate-y-2 hover:scale-105">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10 shadow-soft group-hover:shadow-lg group-hover:bg-green/20 transition-all">
                 <Truck className="h-7 w-7 text-green" />
@@ -71,7 +72,7 @@ export default async function HomePage() {
       <FeaturedGrid products={featured} />
 
       {/* Travel Capsule Section */}
-      <AnimatedSection className="container-max py-12 md:py-16">
+      <AnimatedSection className="hidden md:block container-max py-12 md:py-16">
         <div className="grid gap-8 md:gap-12 items-center md:grid-cols-2">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 rounded-full bg-green/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green">
@@ -90,10 +91,10 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative aspect-[3/4] overflow-hidden rounded-2xl max-w-sm mx-auto md:mx-0 md:max-w-none group">
+          <div className="relative aspect-[9/16] overflow-hidden rounded-2xl max-w-sm mx-auto md:mx-0 md:max-w-md group">
             <div className="absolute inset-0 bg-gradient-to-t from-green/20 to-transparent z-10 group-hover:from-green/30 transition-all" />
             <Image
-              src="https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop"
+              src="/assets/couple.png"
               alt="Travel capsule collection"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -108,18 +109,18 @@ export default async function HomePage() {
         {/* Animated background */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(18,49,43,0.05),transparent_50%),radial-gradient(circle_at_80%_50%,rgba(181,150,69,0.08),transparent_50%)]" />
         <div className="container-max relative z-10">
-          <div className="grid gap-8 sm:grid-cols-3">
+          <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
             <div className="space-y-2 text-center group transform transition-all hover:scale-110">
-              <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green to-green/70 bg-clip-text text-transparent">2000+</p>
-              <p className="text-black/60">Happy customers</p>
+              <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green to-green/70 bg-clip-text text-transparent">2000+</p>
+              <p className="text-sm text-black/60">Happy customers</p>
             </div>
             <div className="space-y-2 text-center group transform transition-all hover:scale-110">
-              <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gold to-green bg-clip-text text-transparent">4.9/5</p>
-              <p className="text-black/60">Average rating</p>
+              <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gold to-green bg-clip-text text-transparent">4.9/5</p>
+              <p className="text-sm text-black/60">Average rating</p>
             </div>
             <div className="space-y-2 text-center group transform transition-all hover:scale-110">
-              <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green to-green/70 bg-clip-text text-transparent">Made</p>
-              <p className="text-black/60">In small batches</p>
+              <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green to-green/70 bg-clip-text text-transparent">Made</p>
+              <p className="text-sm text-black/60">In small batches</p>
             </div>
           </div>
         </div>
@@ -131,63 +132,11 @@ export default async function HomePage() {
         <div className="absolute top-20 right-20 h-64 w-64 rounded-full bg-green/5 blur-3xl" />
         <div className="absolute bottom-20 left-20 h-64 w-64 rounded-full bg-gold/10 blur-3xl" />
         <div className="container-max relative z-10">
-          <div className="mb-8 space-y-2 text-center">
+          <div className="mb-12 space-y-2 text-center">
             <h2 className="text-4xl font-bold tracking-tight md:text-5xl">What our customers say</h2>
             <p className="text-lg text-black/60 mx-auto max-w-2xl">Real reviews from real people who love our gear.</p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-2xl border border-black/5 bg-white p-8 shadow-soft hover:shadow-lg transition-all hover:-translate-y-1 group">
-              <div className="mb-4 flex text-yellow-500 group-hover:scale-110 transition-transform">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
-              </div>
-              <p className="mb-4 text-black/80">
-                &quot;Best hoodie I&apos;ve ever owned. The quality is incredible and it fits perfectly. Worth every penny.&quot;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green/30 to-gold/20" />
-                <div>
-                  <p className="font-semibold">Alex Martinez</p>
-                  <p className="text-xs text-black/50">Verified buyer</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-black/5 bg-white p-8 shadow-soft hover:shadow-lg transition-all hover:-translate-y-1 group">
-              <div className="mb-4 flex text-yellow-500 group-hover:scale-110 transition-transform">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
-              </div>
-              <p className="mb-4 text-black/80">
-                &quot;Subtle design, premium feel. These are now my go-to pieces for everyday wear.&quot;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-gold/30 to-green/20" />
-                <div>
-                  <p className="font-semibold">Jordan Lee</p>
-                  <p className="text-xs text-black/50">Verified buyer</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-black/5 bg-white p-8 shadow-soft hover:shadow-lg transition-all hover:-translate-y-1 group">
-              <div className="mb-4 flex text-yellow-500 group-hover:scale-110 transition-transform">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
-              </div>
-              <p className="mb-4 text-black/80">
-                &quot;Fast shipping, great quality, and the customer service is top-notch. Highly recommend!&quot;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green/30 to-gold/30" />
-                <div>
-                  <p className="font-semibold">Sam Rivera</p>
-                  <p className="text-xs text-black/50">Verified buyer</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ReviewsCarousel />
         </div>
       </AnimatedSection>
 

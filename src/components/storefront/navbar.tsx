@@ -112,6 +112,7 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
             </Link>
           ))}
           <button
+            id="cart-button"
             onClick={openDrawer}
             className="relative inline-flex items-center gap-2 rounded-full border border-black/5 px-3 py-2 text-sm transition hover:-translate-y-0.5 hover:shadow-soft"
           >

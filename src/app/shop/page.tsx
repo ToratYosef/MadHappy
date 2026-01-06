@@ -34,7 +34,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             <h1 className="text-3xl font-semibold">All products</h1>
           </div>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {sorted.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

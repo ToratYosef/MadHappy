@@ -78,3 +78,6 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
 - Checkout session verifies items against live DB data before creating Stripe sessions.
 - Webhook handles `checkout.session.completed` to create orders and decrement inventory inside a transaction.
 - Tailwind theme colors: off-white background, near-black text, taupe, deep green, muted gold accents.
+
+### Storefront hero image
+- The left image in the homepage hero now reads directly (no Next Image optimization) from `public/assets/Woman_in_Lavender.png`. Replace this file to change the photo. Recommended ~900×900, PNG or JPG.

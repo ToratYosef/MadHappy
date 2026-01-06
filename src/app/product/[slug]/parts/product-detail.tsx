@@ -226,10 +226,7 @@ export default function ProductDetail({ product }: Props) {
             <span>sold</span>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-black/5 bg-slate-50/70 p-4">
-            <p className="text-sm font-semibold text-black">Select options</p>
-            <p className="text-sm text-black/70">Choose your color and size.</p>
-          </div>
+          {/* Removed helper copy above options per request */}
 
           <AddToCart
             product={product}

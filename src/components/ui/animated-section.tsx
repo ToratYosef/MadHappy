@@ -6,8 +6,9 @@ import { useInView } from 'react-intersection-observer';
 export default function AnimatedSection({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  if (prefersReducedMotion) return <div className={className} id={id}>{children}</div>;
+  if (prefersReducedMotion || isMobile) return <div className={className} id={id}>{children}</div>;
 
   return (
     <motion.div

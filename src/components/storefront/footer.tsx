@@ -6,15 +6,18 @@ export default function Footer() {
   return (
     <footer className="border-t border-black/5 bg-gradient-to-b from-white to-slate-50/70">
       <div className="container-max py-12">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Image src="/logo.png" alt="LowKeyHigh" width={140} height={45} className="h-10 w-auto" />
-            <p className="text-sm text-black/60 leading-relaxed">
-              Understated luxury essentials for everyday elevation. Quality pieces that speak softly but carry confidence.
-            </p>
+        {/* Logo & Description - Centered */}
+        <div className="mb-12 text-center">
+          <div className="mb-4 flex justify-center">
+            <Image src="/logo.png" alt="LowKeyHigh" width={200} height={70} className="h-16 w-auto" />
           </div>
+          <p className="mx-auto max-w-md text-sm text-black/60 leading-relaxed">
+            Understated luxury essentials for everyday elevation. Quality pieces that speak softly but carry confidence.
+          </p>
+        </div>
 
+        {/* 3 Column Grid - All Devices */}
+        <div className="grid gap-8 grid-cols-3">
           {/* Shop */}
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-black">Shop</h3>
@@ -44,17 +47,19 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-black/70">
               <li className="flex items-start gap-2">
                 <Mail className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <a href="mailto:hello@lowkeyhigh.com" className="hover:text-green transition">
-                  hello@lowkeyhigh.com
+                <a href="mailto:info@secondhandcell.com" className="hover:text-green transition">
+                  Email Us
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>+1 (555) 123-4567</span>
+                <a href="sms:3475591707" className="hover:text-green transition">
+                  Text Us
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>Los Angeles, CA</span>
+                <span>Brooklyn, NY</span>
               </li>
             </ul>
           </div>
