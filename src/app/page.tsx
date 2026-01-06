@@ -20,36 +20,40 @@ export default async function HomePage() {
       <Hero settings={{ heroHeadline: settings?.heroHeadline, heroSubheadline: settings?.heroSubheadline }} />
 
       {/* Features Section */}
-      <AnimatedSection className="border-y border-black/5 bg-slate-50/50 py-16">
+      <AnimatedSection className="border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-16">
         <div className="container-max">
+          <div className="mb-8 flex flex-col items-center gap-2 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-green">Why the community stays</p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Optimism, woven into every drop</h2>
+          </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10 shadow-soft">
                 <Truck className="h-7 w-7 text-green" />
               </div>
-              <h3 className="font-semibold">Fast Dispatch</h3>
-              <p className="text-sm text-black/60">Ships within 48 hours</p>
+              <h3 className="font-semibold">48-hour moves</h3>
+              <p className="text-sm text-black/60">We dispatch fast so you can live in the moment.</p>
             </div>
             <div className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 shadow-soft">
                 <Shield className="h-7 w-7 text-green" />
               </div>
-              <h3 className="font-semibold">Secure Payment</h3>
-              <p className="text-sm text-black/60">100% secure transactions</p>
+              <h3 className="font-semibold">Protected energy</h3>
+              <p className="text-sm text-black/60">Secure checkout and support that actually cares.</p>
             </div>
             <div className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10 shadow-soft">
                 <Package className="h-7 w-7 text-green" />
               </div>
-              <h3 className="font-semibold">Easy Returns</h3>
-              <p className="text-sm text-black/60">30-day return policy</p>
+              <h3 className="font-semibold">No-stress returns</h3>
+              <p className="text-sm text-black/60">30 days to try it on, move, and fall in love.</p>
             </div>
             <div className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green/10">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 shadow-soft">
                 <Star className="h-7 w-7 text-green" />
               </div>
-              <h3 className="font-semibold">Premium Quality</h3>
-              <p className="text-sm text-black/60">Carefully selected materials</p>
+              <h3 className="font-semibold">Feel-good craft</h3>
+              <p className="text-sm text-black/60">Premium fabrics, mindful details, elevated comfort.</p>
             </div>
           </div>
         </div>
