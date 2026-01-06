@@ -59,7 +59,10 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
                 className="h-full w-full object-cover"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+              <div className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-black/70 backdrop-blur">
+                Launch mood
+              </div>
             </div>
             <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
               <Image
@@ -84,6 +87,12 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
                 Earthy tones
               </div>
             </div>
+            <div className="absolute -right-10 -top-10 hidden h-24 w-24 rounded-full bg-gold/30 blur-3xl md:block" />
+            <div className="absolute -left-8 -bottom-12 hidden h-24 w-24 rounded-full bg-green/20 blur-3xl md:block" />
+          </div>
+          <div className="absolute -right-4 bottom-6 w-48 rotate-[-6deg] rounded-3xl bg-white/90 p-4 text-sm font-semibold text-green shadow-2xl ring-1 ring-black/10 md:right-0">
+            Good energy only
+            <p className="text-xs font-normal text-black/60">Layered textures. Optimistic palette. Ready for the city.</p>
           </div>
         </div>
       </AnimatedSection>
