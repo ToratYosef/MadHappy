@@ -5,6 +5,7 @@ import { Gauge, Package, Settings, ShoppingCart, LogOut, Ticket, Image as ImageI
 import { getAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { SignOutButton } from './sign-out-button';
+import { MobileAdminNav } from './mobile-nav';
 
 const nav = [
   { href: '/admin', label: 'Dashboard', icon: Gauge },
@@ -21,7 +22,7 @@ export default async function AdminShell({ children }: { children: React.ReactNo
   if (!session?.user?.email) redirect('/login');
 
   return (
-    <div className="grid min-h-screen grid-cols-[240px_1fr] bg-background">
+    <div className="grid min-h-screen grid-cols-1 bg-background lg:grid-cols-[240px_1fr]">
       <aside className="hidden border-r border-black/5 bg-white/70 lg:block">
         <div className="flex h-full flex-col">
           <div className="border-b border-black/5 px-6 py-5 flex items-center justify-center">
@@ -52,13 +53,16 @@ export default async function AdminShell({ children }: { children: React.ReactNo
         </div>
       </aside>
       <div className="flex flex-col">
-        <header className="flex items-center justify-between border-b border-black/5 bg-white/70 px-4 py-3 shadow-sm lg:hidden">
-          <div className="text-base font-semibold">LowKeyHigh admin</div>
+        <header className="flex items-center justify-between gap-3 border-b border-black/5 bg-white/80 px-4 py-3 shadow-sm lg:hidden">
+          <div className="flex items-center gap-3">
+            <MobileAdminNav nav={nav} />
+            <Image src="/logo.png" alt="LowKeyHigh" width={120} height={40} className="h-10 w-auto" priority />
+          </div>
           <SignOutButton>
-            <span className="text-sm text-black/70">Sign out</span>
+            <span className="text-sm text-black/70 rounded-full border border-black/10 px-3 py-1 hover:border-black/30 transition">Sign out</span>
           </SignOutButton>
         </header>
-        <main className="flex-1 p-6 lg:p-10">{children}</main>
+        <main className="flex-1 p-5 lg:p-10">{children}</main>
       </div>
     </div>
   );
