@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, type LucideIcon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { SignOutButton } from './sign-out-button';
 import { cn } from '@/lib/utils';
+import { adminNavIconMap, type AdminNavItem } from './nav-items';
 
-type NavItem = { href: string; label: string; icon: LucideIcon };
-
-export function MobileAdminNav({ nav }: { nav: NavItem[] }) {
+export function MobileAdminNav({ nav }: { nav: AdminNavItem[] }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -50,17 +49,20 @@ export function MobileAdminNav({ nav }: { nav: NavItem[] }) {
           </button>
         </div>
         <nav className="space-y-1 p-3 text-sm">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-black/70 transition hover:bg-black/5"
-            >
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) => {
+            const Icon = adminNavIconMap[item.icon];
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-black/70 transition hover:bg-black/5"
+              >
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
         <div className="mt-auto border-t border-black/5 p-3">
           <SignOutButton>
