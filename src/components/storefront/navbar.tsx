@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, User } from 'lucide-react';
+import { ShoppingBag, User, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
 import { useCartDrawer } from '@/lib/cart-drawer-store';
@@ -32,24 +32,29 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
   const { data: session } = useSession();
   const { openAuthModal } = useAuth();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsUserDropdownOpen(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
     };
 
-    if (isUserDropdownOpen) {
+    if (isUserDropdownOpen || isMobileMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isUserDropdownOpen]);
+  }, [isUserDropdownOpen, isMobileMenuOpen]);
 
   useEffect(() => {
     let ticking = false;
@@ -103,7 +108,9 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
             priority 
           />
         </Link>
-        <nav className="flex items-center gap-4 text-sm font-medium">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-4 text-sm font-medium">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -205,7 +212,119 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
             )}
           </div>
         </nav>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center gap-3">
+          {/* Mobile Cart */}
+          <Link
+            id="cart-button"
+            href="/cart"
+            className="relative inline-flex items-center gap-2 rounded-full border border-black/5 px-3 py-2 text-sm transition hover:-translate-y-0.5 hover:shadow-soft"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {count > 0 && (
+              <span className="absolute -right-2 -top-2 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-green px-1.5 text-xs font-semibold text-white shadow-soft">
+                {count}
+              </span>
+            )}
+          </Link>
+
+          {/* Hamburger Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="inline-flex items-center justify-center rounded-full border border-black/5 p-2 transition hover:bg-black/5"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div ref={mobileMenuRef} className="md:hidden border-t border-black/5 bg-white/95 backdrop-blur">
+          <div className="container-max py-4 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  'block px-3 py-2 rounded-lg transition hover:bg-black/5',
+                  pathname === link.href && 'bg-black/5 text-foreground font-semibold'
+                )}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            
+            <div className="pt-2 border-t border-black/5 mt-2">
+              {session?.user ? (
+                <div className="space-y-2">
+                  <div className="px-3 py-2">
+                    <p className="text-xs text-black/50 uppercase tracking-wider">Signed in as</p>
+                    <p className="font-semibold text-sm truncate">{session.user.email}</p>
+                  </div>
+                  <Link
+                    href="/account"
+                    className="block px-3 py-2 text-sm hover:bg-black/5 rounded-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Account
+                  </Link>
+                  <Link
+                    href="/track-order"
+                    className="block px-3 py-2 text-sm hover:bg-black/5 rounded-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Track Order
+                  </Link>
+                  <Link
+                    href="/help"
+                    className="block px-3 py-2 text-sm hover:bg-black/5 rounded-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Help
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut({ redirect: true, callbackUrl: '/' });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-red-50 text-red-600 rounded-lg"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      openAuthModal();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="button-primary w-full text-sm"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => {
+                      openAuthModal();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="button-secondary w-full text-sm"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

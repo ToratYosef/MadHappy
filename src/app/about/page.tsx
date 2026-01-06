@@ -7,7 +7,7 @@ import Link from 'next/link';
 const pillars = [
   {
     title: 'Why we exist',
-    body: 'Low Key High was built to deliver quiet confidence—pieces that move with you from sunrise walks to late flights without screaming for attention.'
+    body: 'LowKeyHigh was built to deliver quiet confidence—pieces that move with you from sunrise walks to late flights without screaming for attention.'
   },
   {
     title: 'What we stand for',
@@ -34,7 +34,7 @@ export default function AboutPage() {
         <AnimatedSection className="grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.3em] text-green">About</p>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">Low Key High is quiet confidence.</h1>
+            <h1 className="text-4xl font-bold leading-tight md:text-5xl">LowKeyHigh is quiet confidence.</h1>
             <p className="text-lg text-black/70 leading-relaxed">
               Not loud logos. Not trend chasing. Just thoughtful silhouettes, premium handfeel, and a point of view rooted in optimism.
             </p>

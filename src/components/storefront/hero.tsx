@@ -6,7 +6,7 @@ import AnimatedSection from '@/components/ui/animated-section';
 const heroImages = [
   // Left (primary) hero image – served directly (no Next Image optimization)
   '/assets/Woman_in_Lavender.png',
-  'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=600&h=700&fit=crop',
+  'public/assets/boy.png',
   'https://images.pexels.com/photos/1321943/pexels-photo-1321943.jpeg?auto=compress&cs=tinysrgb&w=600&h=700&fit=crop'
 ];
 

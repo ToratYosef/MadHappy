@@ -51,7 +51,7 @@ export default async function HomePage() {
       <AnimatedSection className="hidden md:block border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-12 md:py-16 relative overflow-hidden">
         {/* Floating decorative elements */}
         <div className="absolute top-10 right-10 h-32 w-32 rounded-full bg-green/5 blur-2xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 h-40 w-40 rounded-full bg-gold/10 blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-10 left-10 h-40 w-40 rounded-full bg-gold/10 blur-2xl animate-pulse" />
         <div className="container-max relative z-10">
           <div className="mb-6 md:mb-8 flex flex-col items-center gap-2 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-green">Why the community stays</p>
