@@ -28,7 +28,6 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
   const { openAuthModal } = useAuth();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [canScroll, setCanScroll] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,21 +48,26 @@ export default function Navbar({ onAuthModalOpen }: NavbarProps = {}) {
 
   useEffect(() => {
     let ticking = false;
-    
+    const SHRINK_START = 72;
+    const SHRINK_RESET = 32;
+
     const update = () => {
       const doc = document.documentElement;
       const scrollable = doc.scrollHeight - window.innerHeight > 48;
-      setCanScroll(scrollable);
-      setIsScrolled(scrollable && window.scrollY > 50);
+      const currentY = window.scrollY;
+
+      setIsScrolled((prev) => {
+        if (!scrollable) return false;
+        if (!prev && currentY > SHRINK_START) return true;
+        if (prev && currentY < SHRINK_RESET) return false;
+        return prev;
+      });
     };
 
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          const doc = document.documentElement;
-          const scrollable = doc.scrollHeight - window.innerHeight > 48;
-          setCanScroll(scrollable);
-          setIsScrolled(scrollable && window.scrollY > 50);
+          update();
           ticking = false;
         });
         ticking = true;
