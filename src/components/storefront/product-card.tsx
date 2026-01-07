@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Check } from 'lucide-react';
-import { useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { formatCurrency, cn } from '@/lib/utils';
 import type { Product } from '@/types/product';
 import { filterImagesByVariant } from '@/lib/product-images';
@@ -55,6 +55,32 @@ export function ProductCard({ product }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(colorValues[0] ?? null);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [addSuccess, setAddSuccess] = useState(false);
+  const [autoCycleEnabled, setAutoCycleEnabled] = useState(true);
+
+  const stopAutoCycle = () => {
+    setAutoCycleEnabled(false);
+  };
+
+  useEffect(() => {
+    if (!colorValues.length) return;
+    if (!selectedColor || !colorValues.includes(selectedColor)) {
+      setSelectedColor(colorValues[0]);
+    }
+  }, [colorValues, selectedColor]);
+
+  useEffect(() => {
+    if (!autoCycleEnabled || colorValues.length < 2) return;
+    const interval = setInterval(() => {
+      setSelectedColor((current) => {
+        const currentIndex = current ? colorValues.indexOf(current) : -1;
+        const nextIndex = (currentIndex + 1) % colorValues.length;
+        return colorValues[nextIndex];
+      });
+      setSelectedSize('');
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [colorValues, autoCycleEnabled]);
 
   // Get variant for the selected color (any size) to show color-specific images
   const colorVariant = useMemo(() => {
@@ -143,8 +169,17 @@ export function ProductCard({ product }: ProductCardProps) {
       tabIndex={0}
       onClick={navigateToProduct}
       onKeyDown={handleCardKeyDown}
+      onMouseEnter={stopAutoCycle}
+      onPointerDown={stopAutoCycle}
     >
-      <Link href={`/product/${product.slug}`} className="block" onClick={(e) => e.stopPropagation()}>
+      <Link
+        href={`/product/${product.slug}`}
+        className="block"
+        onClick={(e) => {
+          stopAutoCycle();
+          e.stopPropagation();
+        }}
+      >
         {baseImage && (
           <div 
             className="relative aspect-[4/5] overflow-hidden"
@@ -182,6 +217,7 @@ export function ProductCard({ product }: ProductCardProps) {
               <button
                 key={value}
                 onClick={(event) => {
+                  stopAutoCycle();
                   event.stopPropagation();
                   selectColor(value);
                 }}
@@ -204,8 +240,14 @@ export function ProductCard({ product }: ProductCardProps) {
             <select
               className="rounded-lg border border-black/10 px-3 py-2 text-sm"
               value={selectedSize}
-              onChange={(e) => selectSize(e.target.value)}
-              onClick={(event) => event.stopPropagation()}
+              onChange={(e) => {
+                stopAutoCycle();
+                selectSize(e.target.value);
+              }}
+              onClick={(event) => {
+                stopAutoCycle();
+                event.stopPropagation();
+              }}
               onKeyDown={(event) => event.stopPropagation()}
             >
               <option value="">Select size</option>
@@ -220,6 +262,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-sm font-semibold">Quick add</span>
           <button
             onClick={(event) => {
+              stopAutoCycle();
               event.stopPropagation();
               handleQuickAdd();
             }}
