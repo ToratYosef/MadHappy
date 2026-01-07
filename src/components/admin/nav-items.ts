@@ -1,4 +1,5 @@
 import {
+  Ban,
   Gauge,
   Package,
   Settings,
@@ -10,6 +11,7 @@ import {
 } from 'lucide-react';
 
 export const adminNavIconMap = {
+  cancelOrders: Ban,
   gauge: Gauge,
   orders: ShoppingCart,
   products: Package,
@@ -31,6 +33,7 @@ export type AdminNavItem = {
 export const adminNavItems: AdminNavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: 'gauge' },
   { href: '/admin/orders', label: 'Orders', icon: 'orders' },
+  { href: '/admin/cancel-orders', label: 'Cancel Orders', icon: 'cancelOrders' },
   { href: '/admin/products', label: 'Products', icon: 'products' },
   { href: '/admin/banners', label: 'Banners', icon: 'banners' },
   { href: '/admin/featured', label: 'Featured', icon: 'featured' },
