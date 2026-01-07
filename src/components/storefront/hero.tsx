@@ -6,7 +6,7 @@ import AnimatedSection from '@/components/ui/animated-section';
 const heroImages = [
   // Left (primary) hero image – served directly (no Next Image optimization)
   '/assets/Woman_in_Lavender.png',
-  '/assets/boy.png',
+  '/assets/girl.png',
   'https://images.pexels.com/photos/1321943/pexels-photo-1321943.jpeg?auto=compress&cs=tinysrgb&w=600&h=700&fit=crop'
 ];
 
@@ -161,7 +161,7 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
               </div>
               <div className="relative overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
                 <img
-                  src="/assets/boy.png"
+                  src="/assets/girl.png"
                   alt="Lounge set"
                   className="h-full w-full object-cover"
                 />
