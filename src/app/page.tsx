@@ -48,6 +48,55 @@ export default async function HomePage() {
       </AnimatedSection>
 
       {/* Features Section */}
+      <AnimatedSection className="md:hidden border-y border-black/5 bg-gradient-to-br from-white via-slate-50/60 to-white py-8 relative overflow-hidden">
+        <div className="absolute -top-12 right-6 h-32 w-32 rounded-full bg-green/10 blur-2xl" />
+        <div className="absolute -bottom-12 left-6 h-32 w-32 rounded-full bg-gold/10 blur-2xl" />
+        <div className="container-max relative z-10 space-y-6 px-4">
+          <div className="space-y-2 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-green">Why the community stays</p>
+            <h2 className="text-2xl font-bold tracking-tight">Optimism, woven into every drop</h2>
+            <p className="text-sm text-black/60">Feel the difference in every detail.</p>
+          </div>
+          <div className="grid gap-3">
+            <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-4 shadow-soft ring-1 ring-black/5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green/10">
+                <Truck className="h-6 w-6 text-green" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold">48-hour moves</h3>
+                <p className="text-xs text-black/60">We dispatch fast so you can stay ready.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-4 shadow-soft ring-1 ring-black/5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15">
+                <Shield className="h-6 w-6 text-green" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold">Protected energy</h3>
+                <p className="text-xs text-black/60">Secure checkout and support that cares.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-4 shadow-soft ring-1 ring-black/5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green/10">
+                <Package className="h-6 w-6 text-green" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold">No-stress returns</h3>
+                <p className="text-xs text-black/60">30 days to try it on, move, and fall in love.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-4 shadow-soft ring-1 ring-black/5">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15">
+                <Star className="h-6 w-6 text-green" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold">Feel-good craft</h3>
+                <p className="text-xs text-black/60">Premium fabrics, mindful details, elevated comfort.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
       <AnimatedSection className="hidden md:block border-y border-black/5 bg-gradient-to-r from-white via-slate-50/60 to-white py-12 md:py-16 relative overflow-hidden">
         {/* Floating decorative elements */}
         <div className="absolute top-10 right-10 h-32 w-32 rounded-full bg-green/5 blur-2xl animate-pulse" />
@@ -93,6 +142,35 @@ export default async function HomePage() {
       <FeaturedGrid products={featured} />
 
       {/* Travel Capsule Section */}
+      <AnimatedSection className="md:hidden container-max py-10">
+        <div className="space-y-6 px-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-green/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-green">
+            <span className="h-2 w-2 rounded-full bg-green animate-pulse" />
+            New Drop
+          </div>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-bold tracking-tight">Travel capsule just landed</h2>
+            <p className="text-sm text-black/70">Travel-ready layers built for takeoff.</p>
+            <p className="text-sm text-black/60">
+              Elevated essentials engineered for red-eyes, layovers, and everything between departure and arrival.
+            </p>
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-soft ring-1 ring-black/5">
+            <div className="absolute inset-0 bg-gradient-to-t from-green/25 to-transparent" />
+            <Image
+              src="/assets/couples.png"
+              alt="Travel capsule collection"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          <Link href="/shop" className="inline-flex items-center gap-2 text-green font-semibold transition hover:gap-3 group">
+            <span>Shop collection</span>
+            <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
+        </div>
+      </AnimatedSection>
       <AnimatedSection className="hidden md:block container-max py-12 md:py-16">
         <div className="grid gap-8 md:gap-12 items-center md:grid-cols-2">
           <div className="space-y-4">
