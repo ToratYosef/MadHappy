@@ -62,32 +62,6 @@ export function Hero({ settings }: { settings: { heroHeadline?: string | null; h
           </div>
         </div>
 
-        {/* Feature Cards at Bottom */}
-        <div className="relative z-20 w-full px-2">
-          <div className="bg-white/95 rounded-xl p-3 space-y-2 shadow-lg">
-            <p className="text-xs font-semibold uppercase tracking-wider text-green">Why the community stays</p>
-            <p className="text-xs font-bold text-foreground mb-3">Optimism, woven into every drop</p>
-            
-            <div className="grid grid-cols-2 gap-2">
-              <div className="bg-green/5 rounded-lg p-2">
-                <p className="text-xs font-semibold text-foreground">48-hour moves</p>
-                <p className="text-xs text-black/60">We dispatch fast</p>
-              </div>
-              <div className="bg-green/5 rounded-lg p-2">
-                <p className="text-xs font-semibold text-foreground">Protected energy</p>
-                <p className="text-xs text-black/60">Secure checkout</p>
-              </div>
-              <div className="bg-green/5 rounded-lg p-2">
-                <p className="text-xs font-semibold text-foreground">No-stress returns</p>
-                <p className="text-xs text-black/60">30 days to try</p>
-              </div>
-              <div className="bg-green/5 rounded-lg p-2">
-                <p className="text-xs font-semibold text-foreground">Feel-good craft</p>
-                <p className="text-xs text-black/60">Premium fabrics</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Desktop Hero */}
