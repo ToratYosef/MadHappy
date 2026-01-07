@@ -63,15 +63,33 @@ export const mapProduct = (record: any): Product => {
 };
 
 export const getFeaturedProducts = async () => {
-  const products = await prisma.product.findMany({
-    include: { variants: true },
-    orderBy: { updatedAt: 'desc' },
-    take: 8
-  });
+  const settings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+  const featuredIds = Array.isArray(settings?.featuredProductIds)
+    ? settings?.featuredProductIds.map((id) => String(id))
+    : [];
+
+  const products = featuredIds.length
+    ? await prisma.product.findMany({
+        where: { id: { in: featuredIds } },
+        include: { variants: true }
+      })
+    : await prisma.product.findMany({
+        include: { variants: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 8
+      });
+
   const normalized = products.map(mapProduct);
-  return normalized
+  const filtered = normalized
     .map((product) => ({ ...product, variants: product.variants.filter((v) => v.isEnabled) }))
     .filter((p) => p.variants.length);
+
+  if (!featuredIds.length) return filtered;
+
+  const productMap = new Map(filtered.map((product) => [product.id, product]));
+  return featuredIds
+    .map((id) => productMap.get(id))
+    .filter((product): product is (typeof filtered)[number] => Boolean(product));
 };
 
 export const getProducts = async (params: { search?: string; sort?: string }) => {
