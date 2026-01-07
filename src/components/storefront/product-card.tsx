@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Check } from 'lucide-react';
-import { useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { formatCurrency, cn } from '@/lib/utils';
 import type { Product } from '@/types/product';
 import { filterImagesByVariant } from '@/lib/product-images';
@@ -55,6 +55,27 @@ export function ProductCard({ product }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(colorValues[0] ?? null);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [addSuccess, setAddSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!colorValues.length) return;
+    if (!selectedColor || !colorValues.includes(selectedColor)) {
+      setSelectedColor(colorValues[0]);
+    }
+  }, [colorValues, selectedColor]);
+
+  useEffect(() => {
+    if (colorValues.length < 2) return;
+    const interval = setInterval(() => {
+      setSelectedColor((current) => {
+        const currentIndex = current ? colorValues.indexOf(current) : -1;
+        const nextIndex = (currentIndex + 1) % colorValues.length;
+        return colorValues[nextIndex];
+      });
+      setSelectedSize('');
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [colorValues]);
 
   // Get variant for the selected color (any size) to show color-specific images
   const colorVariant = useMemo(() => {
