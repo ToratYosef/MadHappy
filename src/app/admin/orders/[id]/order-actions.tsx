@@ -13,11 +13,13 @@ export function OrderActions({ orderId, fulfillmentStatus, printifyOrderId }: Or
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [isCancellingPrintify, setIsCancellingPrintify] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const canSubmit = !printifyOrderId && fulfillmentStatus !== 'CANCELED' && fulfillmentStatus !== 'CANCELLED';
   const canCancel = fulfillmentStatus === 'DRAFT' || fulfillmentStatus === 'PROCESSING';
+  const canCancelPrintify = Boolean(printifyOrderId);
 
   const handleSubmitToPrintify = async () => {
     if (!canSubmit) return;
@@ -75,6 +77,37 @@ export function OrderActions({ orderId, fulfillmentStatus, printifyOrderId }: Or
     }
   };
 
+  const handleCancelPrintify = async () => {
+    if (!canCancelPrintify) return;
+
+    if (!confirm('Are you sure you want to cancel this Printify order? This will also mark the order as cancelled.')) {
+      return;
+    }
+
+    setIsCancellingPrintify(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/cancel-printify`, {
+        method: 'POST'
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to cancel Printify order');
+      }
+
+      setSuccess('Printify order cancelled and order marked as cancelled');
+      setTimeout(() => router.refresh(), 1500);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsCancellingPrintify(false);
+    }
+  };
+
   return (
     <div className="space-y-3">
       {error && (
@@ -114,6 +147,16 @@ export function OrderActions({ orderId, fulfillmentStatus, printifyOrderId }: Or
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isCancelling ? 'Cancelling...' : '❌ Cancel Order'}
+          </button>
+        )}
+
+        {canCancelPrintify && (
+          <button
+            onClick={handleCancelPrintify}
+            disabled={isCancellingPrintify}
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-400 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isCancellingPrintify ? 'Cancelling Printify...' : '🛑 Cancel Printify Order'}
           </button>
         )}
       </div>
