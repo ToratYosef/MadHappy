@@ -82,27 +82,6 @@ export function ProductCard({ product }: ProductCardProps) {
     return () => clearInterval(interval);
   }, [colorValues, autoCycleEnabled]);
 
-  useEffect(() => {
-    if (!colorValues.length) return;
-    if (!selectedColor || !colorValues.includes(selectedColor)) {
-      setSelectedColor(colorValues[0]);
-    }
-  }, [colorValues, selectedColor]);
-
-  useEffect(() => {
-    if (colorValues.length < 2) return;
-    const interval = setInterval(() => {
-      setSelectedColor((current) => {
-        const currentIndex = current ? colorValues.indexOf(current) : -1;
-        const nextIndex = (currentIndex + 1) % colorValues.length;
-        return colorValues[nextIndex];
-      });
-      setSelectedSize('');
-    }, 1500);
-
-    return () => clearInterval(interval);
-  }, [colorValues]);
-
   // Get variant for the selected color (any size) to show color-specific images
   const colorVariant = useMemo(() => {
     if (!selectedColor || !colorOption) return firstEnabledVariant;
