@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ShoppingBag, Check } from 'lucide-react';
-import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { formatCurrency, cn } from '@/lib/utils';
 import type { Product } from '@/types/product';
 import { filterImagesByVariant } from '@/lib/product-images';
@@ -56,9 +56,34 @@ export function ProductCard({ product }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [addSuccess, setAddSuccess] = useState(false);
   const [autoCycleEnabled, setAutoCycleEnabled] = useState(true);
+  const [isManuallyStopped, setIsManuallyStopped] = useState(false);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const stopAutoCycle = () => {
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
     setAutoCycleEnabled(false);
+    setIsManuallyStopped(true);
+  };
+
+  const pauseAutoCycleForHover = () => {
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    if (!isManuallyStopped) {
+      setAutoCycleEnabled(false);
+    }
+  };
+
+  const scheduleAutoCycleResume = () => {
+    if (isManuallyStopped) return;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(() => {
+      setAutoCycleEnabled(true);
+    }, 1500);
   };
 
   useEffect(() => {
@@ -81,6 +106,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return () => clearInterval(interval);
   }, [colorValues, autoCycleEnabled]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Get variant for the selected color (any size) to show color-specific images
   const colorVariant = useMemo(() => {
@@ -169,7 +202,8 @@ export function ProductCard({ product }: ProductCardProps) {
       tabIndex={0}
       onClick={navigateToProduct}
       onKeyDown={handleCardKeyDown}
-      onMouseEnter={stopAutoCycle}
+      onMouseEnter={pauseAutoCycleForHover}
+      onMouseLeave={scheduleAutoCycleResume}
       onPointerDown={stopAutoCycle}
     >
       <Link
