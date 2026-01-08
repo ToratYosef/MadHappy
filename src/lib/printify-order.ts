@@ -1,5 +1,35 @@
 import { prisma } from './db';
-import { submitPrintifyOrder, parsePrintifyError } from './printify';
+import { listPrintifyOrders, submitPrintifyOrder, parsePrintifyError } from './printify';
+
+type PrintifyOrderSummary = {
+  id?: string;
+  external_id?: string;
+};
+
+const extractOrders = (response: any): PrintifyOrderSummary[] => {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.orders)) return response.orders;
+  return [];
+};
+
+const findPrintifyOrderByExternalId = async (externalId: string) => {
+  const maxPages = 5;
+  const pageSize = 100;
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const response = await listPrintifyOrders({ page, limit: pageSize });
+    const orders = extractOrders(response);
+    if (!orders.length) break;
+
+    const match = orders.find((order) => order.external_id === externalId);
+    if (match) return match;
+
+    if (orders.length < pageSize) break;
+  }
+
+  return null;
+};
 
 interface OrderItem {
   productId: string;
@@ -91,6 +121,22 @@ export async function submitOrderToPrintify(orderId: string) {
   } catch (error) {
     const parsedError = parsePrintifyError(error);
     console.error('Failed to submit order to Printify:', parsedError);
+
+    const alreadyExists = parsedError.details?.errors?.reason?.includes('already exists');
+    if (alreadyExists) {
+      const existingOrder = await findPrintifyOrderByExternalId(payload.external_id);
+      if (existingOrder?.id) {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: {
+            printifyOrderId: existingOrder.id,
+            fulfillmentStatus: 'SUBMITTED'
+          }
+        });
+        return existingOrder;
+      }
+    }
+
     throw new Error(`Printify submission failed: ${parsedError.message}`);
   }
 }

@@ -25,7 +25,9 @@ async function handlePaymentIntent(paymentIntent: Stripe.PaymentIntent) {
       where: { id: order.id },
       data: { paymentStatus: 'PAID', fulfillmentStatus: 'PROCESSING' }
     });
+  }
 
+  if (!order.printifyOrderId) {
     // Submit to Printify after payment is confirmed
     try {
       await submitOrderToPrintify(order.id);
