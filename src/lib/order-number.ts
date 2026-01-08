@@ -8,7 +8,7 @@ export async function generateOrderNumber(): Promise<string> {
     take: 100 // Get recent orders to find the highest number
   });
 
-  let maxNumber = 1000; // Start from 1000, so first order is LKH-01001
+  let maxNumber = 1000000; // Start from 1,000,000 so first order is LKH-1000001
   
   for (const order of orders) {
     if (order.orderNumber) {
@@ -23,5 +23,5 @@ export async function generateOrderNumber(): Promise<string> {
   }
 
   const nextNumber = maxNumber + 1;
-  return `LKH-${String(nextNumber).padStart(5, '0')}`;
+  return `LKH-${String(nextNumber).padStart(7, '0')}`;
 }
